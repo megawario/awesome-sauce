@@ -1,0 +1,45 @@
+body {
+    background-color:rgb(153,200,60);
+}
+
+#logo{
+    width: 1024px;
+    heigth: 378,5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+section{
+    width:100%;
+    margin: auto;
+    padding:10px;
+}
+
+div#synopsis{
+    margin-left:60%;
+    float:left;
+}
+div#tablediv{
+    width: 60%;
+    float:left;
+}
+
+
+#synopsis{
+    rows: 20;
+    cols: 50;
+}
+.formGroup label{
+    text-align: right;
+    float:left;
+    
+}
+.formGroup input{}
+    
+.iconButton{
+    background-color: Transparent;
+    border: none;
+    overflow: hidden;
+    outline:none;
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html lang="pt">
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/js/jquery-ui-1.11.4/jquery-ui.min.css">
+    <script src="/js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+    <script src="/js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <script src="/js/buttons.js"></script>
+  </head>
+
+  <body>
+    <div class="header" id="header">
+      <img id="logo" src="/image/logo.jpg">
+    </div>
+    <div>
+      <h4>Evento passado: 8 Janeiro 2016</h4>
+      <h1> 12 Fevereiro 2016 </h1>
+      <h4>Proximo evento: 11 Março 2016 </h4> 
+    </div>
+    <section>
+      <div id="tablediv">
+	<table id="mytable">
+	  <tr>
+	    <th>Sistema</th>
+	    <th>Aventura</th>
+	    <th>Mestre de jogo</th>
+	    <th>Jogadores registados</th>
+	    <th>
+	      <button id="addAdventure"
+		      title="Add new adventure"
+		      class="iconButton">
+		<i class="material-icons md-48">add_circle</i>
+	      </button>
+	    </th>
+	  </tr>
+	  
+	</table>
+      </div>
+      <div id="synopsis">
+	<div id="synopsis_content">
+	<p>Benvindo ao site de marcação para os jogos Mensais de Rpg.</p>
+	<p>Passa o cursor sobre as linhas para veres or resumos das sessões.</p>
+	<p>Adiciona o teu jogo ou regista-te num.</p>
+	</div>
+      </div>
+    </section>
+    <div id="adventureDialog">
+      <form>
+	<fieldset>
+	  <div class="formGroup">
+	    <label for="name">Nome</label>
+	    <input type="text" name="name" id="adv_name" class="text ui-widget-content ui-corder-all">
+	  </div>
+	  <div class="formGroup">
+	    <label for="system">Sistema</label>
+	    <input type="text" name="system" id="adv_system" class="text ui-widget-content ui-corder-all">
+	  </div>
+	  <div class="formGroup">
+	    <label for="adventure">Aventura</label>
+	    <input type="text" name="adventure" id="adb_adventure" class="text ui-widget-content ui-corder-all">
+	  </div>
+	  <label for="synopsis">Resumo</label>
+	  <textarea id="adv_synopsis" maxlength="2000" class="text"></textarea>
+	</fieldset>
+      </form>
+    </div>
+    <div id="insert_user"></div>
+  </body>
+</html>
