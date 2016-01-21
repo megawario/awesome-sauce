@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/js/jquery-ui-1.11.4/jquery-ui.min.css">
     <script src="/js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
     <script src="/js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
-    <script src="/js/buttons.js"></script>
+    <script src="/js/adventureSubmit.js"></script>
+    <script src="/js/main.js"></script>
   </head>
 
   <body>
@@ -15,18 +16,18 @@
       <img id="logo" src="/image/logo.jpg">
     </div>
     <div>
-      <h4>Evento passado: 8 Janeiro 2016</h4>
+      <h5>Evento passado: 8 Janeiro 2016</h5>
       <h1> 12 Fevereiro 2016 </h1>
-      <h4>Proximo evento: 11 Março 2016 </h4> 
+      <h5>Proximo evento: 11 Março 2016 </h5> 
     </div>
     <section>
       <div id="tablediv">
 	<table id="mytable">
 	  <tr>
+	    <th>Hora</th>
 	    <th>Sistema</th>
 	    <th>Aventura</th>
-	    <th>Mestre de jogo</th>
-	    <th>Jogadores registados</th>
+	    <th>Vagas</th>
 	    <th>
 	      <button id="addAdventure"
 		      title="Add new adventure"
@@ -39,13 +40,17 @@
 	</table>
       </div>
       <div id="synopsis">
-	<div id="synopsis_content">
+	<div class="synopsis_0" data-index=0>
 	<p>Benvindo ao site de marcação para os jogos Mensais de Rpg.</p>
 	<p>Passa o cursor sobre as linhas para veres or resumos das sessões.</p>
 	<p>Adiciona o teu jogo ou regista-te num.</p>
 	</div>
       </div>
     </section>
+    <div class="synopsis">
+      <h1 id="s_name">test</h1>
+      <p id="s_synopsis"></p>
+    </div>
     <div id="adventureDialog">
       <form>
 	<fieldset>
@@ -59,7 +64,15 @@
 	  </div>
 	  <div class="formGroup">
 	    <label for="adventure">Aventura</label>
-	    <input type="text" name="adventure" id="adb_adventure" class="text ui-widget-content ui-corder-all">
+	    <input type="text" name="adventure" id="adv_adventure" class="text ui-widget-content ui-corder-all">
+	  </div>
+	  <div class ="formGroup">
+	    <label for="time">Hora</label>
+	    <input type="time" name="time" id="adv_time" min="14:00" max="23:59">
+	  </div>
+	  <div class="formGroup">
+	    <label for="slots">Vagas</label>
+	    <input type="number" min="1" max="20" id="adv_slots" class="number ui-widget-content ui-corder-all">
 	  </div>
 	  <label for="synopsis">Resumo</label>
 	  <textarea id="adv_synopsis" maxlength="2000" class="text"></textarea>
