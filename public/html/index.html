@@ -11,6 +11,7 @@
     <script src="/js/adventureSubmit.js"></script>
     <script src="/js/adventureSynopsis.js"></script>
     <script src="/js/main.js"></script>
+    <script src="/js/player.js"></script>
     <script src="/js/util.js"></script>
   </head>
 
@@ -19,9 +20,7 @@
 	<img class="logo" src="/image/logo.jpg">
       </div>
       <h1 class="title" id="gameDay"></h1>
-
       <div class="info">
-
 	<div class="table">
 	  <table class="flatTable" id="mytable">
 	    <tr class="titleTr">
@@ -44,33 +43,46 @@
 	  </table>
 	</div>
 
-	<div id="synopsisContainer">
+	
 	  <div class="welcomeText" data-index=0>
-	    <p>Bemvindo ao site de marcação para os jogos Mensais de Rpg.</p>
-	    <p>Passa o cursor sobre as linhas para veres or resumos das sessões.</p>
-	    <p>Adiciona o teu jogo ou regista-te num.</p>
+	    <p>Bemvindo ao site de marcação para os jogos Mensais de Rpg.<br>
+	    Passa o cursor sobre as linhas para veres or resumos das sessões.<br>
+	    Adiciona o teu jogo ou regista-te num.</p>
 	  </div>
+	
+	<div class="footer">
+	  <p> <a href="https://github.com/megawario/awesome-sauce">fork me! fork me! fork me hard!</a>  </p>
 	</div>
-
       </div>
       
       <div id="adventureSynopsisDialog">
-	<h1 id="as_name"></h1>
+	<h2 id="as_name"></h2>
+	<div>
+	  <div id="progressbar"></div>
+	  <label id="as_slots">empty :(</label>
+	</div>
+	
 	<div id="tabs">
 	  
 	  <ul>
-	    <li href="#tab-1"><a>Resumo</a></li>
-	    <li href="#tab-2"><a>Jogadores</a></li>
+	    <li><a href="#tab-1">Resumo</a></li>
+	    <li><a href="#tab-2">Jogadores</a></li>
 	  </ul>
 	  <div id="tab-1">
 	     <p  id="as_synopsis"></p>
 	  </div>
 	  <div id="tab-2">
-	    <p>Jogadores Inscritos</p>
+	    <ul id="as_players"></ul>
 	  </div>
 	</div>
       </div>
-      
+
+      <div class="Dialog" id="playerDialog">
+	    <label for="as_player">junta-te ao jogo</label>
+	    <input title="o teu nome aqui" type="text" name="as_player" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
+	    <button id="as_addPlayer" title="Marca lugar" ><i class="material-icons md-48">send </i></button>
+	</div>
+	
 
     <div class="Dialog" id="adventureDialog">
       <form id="adventureForm">
