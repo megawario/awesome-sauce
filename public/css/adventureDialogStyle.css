@@ -1,0 +1,11 @@
+/*CSS style sheet for adventure dialog*/
+
+.formGroup label{
+    display: inline-block;
+    width: 80px;
+    text-align:right;
+}
+
+.formGroup input{
+    left-margin:10px;
+}

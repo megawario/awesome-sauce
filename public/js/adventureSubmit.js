@@ -1,20 +1,31 @@
 //js relating to Adventure dialog submition
 
+
+//recenters and opens the dialog
+function openDialog(){
+    $("#adventureDialog").dialog("open");
+}
+
 //Creates adventure dialog
 //on dialog close, refresh should be done to view page.
 function createAdventureDialog(){
     $("#adventureDialog").dialog({
 	title: "Adicionar aventura",
 	show: {effect: "drop",duration:800},
+	hide: {effect: "drop",duration:800},
+	closeOnEscape: true,
 	draggable:false,
 	resizable:false,
 	autoOpen: false,
 	modal: true,
+	width: "500px",
 	buttons:{
 	    "Save":createAdventure,
 	    Cancel: function(){$("#adventureDialog").dialog("close")}
 	},
-	close: function(){ getAdventure()} //fetch new possible info
+	close: function(){
+	    $("#adventureForm")[0].reset();//clear all form info
+	    getAdventure()} //fetch new possible info
     });
 }
 
@@ -23,6 +34,7 @@ function createAdventureDialog(){
 // 2- on OK - close form and reload data from database
 function createAdventure(){
     var content = new Object();
+    content.date=getGameDate(true);
     content.name=$("#adv_name").val();
     content.synopsis=$("#adv_synopsis").val();
     content.adventure=$("#adv_adventure").val();
