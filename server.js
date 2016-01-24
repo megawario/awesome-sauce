@@ -28,9 +28,8 @@ app.post('/rest/adventure/create',function(req,res){
     });
 });
 
-app.get('/rest/adventure',function(req,res){
-    db.getAdventure(function(result){
-	console.log(result);
+app.get('/rest/adventure/:date',function(req,res){
+    db.getAdventure(req.params.date,function(result){
 	res.send(result);
     });
 });
