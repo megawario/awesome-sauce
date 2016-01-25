@@ -19,7 +19,6 @@ function createAdventureDialog(){
 	autoOpen: false,
 	modal: true,
 	width: "500px",
-	position: "top",
 	buttons:{
 	    "Save":createAdventure,
 	    Cancel: function(){$("#adventureDialog").dialog("close")}

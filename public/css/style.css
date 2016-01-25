@@ -4,6 +4,38 @@ body {
 }
 
 
+
+
+/*ACTION icons*/
+.button{
+    border: none;
+    background:transparent;
+}
+.myButton{
+    margin:2px;
+}
+
+.myButton:hover{
+    color: green;
+    animation-name:buzz_out;
+    animation-duration:0.75s;
+    animation-timing-function: linear;
+    animation-iteration-count:1;
+}
+
+@keyframes buzz_out{
+    10%{ transform: translateX(3px) rotate(2deg);}
+    20%{ transform: translateX(-3px) rotate(-2deg);}
+    30%{ transform: translateX(3px) rotate(2deg);}
+    40%{ transform: translateX(-3px) rotate(-2deg);}
+    50%{ transform: translateX(2px) rotate(1deg);}
+    60%{ transform: translateX(-2px) rotate(-1deg);}
+    70%{ transform: translateX(2px) rotate(1deg);}
+    80%{ transform: translateX(-2px) rotate(-1deg);}
+    90%{ transform: translateX(1px) rotate(0deg);}
+    100%{ transform: translateX(-1px) rotate(0deg);}
+}
+
 /* HEADER */
 div.header{
     margin-left:5%;
@@ -41,90 +73,6 @@ div#synopsisContainer{
     text-align: center;
 }
 
-/*TABLE*/
-div.table{
-    overflow: hidden;
-    max-width:200%;
-    margin-left:10%;
-    margin-right:10%;
-}
-
-
-.flatTable{
-    width:100%;
-    max-width:200%;
-    border-radius: 25px 25px 25px 25px;
-    border-collapse:collapse;
-    font-weight:bold;
-    color:#6b6b6b;
-    background: #6b6b6b;
-    overflow: hidden;
-}
-
-.flatTable tr{
-    max-height:60px;
-    height:60px;
-    background:#f1f2f3;
-    border-bottom:rgba(0,0,0,0.05) 1px solid;
-}
-
-.flatTable tr:nth-child(2n+3){
-    height: 60px;
-    background:#d4d1d5;
-    border-bottom:rgba(0,0,0,0.05) 1px solid;
-}
-
-.flatTable .titleTr{
-    height: 60px;
-    color: #f6f3f7;
-    background:#418a95;
-    border:0px solid;
-    
-}
-
-.flatTable .headingTr{
-    height:30px;
-    background: #63acb7;
-    color: #f6f3f7;
-    font-size: 12pt;
-    border: 0px solid;
-}
-
-.flatTable td{
-    text-align:center;
-    box-sizing: border-box;
-}
-
-.flatTable .titleTd{
-    white-space:nowrap;
-    font-size:200%;
-    align-text: left;
-    width:5px;
-}
-.flatTable .td_time{
-    max-width:10px;
-    text-align:center;
-}
-.flatTable .td_system{
-    word-wrap: break-word;
-    text-overflow:ellipsis;
-    max-width:200px;
-    text-align: center;
-}
-.flatTable .td_adventure{
-    word-wrap: break-word;
-    text-overflow:ellipsis;
-    max-width:200px;
-    text-align:left;
-}
-.flatTable .td_slots{
-    max-width:10px;
-    text-align: center;
-}
-
-.flatTable .plusTdButton{
-    width:20px;
-}
 
 
 
