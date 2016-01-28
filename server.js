@@ -19,20 +19,36 @@ app.get('/',function(req,res){
 });
 
 
-//define services
+//Services
+//POST
 app.use(bodyParser.json());
 app.post('/rest/adventure/create',function(req,res){
-    //putOnDB
+    //TODO process validation for the req body here.
     db.createAdventure(req.body,function(result){
 	res.send(result);
     });
 });
 
+app.use(bodyParser.json());
+app.post('/rest/adventure/addPlayer',function(req,res){
+    var id=req.body._id;
+    var playerName = req.body.player;
+    console.log(id);
+    console.log(playerName);
+    //TODO process validation here for post arg.
+    db.addPlayer(id,playerName,function(result){
+	res.send(result);
+    });
+});
+
+
+//GET
 app.get('/rest/adventure/:date',function(req,res){
     db.getAdventure(req.params.date,function(result){
 	res.send(result);
     });
 });
+
 
 
 

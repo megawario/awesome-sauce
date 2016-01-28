@@ -1,4 +1,5 @@
 /*CSS file for the table*/
+
 /*TABLE*/
 div.table{
     overflow: hidden;
@@ -85,5 +86,31 @@ div.table{
 }
 
 .flatTable .plusTdButton{
-    max-width:45px;
+    max-width:70px;
 }
+
+/* Buttons on table */
+
+.actionButton{
+    outline:0;
+    border: none;
+    background: transparent;
+    margin:2px;
+    max-width:25;
+}
+
+.actionButton:hover{
+    animation-name:buzz_out;
+    animation-duration:0.75s;
+    animation-timing-function: linear;
+    animation-iteration-count:1;
+}
+
+.redButton:hover{
+    color:red;
+}
+
+.greenButton:hover{
+    color:green;
+}
+

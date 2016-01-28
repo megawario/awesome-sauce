@@ -31,14 +31,13 @@ $(function(){
 
 
 function selectTableRow(event){
-    var index = $(this).parent().parent().parent().index()-2; //minus the header and title row (-2) the parent.parent fetches the line
+    var index = $(this).parent().parent().index()-2; //minus the header and title row (-2) the parent.parent fetches the line
     showSynopsis(adventures[index]);
 }
 
 function playerDialog(){
     // -2 for headers 3 parents to fetch the line.
-    var index=$(this).parent().parent().parent().index()-2;
-    alert(index);
+    var index=$(this).parent().parent().index()-2;
     showPlayerDialog(adventures[index]);
 }
 
@@ -67,6 +66,7 @@ function getAdventure(){
 	    $('table').append(createTableLine(obj));//add to table and to datastructure;
 	    $(".b_player").last().on("click",playerDialog);
 	    $(".b_info").last().on("click",selectTableRow);
+	    //$(".b_edit").last().on("click",playerDialog);
 	}
     });
  }
@@ -80,7 +80,8 @@ function createTableLine(json){
 	+"</td><td class='td_adventure'>"+json.adventure
 	+"</td><td class='td_slots'>"+json.slots
 	+"</td><td class='td_icons'>"
-	+"<button class='button'><i class='material-icons b_info myButton'>info</i></button>"
-	+"<button class='button'><i class='material-icons b_player myButton'>person_add</i></button></td></tr>";   
+	+"<button class='actionButton redButton b_edit'><i class='material-icons'>mode_edit</i></button>"
+	+"<button class='actionButton greenButton b_info'><i class='material-icons'>info</i></button>"
+	+"<button class='actionButton greenButton b_player'><i class='material-icons'>person_add</i></button></td></tr>";   
 }
 

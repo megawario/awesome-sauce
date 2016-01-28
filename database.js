@@ -1,5 +1,6 @@
 //Database for this server
 var mongoClient = require('mongodb').MongoClient;
+var mongo = require('mongodb');
 var config = require('./config');
 //utils
 
@@ -28,12 +29,38 @@ var database={
     getAdventure : function(date,callback){
 	mongoClient.connect(config.db.url,function(err,db){
 	    if(err){return console.dir(err);}
-	    db.collection('adventure').find({"date":date}).toArray(function(err,docs){
+	    db.collection('adventure').find({"date":date}).sort({"time":1}).toArray(function(err,docs){
 		db.close();
 		return callback(docs);
 	    });
     });
+    },
+
+    //updates adventure by id,  ading a new user.
+    addPlayer : function(id,playerName,callback){
+	mongoClient.connect(config.db.url,function(err,db){
+	    if(err){return console.dir(err);}
+	    db.collection('adventure').updateOne(
+		{"_id": mongo.ObjectID(id)},
+		{$push:{"players":playerName}},
+		function(err,docs){
+		    console.log(err);
+		    db.close();
+		    return callback('ok');//return status if it was ok.
+		});
+	});
+    },
+    
+//removes a player from the adventure with the id. 
+    removePlayer: function(id,callback){
+	//TODO
+    },
+    
+// removes adventure docment identified by id.
+    removeAdventure: function(id,callback){
+	//TODO 
     }
+    
 }
 
 module.exports=database;

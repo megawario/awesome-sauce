@@ -34,6 +34,7 @@ function showSynopsis(json){
     $('#as_synopsis').text(json.synopsis);
     $('#progressbar').progressbar("option","value",progress);
     $('#as_slots').text(getProgressLabelText(progress));
+    $('#as_players').text(String(json.players.map((current)=>current+'\n')));
     $('#adventureSynopsisDialog').dialog("option","title",json.adventure);
     $('#adventureSynopsisDialog').dialog("open");
 }
