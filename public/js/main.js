@@ -18,7 +18,10 @@ $(function(){
 
     //create add player dialog;
     createPlayerDialog();
-    
+
+    //Create dialog for deletion confirmation.
+    createDialogConfirm();
+
     //create synopsis dialog;
     createAdventureSynopsisDialog();
     
@@ -26,9 +29,17 @@ $(function(){
     $("#gameDay").text(getGameDate());
 
     //load adventures
-    getAdventure();
+    getAdventure();    
 });
 
+function createDialogConfirm(){
+    $("#dialogConfirm").dialog({
+	resizable:false,
+	autoOpen: false,
+	height:140,
+	modal:true,
+    });
+}
 
 function selectTableRow(event){
     var index = $(this).parent().parent().index()-2; //minus the header and title row (-2) the parent.parent fetches the line
@@ -66,15 +77,18 @@ function getAdventure(){
 	    $('table').append(createTableLine(obj));//add to table and to datastructure;
 	    $(".b_player").last().on("click",playerDialog);
 	    $(".b_info").last().on("click",selectTableRow);
-	    //$(".b_edit").last().on("click",playerDialog);
+	    $(".b_edit").last().on("click",editAdventure);
 	}
     });
  }
 
+function editAdventure(){
+    alert("TODO - Not yet implemented");
+}
+
 //returns a table entry
 function createTableLine(json){
-    //fill var
-    adventures.push(json);
+    adventures.push(json); //fill inner representation
     return "<tr class='tableRow'> <td class='td_time'>"+json.time
 	+"</td><td class='td_system'>"+json.system
 	+"</td><td class='td_adventure'>"+json.adventure

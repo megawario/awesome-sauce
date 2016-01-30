@@ -1,0 +1,5 @@
+/*Player display CSS - CSS regarding player displays*/
+
+.pd_nameLine{
+    display: inline-block;
+}

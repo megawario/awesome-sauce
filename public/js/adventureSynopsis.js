@@ -8,14 +8,20 @@ function createAdventureSynopsisDialog(){
     $("#as_addPlayer").button();
     $("#adventureSynopsisDialog").dialog({
 	title: "synopsis",
-	show: {effect: "drop",duration:800},
-	hide: {effect: "drop",duration:800},
+	show: {effect: "drop",duration:1000,direction:"up"},
+	hide: {effect: "drop",duration:1000,direction:"up"},
 	closeOnEscape: true,
 	draggable:false,
 	resizable:false,
 	autoOpen: false,
 	modal: true,
 	width: "500px",
+	position:{
+	    my: "top",
+	    at: "top",
+	    of: window,
+	    collision:"none"
+	}
 	//buttons:{
 	    //"Save":createAdventure,
 	    //Cancel: function(){$("#adventureSynopsisDialog").dialog("close")}
@@ -34,11 +40,15 @@ function showSynopsis(json){
     $('#as_synopsis').text(json.synopsis);
     $('#progressbar').progressbar("option","value",progress);
     $('#as_slots').text(getProgressLabelText(progress));
-    $('#as_players').text(String(json.players.map((current)=>current+'\n')));
+    json.players.map(function(current){
+	$('#as_players').append(newNameLine(current));
+	$('.b_removePlayer').last().on('click',function(){removePlayer(current);});
+    });
     $('#adventureSynopsisDialog').dialog("option","title",json.adventure);
+    //$('#adventureSynopsisDialog').dialog("option","position","center");  
+    
     $('#adventureSynopsisDialog').dialog("open");
 }
-
 
 //returns funny sentence to progress advancement.
 function getProgressLabelText(progress){
@@ -51,3 +61,15 @@ function getProgressLabelText(progress){
 		    };
 }
 
+//creates a new line for the player name
+function newNameLine(name){
+    return "<li class='pd_nameLine'><p>"+name+"</p><button class='actionButton redButton b_removePlayer'><i class='material-icons'>clear</i></button></li>"
+}
+
+//removes player from game
+function removePlayer(playerName){
+    alert(playerName);
+    $('#dialogConfirm').dialog('option','buttons',{}); //set button behaviour
+    $('#dialogConfirmText').text("Remover "+playerName+"do jogo?");
+    $('#dialogConfirm').dialog('open');
+}
