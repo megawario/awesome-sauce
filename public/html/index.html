@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/adventureDialogStyle.css">
     <link rel="stylesheet" href="/css/animation.css">
     <link rel="stylesheet" href="/css/playerDisplay.css">
+    <link rel="stylesheet" href="/css/adventureSynopsis.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/js/jquery-ui-1.11.4/jquery-ui.min.css">
     <script src="/js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
@@ -21,25 +22,27 @@
 
   <body>
     <div id="adventureSynopsisDialog">
+      <div>
 	<h2 id="as_name"></h2>
-	<div>
-	  <div id="progressbar"></div>
-	  <label id="as_slots">empty :(</label>
+	<div id="progressbar">
+	  <div id="as_slots">empty :(</div>
 	</div>
-	<div id="tabs">
-	  <ul>
-	    <li><a href="#tab-1">Resumo</a></li>
-	    <li><a href="#tab-2">Jogadores</a></li>
-	  </ul>
-	  <div id="tab-1">
+      </div>
+      
+	<div id="as_accordion">
+	  <h6>Resumo</h6>
+	  <div class="accordion-tab" >
 	    <p  id="as_synopsis"></p>
 	  </div>
-	  <div id="tab-2">
+	  <h6>Jogadores</h6>
+	  <div class="accordion-tab">
 	    <ul id="as_players"></ul>
 	  </div>
 	</div>
-      </div>
-      <div class="header">
+     
+    </div>
+    
+    <div class="header">
 	<img class="logo" src="/image/logo.jpg">
       </div>
       <h1 class="title" id="gameDay"></h1>
@@ -81,9 +84,7 @@
 
       <div class="Dialog" 'id="#dialogConfirm"><p id="dialogConfirmText"></p></div>
       
-      
-
-      
+            
       <div class="Dialog" id="playerDialog">
 	<form id="playerForm">
 	  <fieldset>

@@ -13,6 +13,7 @@ config.services.port=8080;
 //database config
 config.db={};
 config.db.url='mongodb://localhost:27017/lissch';
+
 //others soon:
 
 module.exports = config;

@@ -14,7 +14,7 @@ $(function(){
     $.getScript("../js/adventureSubmit.js");
 
     createAdventureDialog();  //initialize adventure add dialog
-    $("#addAdventure").button().on("click",openDialog); //sets button to open dialog
+    $("#addAdventure").button().on("click",openAdventureDialog); //sets button to open dialog
 
     //create add player dialog;
     createPlayerDialog();
@@ -41,20 +41,9 @@ function createDialogConfirm(){
     });
 }
 
-function selectTableRow(event){
-    var index = $(this).parent().parent().index()-2; //minus the header and title row (-2) the parent.parent fetches the line
-    showSynopsis(adventures[index]);
-}
-
-function playerDialog(){
-    // -2 for headers 3 parents to fetch the line.
-    var index=$(this).parent().parent().index()-2;
-    showPlayerDialog(adventures[index]);
-}
-
 //Get game day date
 //Returns second Saturday of the month string in the format: dd Month yyyy
-//if number = false, returns in numeral dd-mm-yyyy
+//if number = false, returns in month full name
 function getGameDate(number){
     var current = new Date();
     var day = getMonthDay(14,current.getMonth(),current.getFullYear());
@@ -74,25 +63,27 @@ function getAdventure(){
 	var obj;
 	for(i=0;i<data.length;i++){
 	    obj=JSON.parse(JSON.stringify(data[i]));
-	    $('table').append(createTableLine(obj));//add to table and to datastructure;
-	    $(".b_player").last().on("click",playerDialog);
-	    $(".b_info").last().on("click",selectTableRow);
-	    $(".b_edit").last().on("click",editAdventure);
+	    addNewTableLine(obj);
 	}
     });
  }
 
-function editAdventure(){
-    alert("TODO - Not yet implemented");
+//add new table line to table with all functionality.
+function addNewTableLine(json){
+    adventures.push(json); //fill inner representation
+    $('table').append(createTableLine(json));//add to table and to datastructure;
+    //$(createTableLine(json)).hide().insertAfter($('table').last()).slideDown('slow');
+    $(".b_player").last().on("click",function(){showPlayerDialog(adventures[$(this).parent().parent().index()-2]);});
+    $(".b_info").last().on("click",function(){showSynopsis(adventures[$(this).parent().parent().index()-2])});
+    $(".b_edit").last().on("click",function(){editAdventureDialog(adventures[$(this).parent().parent().index()-2],$(this).parent().parent().index()-2);});
 }
 
 //returns a table entry
 function createTableLine(json){
-    adventures.push(json); //fill inner representation
     return "<tr class='tableRow'> <td class='td_time'>"+json.time
 	+"</td><td class='td_system'>"+json.system
 	+"</td><td class='td_adventure'>"+json.adventure
-	+"</td><td class='td_slots'>"+json.slots
+	+"</td><td class='td_slots'>"+(json.slots-json.players.length)
 	+"</td><td class='td_icons'>"
 	+"<button class='actionButton redButton b_edit'><i class='material-icons'>mode_edit</i></button>"
 	+"<button class='actionButton greenButton b_info'><i class='material-icons'>info</i></button>"

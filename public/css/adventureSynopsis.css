@@ -1,0 +1,40 @@
+/*CSS for adventure synopsis dialog*/
+
+
+
+
+#as_name{
+    margin: 1px;
+}
+
+#progressbar {
+    text-align: center;
+    overflow: hidden;
+    width:100%;
+}
+
+#as_slots {
+    line-height: 200%;
+    float:left;
+    width:100%;
+    position: absolute;
+    vertical-align: middle;
+    overflow:hidden;
+}
+
+#adventureSynopsisDialog ul{
+    margin:0px;
+    padding:0px;
+    list-style:none;
+    display:table-row-group;
+}
+#adventureSynopsisDialog li{
+    margin:0px;
+}
+#adventureSynopsisDialog p{
+    margin:0px;
+}
+#adventureSynopsisDialog button{
+    max-width:40px;
+    margin:0px;
+}
