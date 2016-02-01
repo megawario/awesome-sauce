@@ -3,9 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/table.css">
+    <link rel="stylesheet" href="/css/adventureDialogStyle.css">
+    <link rel="stylesheet" href="/css/animation.css">
+    <link rel="stylesheet" href="/css/playerDisplay.css">
+    <link rel="stylesheet" href="/css/adventureSynopsis.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/js/jquery-ui-1.11.4/jquery-ui.min.css">
-    <link rel="stylesheet" href="/css/adventureDialogStyle.css">
     <script src="/js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
     <script src="/js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
     <script src="/js/adventureSubmit.js"></script>
@@ -13,19 +17,42 @@
     <script src="/js/main.js"></script>
     <script src="/js/player.js"></script>
     <script src="/js/util.js"></script>
+    <script src="/js/playerDialog.js"></script>
   </head>
 
   <body>
-      <div class="header">
+    <div id="adventureSynopsisDialog">
+      <div>
+	<h2 id="as_name"></h2>
+	<div id="progressbar">
+	  <div id="as_slots">empty :(</div>
+	</div>
+      </div>
+      
+	<div id="as_accordion">
+	  <h6>Resumo</h6>
+	  <div class="accordion-tab" >
+	    <p  id="as_synopsis"></p>
+	  </div>
+	  <h6>Jogadores</h6>
+	  <div class="accordion-tab">
+	    <ul id="as_players"></ul>
+	  </div>
+	</div>
+     
+    </div>
+    
+    <div class="header">
 	<img class="logo" src="/image/logo.jpg">
       </div>
       <h1 class="title" id="gameDay"></h1>
+
       <div class="info">
 	<div class="table">
 	  <table class="flatTable" id="mytable">
 	    <tr class="titleTr">
 	      <td class="titleTd" colspan="2">Mesas de jogo</td>
-	      <td colspan="1"></td>
+	      <td colspan="2"></td>
 	      <td class="plusTdButton">
 		<button id="addAdventure"
 			title="Add new adventure"
@@ -33,85 +60,67 @@
 		  <i class="material-icons md-48">add_circle</i>
 		</button>
 	      </td>
+	      <td colspan="1"></td>
 	    </tr>
 	    <tr class="headingTr">
 	      <td class="headingTd" >Hora</td>
 	      <td class="headingTd" >Sistema</td>
 	      <td class="headingTd" >Aventura</td>
 	      <td class="headingTd" >Vagas</td>
+	      <td class="headingTd" ></td>
 	    </tr>
 	  </table>
 	</div>
-
 	
-	  <div class="welcomeText" data-index=0>
-	    <p>Bemvindo ao site de marcação para os jogos Mensais de Rpg.<br>
+	<div class="welcomeText" data-index=0>
+	  <p>Bemvindo ao site de marcação para os jogos Mensais de RPG.<br>
 	    Passa o cursor sobre as linhas para veres or resumos das sessões.<br>
 	    Adiciona o teu jogo ou regista-te num.</p>
-	  </div>
-	
-	<div class="footer">
-	  <p> <a href="https://github.com/megawario/awesome-sauce">fork me! fork me! fork me hard!</a>  </p>
 	</div>
+	<footer class="footer">
+	  <p><a href="https://github.com/megawario/awesome-sauce">fork me! fork me! fork me hard!</a></p>
+	</footer>
+      </div>   
+
+      <div class="Dialog" 'id="#dialogConfirm"><p id="dialogConfirmText"></p></div>
+      
+            
+      <div class="Dialog" id="playerDialog">
+	<form id="playerForm">
+	  <fieldset>
+	    <label for="as_player">junta-te ao jogo</label>
+	    <input title="o teu nome aqui" type="text" name="as_player" id="pf_player" maxlength="20" class="text ui-widget-content ui-corder-all">
+	  </fieldset>
+	</form>
       </div>
       
-      <div id="adventureSynopsisDialog">
-	<h2 id="as_name"></h2>
-	<div>
-	  <div id="progressbar"></div>
-	  <label id="as_slots">empty :(</label>
-	</div>
-	
-	<div id="tabs">
-	  
-	  <ul>
-	    <li><a href="#tab-1">Resumo</a></li>
-	    <li><a href="#tab-2">Jogadores</a></li>
-	  </ul>
-	  <div id="tab-1">
-	     <p  id="as_synopsis"></p>
-	  </div>
-	  <div id="tab-2">
-	    <ul id="as_players"></ul>
-	  </div>
-	</div>
+      <div class="Dialog" id="adventureDialog">
+	<form id="adventureForm">
+	  <fieldset>
+	    <div class="formGroup">
+	      <label for="name">Nome</label>
+	      <input type="text" name="name" title="Nome do DM" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
+	    </div>
+	    <div class="formGroup">
+	      <label for="system">Sistema</label>
+	      <input type="text" name="system" title="Sistema do jogo" id="adv_system" maxlength="40" class="text ui-widget-content ui-corder-all">
+	    </div>
+	    <div class="formGroup">
+	      <label for="adventure">Aventura</label>
+	      <input type="text" name="adventure" title="Titulo da aventura" id="adv_adventure" maxlength="80" class="text ui-widget-content ui-corder-all">
+	    </div>
+	    <div class ="formGroup">
+	      <label for="time">Hora</label>
+	      <input type="time" name="time" id="adv_time" value="14:00" min="14:00" max="23:59">
+	    </div>
+	    <div class="formGroup">
+	      <label for="slots">Vagas</label>
+	      <input type="number" min="1" max="20" id="adv_slots" class="number ui-widget-content ui-corder-all">
+	    </div>
+	    <label class="synopsisLabel"for="synopsis">Resumo</label>
+	    <textarea id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all"></textarea>
+	  </fieldset>
+	</form>
       </div>
-
-      <div class="Dialog" id="playerDialog">
-	    <label for="as_player">junta-te ao jogo</label>
-	    <input title="o teu nome aqui" type="text" name="as_player" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
-	    <button id="as_addPlayer" title="Marca lugar" ><i class="material-icons md-48">send </i></button>
-	</div>
-	
-
-    <div class="Dialog" id="adventureDialog">
-      <form id="adventureForm">
-	<fieldset>
-	  <div class="formGroup">
-	    <label for="name">Nome</label>
-	    <input type="text" name="name" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
-	  </div>
-	  <div class="formGroup">
-	    <label for="system">Sistema</label>
-	    <input type="text" name="system" id="adv_system" maxlength="40" class="text ui-widget-content ui-corder-all">
-	  </div>
-	  <div class="formGroup">
-	    <label for="adventure">Aventura</label>
-	    <input type="text" name="adventure" id="adv_adventure" maxlength="80" class="text ui-widget-content ui-corder-all">
-	  </div>
-	  <div class ="formGroup">
-	    <label for="time">Hora</label>
-	    <input type="time" name="time" id="adv_time" value="14:00" min="14:00" max="23:59">
-	  </div>
-	  <div class="formGroup">
-	    <label for="slots">Vagas</label>
-	    <input type="number" min="1" max="20" id="adv_slots" class="number ui-widget-content ui-corder-all">
-	  </div>
-	  <label for="synopsis">Resumo</label>
-	  <textarea id="adv_synopsis" maxlength="2000" class="text"></textarea>
-	</fieldset>
-      </form>
-    </div>
-    <div id="insert_user"></div>
   </body>
 </html>
