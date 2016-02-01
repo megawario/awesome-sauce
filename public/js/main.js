@@ -73,7 +73,7 @@ function addNewTableLine(json){
     adventures.push(json); //fill inner representation
     $('table').append(createTableLine(json));//add to table and to datastructure;
     //$(createTableLine(json)).hide().insertAfter($('table').last()).slideDown('slow');
-    $(".b_player").last().on("click",function(){showPlayerDialog(adventures[$(this).parent().parent().index()-2]);});
+    $(".b_player").last().on("click",function(){showPlayerDialog(adventures[$(this).parent().parent().index()-2],$(this).parent().parent().index()-2);});
     $(".b_info").last().on("click",function(){showSynopsis(adventures[$(this).parent().parent().index()-2])});
     $(".b_edit").last().on("click",function(){editAdventureDialog(adventures[$(this).parent().parent().index()-2],$(this).parent().parent().index()-2);});
 }

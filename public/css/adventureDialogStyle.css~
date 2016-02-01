@@ -6,23 +6,8 @@
     display: inline-block;
 }
 
-.synopsisLabel{
-    display:block;
-}
 #adv_slots{
     width:50px;
-}
-#adv_adventure{
-    width:300px;
-}
-#adv_system{
-    width:300px;
-}
-#adv_synopsis{
-    min-height:200px;
-    min-width:400px;
-    
-
 }
 #adventureDialog .formGroup input{
     left-margin:10px;

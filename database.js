@@ -30,8 +30,6 @@ var database={
 	    if(err){return console.dir(err);}
 	    var id = json._id;
 	    delete json['_id'];
-	    console.log('JSON: '+json+' for id '+id);
-	    console.log(json.adventure);
 	    db.collection('adventure').updateOne(
 		{"_id": mongo.ObjectID(id)},
 		json,

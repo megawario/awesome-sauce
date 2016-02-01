@@ -4,7 +4,7 @@ var config={};
 //server configurations
 config.server={};
 config.server.port=8081;
-
+config.server.path='/lisrpg/';
 
 //service configuration
 config.services={};

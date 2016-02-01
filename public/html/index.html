@@ -99,15 +99,15 @@
 	  <fieldset>
 	    <div class="formGroup">
 	      <label for="name">Nome</label>
-	      <input type="text" name="name" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
+	      <input type="text" name="name" title="Nome do DM" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
 	    </div>
 	    <div class="formGroup">
 	      <label for="system">Sistema</label>
-	      <input type="text" name="system" id="adv_system" maxlength="40" class="text ui-widget-content ui-corder-all">
+	      <input type="text" name="system" title="Sistema do jogo" id="adv_system" maxlength="40" class="text ui-widget-content ui-corder-all">
 	    </div>
 	    <div class="formGroup">
 	      <label for="adventure">Aventura</label>
-	      <input type="text" name="adventure" id="adv_adventure" maxlength="80" class="text ui-widget-content ui-corder-all">
+	      <input type="text" name="adventure" title="Titulo da aventura" id="adv_adventure" maxlength="80" class="text ui-widget-content ui-corder-all">
 	    </div>
 	    <div class ="formGroup">
 	      <label for="time">Hora</label>
@@ -117,8 +117,8 @@
 	      <label for="slots">Vagas</label>
 	      <input type="number" min="1" max="20" id="adv_slots" class="number ui-widget-content ui-corder-all">
 	    </div>
-	    <label for="synopsis">Resumo</label>
-	    <textarea id="adv_synopsis" maxlength="2000" class="text"></textarea>
+	    <label class="synopsisLabel"for="synopsis">Resumo</label>
+	    <textarea id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all"></textarea>
 	  </fieldset>
 	</form>
       </div>

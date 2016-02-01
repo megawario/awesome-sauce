@@ -12,7 +12,7 @@ div.header{
     height:auto;
 }
 .logo{
-    border-radius: 75px 150px 75px 150px;
+    border-radius: 300px 300px 50px 50px;
     max-width:100%;
     max-heigth:100%;
     margin-left:auto;
@@ -40,10 +40,6 @@ div#synopsisContainer{
     text-align: center;
 }
 
-
-
-
-
 section{
     width:100%;
     margin: auto;
@@ -51,12 +47,6 @@ section{
 }
 
 
-.formGroup label{
-    text-align: right;
-    float:left;
-    
-}
-.formGroup input{}
     
 .iconButton{
     background-color: Transparent;

@@ -37,9 +37,11 @@ function createAdventureDialog(){
 	hide: {effect: "drop",duration:800,direction:"up"},
 	closeOnEscape: true,
 	draggable:false,
-	resizable:false,
+	resizable:true,
 	autoOpen: false,
 	modal: true,
+	minWidth:450,
+	minHeigh:500,
 	position:{
 	    my: "top",
 	    at: "top",

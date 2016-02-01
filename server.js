@@ -108,8 +108,8 @@ app.get('/rest/adventure/:date',function(req,res){
     });
 1});
 
-app.get('/',function(req,res){
-    res.send('Nothing to see here');
+app.get(config.server.path,function(req,res){
+    res.redirect('/html/index.html');
 });
 
 //start server
