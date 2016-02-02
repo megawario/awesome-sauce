@@ -21,7 +21,7 @@ function createPlayerDialog(){
 		var json = $("#playerDialog").data('json'); 
 		var index = $("#playerDialog").data('index'); 
 		createPlayer(json,index)},
-	    Cancel: function(){$("#playerDialog").dialog("close")}
+	    Cancelar: function(){$("#playerDialog").dialog("close")}
 	},
 	close: function(){
 	    $("#playerForm")[0].reset();//clear all form info
