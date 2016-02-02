@@ -3,12 +3,12 @@ var config={};
 
 //server configurations
 config.server={};
-config.server.port=8081;
+config.server.port=8090;
 config.server.path='/lisrpg/';
 
 //service configuration
 config.services={};
-config.services.port=8080;
+config.services.port=8091;
 
 //database config
 config.db={};
