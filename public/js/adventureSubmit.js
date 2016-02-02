@@ -15,7 +15,7 @@ function openAdventureDialog(type,json,index){
 					 var json = $("#adventureDialog").data('json');
 					 var index = $("#adventureDialog").data('index');
 					 removeAdventure(json,index)},
-				     Cancel: function(){$("#adventureDialog").dialog("close")}
+				     Cancelar: function(){$("#adventureDialog").dialog("close")}
 				     })
 	    .data('json',json)     //pass data to be used on the save.
 	    .data('index',index); //pass index for possible delection or edit.
