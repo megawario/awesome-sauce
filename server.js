@@ -15,6 +15,10 @@ var app = express();
 app.use(express.static(__dirname + '/public'));
 
 
+app.get('/', function(req,res){ //delete when a properly configured webserver is put in place
+    res.redirect("/html/index.html");
+});
+
 //Services
 //POST
 app.use(bodyParser.json());

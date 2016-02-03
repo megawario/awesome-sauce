@@ -1,0 +1,16 @@
+{
+  "name": "lisbonRPG",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "url": https://github.com/megawario/awesome-sauce.git
+  },
+  "dependencies": {
+    "express": "~4.9.0",
+    "body-parser": "~1.8.1",
+    "mongodb":"~2.1.4" 	
+  }
+}
