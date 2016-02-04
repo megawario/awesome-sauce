@@ -2,7 +2,7 @@
 var mongoClient = require('mongodb').MongoClient;
 var mongo = require('mongodb');
 var config = require('./config');
-//utils
+var mongoose = require('mongoose');
 
 var database={
 
