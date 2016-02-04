@@ -12,12 +12,62 @@ var db = require("./database");
 
 var app = express();
 
+//Auth objects declaration
+var passport = require('passport');
+//Google OAuth
+var googleStrategy = require('passport-google-oauth2').Strategy;
+var session = require('express-session');
+var uuid = require('node-uuid');
+
+passport.use(new googleStrategy({
+    clientID:  '819734387202-0uu7puep4peo0kibf7taattcqjcp6d09.apps.googleusercontent.com',
+    clientSecret: 'CeleNxJDziJlTJ1j-rLOhlHY', 
+    callbackURL: 'http://pieinthesky.xyz:8090/auth/google/return',
+    scope: 'email',
+    passReqToCallback: true
+
+},
+
+				function(request, accessToken, refreshToken, profile, done){
+				   
+				    //console.log("AUTH: identifier is" + identifier);
+				    console.log("AUTH: profile info given: "+profile.email);
+				    process.nextTick(function(){
+					return done(null, profile);
+				    });
+				}
+			       ));
+	    
+
+passport.serializeUser(function(user, cb) {
+    cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+    cb(null, obj);
+});
+
+app.use(session({
+    genid: function(req) {
+	return uuid.v1();
+    },
+    secret: 'keyboard cat'
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', function(req,res){ //delete when a properly configured webserver is put in place
     res.redirect("/html/index.html");
 });
+
+app.get('/auth/google', passport.authenticate('google'));
+app.get('/auth/google/return',
+	passport.authenticate('google', { successRedirect: '/',
+					  failureRedirect: '/error' }));
 
 //Services
 //POST
