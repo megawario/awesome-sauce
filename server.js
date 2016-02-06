@@ -20,10 +20,10 @@ var session = require('express-session');
 var uuid = require('node-uuid');
 
 passport.use(new googleStrategy({
-    clientID:  '819734387202-0uu7puep4peo0kibf7taattcqjcp6d09.apps.googleusercontent.com',
-    clientSecret: 'CeleNxJDziJlTJ1j-rLOhlHY', 
-    callbackURL: 'http://pieinthesky.xyz:8090/auth/google/return',
-    scope: 'email',
+    clientID:  config.auth.google.clientID,
+    clientSecret: config.auth.google.clientSecret, 
+    callbackURL: config.auth.google.callbackURL,
+    scope: config.auth.google.scope,
     passReqToCallback: true
 
 },
