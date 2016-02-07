@@ -104,6 +104,6 @@ var database={
 
 //loads adventure module
 database.adventure = require('./models/adventureModel.js');
-
+database.mongoose = mongoose;
 //starts database connection
 module.exports=database.initialize();

@@ -43,7 +43,7 @@ app.post('/rest/adventure/edit',function(req,res){
     db.editAdventure(req.body,function(err){
 	if(err){
 	    console.log(err);
-	    res.sendStatus(500);//send error status
+	    res.sendStatus(500); //send error status
 	}else{
 	    res.sendStatus(200);
 	}
