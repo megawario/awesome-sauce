@@ -39,7 +39,7 @@ app.post('/rest/adventure/create',function(req,res){
 
 app.post('/rest/adventure/edit',function(req,res){
     console.log('post request from '+req.ip+' to ' +req.path);
-    //TODO process validations here
+    //TODO process validations here  
     db.editAdventure(req.body,function(err){
 	if(err){
 	    console.log(err);
