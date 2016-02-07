@@ -24,80 +24,56 @@ var database={
 	return this;
     },
 
-    //Database functions.
-    
     //creates new adventure on database, returns the err, and doc newlycreated id on the callback.
     createAdventure : function(json,callback){
 	this.adventure.create(json)
 	    .then(
 		function(result){ //success
-		    callback(undefined,result);
+		    callback(null,result);
 		}).catch(function(err){callback(err);});
     },
 
+    //updates existing adventure
     editAdventure: function(json,callback){
-	
-
-	mongoClient.connect(config.db.url,function(err,db){
-	    if(err){return console.dir(err);}
-	    var id = json._id;
-	    delete json['_id'];
-	   db.collection('adventure').updateOne(
-		{"_id": mongo.ObjectID(id)},
-		json,
-		function(err){                 //return status of success to callback
-		    db.close();
-		    return callback(err);
-		});
-	});	
+	this.adventure.update({_id:json._id},json)
+	    .then(function(result){
+		callback(null,result);})
+	    .catch(function(err){callback(err);});
     },
 
 //returns json with adventures using a projection for the date and request info
     getAdventure : function(date,callback){
-	mongoClient.connect(config.db.url,function(err,db){
-	    if(err){return console.dir(err);}
-	    db.collection('adventure').find({"date":date}).sort({"time":1}).toArray(function(err,docs){
-		db.close();
-		return callback(err,docs);
+	this.adventure.find()
+	    .where('date').equals(date)
+	    .exec(function(err,docs){
+		callback(err,docs);
 	    });
-    });
     },
 
+    // removes adventure docment identified by id.
+    removeAdventure: function(id,callback){
+	this.adventure.remove(id,callback);
+    },
+    
     //updates adventure by id,  ading a new user.
     addPlayer : function(id,playerName,callback){
-	mongoClient.connect(config.db.url,function(err,db){
-	    if(err){return console.dir(err);}
-	    db.collection('adventure').updateOne(
-		{"_id": mongo.ObjectID(id)},
-		{$push:{"players":playerName}},
-		function(err){                 //return status of success to callback
-		    db.close();
-		    return callback(err);
-		});
+	this.adventure.findById(id,function(err,doc){
+	    if(err){callback(err);}
+	    else{
+		doc.players.push(playerName);
+		doc.save(callback); //used to force validations of playerName
+	    }
 	});
     },
     
 //removes a player from the adventure with the id. 
     removePlayer: function(id,playerName,callback){
-	mongoClient.connect(config.db.url,function(err,db){
-	    db.collection('adventure').updateOne(
-		{"_id": mongo.ObjectID(id)},
-		{$pull:{"players":playerName}},
-		function(err){
-		    db.close();
-		    return callback(err);
-		});
-	});
-    },
-    
-// removes adventure docment identified by id.
-    removeAdventure: function(id,callback){
-	mongoClient.connect(config.db.url,function(err,db){
-	    db.collection('adventure').remove({"_id":mongo.ObjectID(id)},
-					      function(err){
-						  db.close();
-						  return callback(err);
-					      });
+	this.adventure.findById(id,function(err,doc){
+	    if(err){callback(err);}
+	    else{
+		doc.players.pull(playerName);
+		doc.save(callback);
+	    }
 	});
     }
 }
