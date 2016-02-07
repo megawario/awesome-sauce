@@ -6,31 +6,43 @@ var mongoose = require('mongoose');
 
 var database={
 
-//initialize database
-    initialize : function(err,callback){	
-	//mongoClient.connect(config.db.url,function(err,db){
-	//    db.collection('adventure').createIndex({"date":1,"time":1,"name":1},{unique:true});
-	//});
-    },
-    
-//creates new adventure on database
-    createAdventure : function(json,callback){
-	mongoClient.connect(config.db.url,function(err,db){
-	    if(err){return console.dir(err);}
-	    db.collection('adventure').insertOne(json,{w:1},function(err,result){
-		db.close();
-		return callback(err,result.insertedId);
-	    });
-			    
+    //initialize database
+    initialize : function(err,callback){
+	mongoose.connect(config.db.url);
+
+	//connection events:
+	mongoose.connection.on('connected',function(){
+	    console.log('Mongoose connected to: '+config.db.url);
 	});
+	mongoose.connection.on('error',function(err){
+	    console.log('Mongoose error on connection: '+err);
+	});
+	mongoose.connection.on('disconnected',function(){
+	    console.log('Mongoose disconnected');
+	});
+
+	return this;
+    },
+
+    //Database functions.
+    
+    //creates new adventure on database, returns the err, and doc newlycreated id on the callback.
+    createAdventure : function(json,callback){
+	this.adventure.create(json)
+	    .then(
+		function(result){ //success
+		    callback(undefined,result);
+		}).catch(function(err){callback(err);});
     },
 
     editAdventure: function(json,callback){
+	
+
 	mongoClient.connect(config.db.url,function(err,db){
 	    if(err){return console.dir(err);}
 	    var id = json._id;
 	    delete json['_id'];
-	    db.collection('adventure').updateOne(
+	   db.collection('adventure').updateOne(
 		{"_id": mongo.ObjectID(id)},
 		json,
 		function(err){                 //return status of success to callback
@@ -89,4 +101,9 @@ var database={
 	});
     }
 }
-module.exports=database;
+
+//loads adventure module
+database.adventure = require('./models/adventureModel.js');
+
+//starts database connection
+module.exports=database.initialize();

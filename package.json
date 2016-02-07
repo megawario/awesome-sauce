@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-      "start": "node server.js"
+	"start": "node server.js",
+	"test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
       "url": "https://github.com/megawario/awesome-sauce.git"

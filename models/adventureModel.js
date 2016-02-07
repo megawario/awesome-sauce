@@ -1,15 +1,17 @@
 //Adventure data model for mongoose.
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var type = Schema.Types;
 
 //adventure data schema
 var adventureSchema = new Schema(
     {
-	_id: ObjectId,               //object id
 	time_start: Date,            //adventure start time
 	time_end: Date,              //adventure end time
 	name: {type: String, required: true},             //dm name
 	system: {type: String},      //game system
 	adventure: {type: String, required: true} ,       //adventure title
-	slots_min: {type: Number, min:0, max: slot_max},  //minumum slots
+	slots_min: {type: Number, min:0, max: 20},  //minumum slots
 	slots_max: {type: Number,required: true},         //maximum slots
 	players: Array,              //players
 	synopsis: {type: String}     //adventure synopsis
@@ -27,7 +29,4 @@ adventureSchema.virtual('minFilledSlots').get(function(){
     return this.slots_min-this.players.length;
 });
 
-
-var adventureModel = mongoose.model('Participant',,'');
-
-module.exports = adventureModel;
+module.exports = mongoose.model('adventure',adventureSchema);
