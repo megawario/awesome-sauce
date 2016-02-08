@@ -26,7 +26,7 @@ var mongoStore = require("connect-mongo")(session);
 var cookieParser = require('cookie-parser');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1/lissch');
+//mongoose.connect('mongodb://127.0.0.1/lissch');
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
@@ -40,6 +40,16 @@ var sessionSchema = new Schema({
 
 var User = mongoose.model('sessions', sessionSchema);
 
+function verifyAuth(){
+    //TODO: verify if the user is authenticated, return json object with user info relevant to the frontend
+}
+
+function getUserById(id, cb){
+    User.findOne({'userID': id}, function(err, user){
+	cb(err, user);
+    });
+}
+
 //Google OAuth
 passport.use(new googleStrategy({
     clientID:  config.auth.google.clientID,
@@ -49,8 +59,6 @@ passport.use(new googleStrategy({
     passReqToCallback: true
 
 }, function(req, accessToken, refreshToken, profile, done){
-    
-    //console.log("AUTH: identifier is" + identifier);
     
     console.log("AUTH: got access token "+accessToken);
     console.log("AUTH: got refresh token "+refreshToken);
@@ -100,10 +108,10 @@ app.use(session({
     },
     secret: 'keyboard cat',
     name: 'session.sid',
-    cookie:{
+/*    cookie:{
 	httpOnly: false,
 	maxAge: 30 * 24 * 60 * 60 * 1000 // 1 month
-    },
+    },*/
     resave: false,
     saveUninitialized: false,
     store: new mongoStore({url: config.db.url, collection: 'cookies'})
@@ -118,7 +126,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req,res){ //delete when a properly configured webserver is put in place
         
-    if(!req.session.passport){
+    if(!req.user){
 	console.log("Cookie not set, user not logged in");
 	console.log(req.session);
     }
@@ -129,8 +137,9 @@ app.get('/', function(req,res){ //delete when a properly configured webserver is
 	    if(user){
 		console.log("E-mail: "+user.email);
 		console.log("Display Name: "+user.displayName);
-		console.log("UserID: "+user.userID);
+		console.log("UserID: "+user.userID);	
 	    }
+
 	    else{
 		console.log("ERROR: User in session not found in DB!");
 	    }
@@ -146,6 +155,41 @@ app.get('/auth/google/return',
 					  failureRedirect: '/error' }));
 
 
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+    
+});
+app.get('/checkAuth', function(req, res){
+    console.log("Frontend auth check");
+    var json = "";
+    if(!req.isAuthenticated())
+	return res.json({"isAuthenticated": false});
+    else{
+	User.findOne({'userID': req.session.passport.user}, function(err, user){
+	    if(user){
+
+		json = {
+		    "isAuthenticated": req.isAuthenticated(),
+		    "displayName": user.displayName,
+		    "email": user.email,
+		    "userID":user.userID
+		};
+		console.log("Sending json: ",json);
+		return res.json(json); 
+	    }
+	
+	    
+	    else{
+		console.log("ERROR: User in session not found in DB!");
+		return res.json({"isAuthenticated": false});
+	    }
+	});
+	
+
+    }
+});
+
 //Services
 //POST
 app.use(bodyParser.json());
@@ -155,9 +199,18 @@ app.post('/rest/adventure/create',function(req,res){
     console.log('post request from '+req.ip+' to ' +req.path);
     console.log("isAuthenticated? "+req.isAuthenticated());
     console.log("USER:"+req.session.passport.user);
-
+    if(req.isAuthenticated()){
+	getUserById(req.session.passport.user, function(err, user){
+	    if(!err && user)
+		console.log("Found user by id: ",user);
+	});
+    }
     //TODO process validation for the req body here.
+    req.body.userID=req.session.passport.user;
+    console.log(req.body);
     db.createAdventure(req.body,function(err,docId){
+
+	
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);//send error status

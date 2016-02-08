@@ -1,21 +1,20 @@
 //js relating to Adventure dialog submition
 
-
 //recenters and opens the dialog
 //Type - "edit" or "create"
 function openAdventureDialog(type,json,index){
     if(type == "edit"){
-	//get need info - json object and the index for table mapping	     
+	//get need info - json object and the index for table mapping
 	$("#adventureDialog").dialog("option","buttons",
 				     { "Guardar": function(){
 					 var json = $("#adventureDialog").data('json');
 					 var index = $("#adventureDialog").data('index');
 					 editAdventure(json,index)},
-				     "Eliminar":function(){
-					 var json = $("#adventureDialog").data('json');
-					 var index = $("#adventureDialog").data('index');
-					 removeAdventure(json,index)},
-				     Cancelar: function(){$("#adventureDialog").dialog("close")}
+				       "Eliminar":function(){
+					   var json = $("#adventureDialog").data('json');
+					   var index = $("#adventureDialog").data('index');
+					   removeAdventure(json,index)},
+				       Cancelar: function(){$("#adventureDialog").dialog("close")}
 				     })
 	    .data('json',json)     //pass data to be used on the save.
 	    .data('index',index); //pass index for possible delection or edit.
@@ -57,15 +56,17 @@ function createAdventureDialog(){
 //Create or update the Adventure
 function createAdventure(){
     //create new json object
+    $.getScript("../js/auth.js");
     var json = new Object();
     json.date=getGameDate(true);
     json.name=$("#adv_name").val();
     json.synopsis=$("#adv_synopsis").val();
     json.adventure=$("#adv_adventure").val();
     json.system=$("#adv_system").val();
-    json.slots=$("#adv_slots").val();
+    json.slots_max=$("#adv_slots").val();
     json.time=$("#adv_time").val();
     json.players=[];
+    json.userID = getUserID();
     
     //ajax request:
     $.ajax({
@@ -94,7 +95,7 @@ function editAdventure(json,index){
     json.slots=$("#adv_slots").val();
     json.time=$("#adv_time").val();
     json.players=[];
-    
+
     //ajax request:
     $.ajax({
 	type:'POST',
@@ -129,7 +130,7 @@ function removeAdventure(json,index){
     });
     $('#adventureDialog').dialog('close');
 }
-    
+
 //reuse create dialog - just update the data.
 function editAdventureDialog(json,index){
     //set values for dialog:
