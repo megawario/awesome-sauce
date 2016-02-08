@@ -23,30 +23,26 @@ app.get('/', function(req,res){ //delete when a properly configured webserver is
 //POST
 app.use(bodyParser.json());
 
-//Push new adventure to the database
+//Create new database on bd
 app.post('/rest/adventure/create',function(req,res){
     console.log('post request from '+req.ip+' to ' +req.path);
     //TODO process validation for the req body here.
-    db.createAdventure(req.body,function(err,docId){
+    db.createAdventure(req.body,function(err,doc){
 	if(err){
 	    console.log(err);
-	    res.sendStatus(500);//send error status
-	}else{
-	    res.status(200).send(docId);
-	}
+	    res.sendStatus(500);       //send error status
+	}else{res.status(200).send(doc);} //sends document
     });
 });
 
+//Edit adventure on database
 app.post('/rest/adventure/edit',function(req,res){
     console.log('post request from '+req.ip+' to ' +req.path);
-    //TODO process validations here
-    db.editAdventure(req.body,function(err){
+    db.editAdventure(req.body,function(err,doc){
 	if(err){
 	    console.log(err);
-	    res.sendStatus(500);//send error status
-	}else{
-	    res.sendStatus(200);
-	}
+	    res.sendStatus(500); //send error status
+	}else{res.status(200).send(doc);} //send document
     });
 });
 
@@ -59,9 +55,7 @@ app.post('/rest/adventure/remove',function(req,res){
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);
-	}else{
-	    res.sendStatus(200);
-	};
+	}else{res.sendStatus(200);};
     });
 });
 
@@ -71,13 +65,11 @@ app.post('/rest/adventure/player/add',function(req,res){
     var id=req.body._id;
     var playerName = req.body.player;
     //TODO process validation here for post arg.
-    db.addPlayer(id,playerName,function(err){
+    db.addPlayer(id,playerName,function(err,doc){
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);
-	}else{
-	    res.sendStatus(200);
-	}
+	}else{res.status(200).send(doc);}
     });
 });
 
@@ -88,26 +80,24 @@ app.post('/rest/adventure/player/remove',function(req,res){
     var playerName = req.body.playerName;
     console.log("removing "+id+ " with name:"+playerName);
     //TODO process validations here
-    db.removePlayer(id,playerName,function(err){
+    db.removePlayer(id,playerName,function(err,doc){
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);
 	}
-	else{
-	    res.sendStatus(200);
-	}
+	else{res.status(200).send(doc);}
     });
 });
 
 //GET
 app.get('/rest/adventure/:date',function(req,res){
     console.log('get request from '+req.ip+' param:'+req.params.date);
-    db.getAdventure(req.params.date,function(err,result){
+    db.getAdventure(req.params.date,function(err,docs){
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);
 	}else{
-	    res.json(result);
+	    res.json(docs);
 	}
     });
 1});

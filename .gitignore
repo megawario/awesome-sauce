@@ -1,3 +1,8 @@
+#emacs files
+*~
+#config file for app
+config.js
+
 # Logs
 logs
 *.log

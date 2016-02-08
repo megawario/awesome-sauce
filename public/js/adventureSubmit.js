@@ -63,7 +63,7 @@ function createAdventure(){
     json.synopsis=$("#adv_synopsis").val();
     json.adventure=$("#adv_adventure").val();
     json.system=$("#adv_system").val();
-    json.slots=$("#adv_slots").val();
+    json.slots_max=$("#adv_slots").val();
     json.time=$("#adv_time").val();
     json.players=[];
     

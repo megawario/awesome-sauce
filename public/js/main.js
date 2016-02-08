@@ -83,7 +83,7 @@ function createTableLine(json){
     return "<tr class='tableRow'> <td class='td_time'>"+json.time
 	+"</td><td class='td_system'>"+json.system
 	+"</td><td class='td_adventure'>"+json.adventure
-	+"</td><td class='td_slots'>"+(json.slots-json.players.length)
+	+"</td><td class='td_slots'>"+(json.slots_max-json.players.length)
 	+"</td><td class='td_icons'>"
 	+"<button class='actionButton redButton b_edit'><i class='material-icons'>mode_edit</i></button>"
 	+"<button class='actionButton greenButton b_info'><i class='material-icons'>info</i></button>"
