@@ -1,6 +1,5 @@
 //Database for this server
 var mongoClient = require('mongodb').MongoClient;
-var mongo = require('mongodb');
 var config = require('./config');
 var mongoose = require('mongoose');
 

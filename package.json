@@ -1,19 +1,32 @@
 {
-    "name": "lisbonRPG",
-    "version": "1.0.0",
-    "private": true,
-    "scripts": {
-	"start": "node server.js",
-	"test": "./node_modules/.bin/mocha --reporter spec"
+  "name": "lisbonrpg",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha --reporter spec"
   },
   "repository": {
-      "url": "https://github.com/megawario/awesome-sauce.git"
+    "url": "git+https://github.com/megawario/awesome-sauce.git"
   },
   "dependencies": {
-      "express": "~4.9.0",
-      "body-parser": "~1.8.1",
-      "mongodb":"~2.1.4",
-      "passport":"~0.3.2",
-      "mongoose":"~4.4.1"
-  }
+    "express": "~4.9.0",
+    "body-parser": "~1.8.1",
+    "passport": "~0.3.2",
+    "mongoose": "~4.4.1"
+  },
+  "description": "Repository for all things fun.",
+  "bugs": {
+    "url": "https://github.com/megawario/awesome-sauce/issues"
+  },
+  "homepage": "https://github.com/megawario/awesome-sauce#readme",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "author": "Mário Pinto",
+  "license": "ISC"
 }
