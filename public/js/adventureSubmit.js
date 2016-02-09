@@ -99,6 +99,7 @@ function createAdventureDialog(){
 //Create or update the Adventure
 function createAdventure(){
     //create new json object
+
     $.getScript("../js/auth.js");
     getUserID(function(userID){ //get userID from backend and append it to the adenture data
 	var json = new Object();
@@ -127,6 +128,7 @@ function createAdventure(){
 	
 	//instead of close here, should show animation of processing. and close should be given by ajax.
 	$("#adventureDialog").dialog("close")
+
     });
 };
 

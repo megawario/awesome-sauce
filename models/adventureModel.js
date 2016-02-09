@@ -15,8 +15,12 @@ var adventureSchema = new Schema(
 	slots_min: {type: Number, min:0, max: 20},  //minumum slots
 	slots_max: {type: Number,required: true},         //maximum slots
 	players: Array,              //players
+<<<<<<< HEAD
 	synopsis: {type: String},     //adventure synopsis
 	userID: {type: Number, required: false}
+=======
+	synopsis: {type: String}     //adventure synopsis
+>>>>>>> peanuts/wip
     });
 
 //virtual properties

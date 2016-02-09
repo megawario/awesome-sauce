@@ -47,14 +47,22 @@ var database={
 	    .exec(function(err,docs){
 		callback(err,docs);
 	    });
+<<<<<<< HEAD
     },
 
     // removes adventure docment identified by id.
     removeAdventure: function(id,callback){
 	console.log("Removing ID ", id);
 	this.adventure.remove(id,callback);
+=======
+>>>>>>> peanuts/wip
     },
 
+    // removes adventure docment identified by id.
+    removeAdventure: function(id,callback){
+	this.adventure.remove(id,callback);
+    },
+    
     //updates adventure by id,  ading a new user.
     addPlayer : function(id,playerName,callback){
 	this.adventure.findById(id,function(err,doc){
@@ -65,6 +73,7 @@ var database={
 	    }
 	});
     },
+<<<<<<< HEAD
     //verifies that a user is authorized to edit/remove adventure
     checkUserAuth: function(id, userID, callback){
 	this.adventure.findById(id, function(err, doc){
@@ -85,6 +94,10 @@ var database={
 	});
     },
     //removes a player from the adventure with the id.
+=======
+    
+//removes a player from the adventure with the id. 
+>>>>>>> peanuts/wip
     removePlayer: function(id,playerName,callback){
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}

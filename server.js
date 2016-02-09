@@ -195,6 +195,7 @@ app.get('/checkAuth', function(req, res){ //checkAuthentication - api for fronte
 //POST
 app.use(bodyParser.json());
 
+<<<<<<< HEAD
 app.post('/checkAuth', function(req, res){ //checkAuthorization - api for frontend - send adventure/player data to check for edit/removal authorization
     console.log("CheckAuthorization POST - got JSON: ",req.body);
     if(!req.body.userID || !req.user)
@@ -208,6 +209,9 @@ app.post('/checkAuth', function(req, res){ //checkAuthorization - api for fronte
 });
 
 //Push new adventure to the database
+=======
+//Create new database on bd
+>>>>>>> peanuts/wip
 app.post('/rest/adventure/create',function(req,res){
     console.log('post request from '+req.ip+' to ' +req.path);
     console.log("isAuthenticated? "+req.isAuthenticated());
@@ -220,6 +224,7 @@ app.post('/rest/adventure/create',function(req,res){
 	});
     }
     //TODO process validation for the req body here.
+<<<<<<< HEAD
     //Insert userID into the received object if a user is logged in so we can check for removal and edit permissions later
     if(req.isAuthenticated())
 	req.body.userID=req.session.passport.user;
@@ -229,25 +234,24 @@ app.post('/rest/adventure/create',function(req,res){
     db.createAdventure(req.body,function(err,docId){
 
 	
+=======
+    db.createAdventure(req.body,function(err,doc){
+>>>>>>> peanuts/wip
 	if(err){
 	    console.log(err);
-	    res.sendStatus(500);//send error status
-	}else{
-	    res.status(200).send(docId);
-	}
+	    res.sendStatus(500);       //send error status
+	}else{res.status(200).send(doc);} //sends document
     });
 });
 
+//Edit adventure on database
 app.post('/rest/adventure/edit',function(req,res){
     console.log('post request from '+req.ip+' to ' +req.path);
-    //TODO process validations here
-    db.editAdventure(req.body,function(err){
+    db.editAdventure(req.body,function(err,doc){
 	if(err){
 	    console.log(err);
-	    res.sendStatus(500);//send error status
-	}else{
-	    res.sendStatus(200);
-	}
+	    res.sendStatus(500); //send error status
+	}else{res.status(200).send(doc);} //send document
     });
 });
 
@@ -260,9 +264,7 @@ app.post('/rest/adventure/remove',function(req,res){
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);
-	}else{
-	    res.sendStatus(200);
-	};
+	}else{res.sendStatus(200);};
     });
 });
 
@@ -272,13 +274,11 @@ app.post('/rest/adventure/player/add',function(req,res){
     var id=req.body._id;
     var playerName = req.body.player;
     //TODO process validation here for post arg.
-    db.addPlayer(id,playerName,function(err){
+    db.addPlayer(id,playerName,function(err,doc){
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);
-	}else{
-	    res.sendStatus(200);
-	}
+	}else{res.status(200).send(doc);}
     });
 });
 
@@ -289,26 +289,24 @@ app.post('/rest/adventure/player/remove',function(req,res){
     var playerName = req.body.playerName;
     console.log("removing "+id+ " with name:"+playerName);
     //TODO process validations here
-    db.removePlayer(id,playerName,function(err){
+    db.removePlayer(id,playerName,function(err,doc){
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);
 	}
-	else{
-	    res.sendStatus(200);
-	}
+	else{res.status(200).send(doc);}
     });
 });
 
 //GET
 app.get('/rest/adventure/:date',function(req,res){
     console.log('get request from '+req.ip+' param:'+req.params.date);
-    db.getAdventure(req.params.date,function(err,result){
+    db.getAdventure(req.params.date,function(err,docs){
 	if(err){
 	    console.log(err);
 	    res.sendStatus(500);
 	}else{
-	    res.json(result);
+	    res.json(docs);
 	}
     });
 1});
