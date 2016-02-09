@@ -70,9 +70,9 @@ function createAdventureDialog(){
 	},
 	open: function(){
 	    $.getScript("../js/auth.js");	    
-	    getUserID(function(userID){
-		console.log("userID ",userID);
-		if(!userID){
+	    verifyAuthentication(function(auth){
+		console.log("userID ",auth.userID);
+		if(!auth){
 		    $(".authWarning").html("");
 		    $(".authWarning").append("<span>Não estás autenticado no site. Por favor nota que não poderás editar ou alterar os dados desta aventura após a submeteres.</span>");
 		}
@@ -91,7 +91,7 @@ function createAdventure(){
     //create new json object
 
     $.getScript("../js/auth.js");
-    getUserID(function(userID){ //get userID from backend and append it to the adenture data
+    verifyAuthentication(function(auth){ //get userID from backend and append it to the adenture data
 	var json = new Object();
 	json.date=getGameDate(true);
 	json.name=$("#adv_name").val();
@@ -101,7 +101,7 @@ function createAdventure(){
 	json.slots_max=$("#adv_slots").val();
 	json.time=$("#adv_time").val();
 	json.players=[];
-	json.userID = userID;
+	json.userID = auth.userID;
 	
 	//ajax request:
 	$.ajax({

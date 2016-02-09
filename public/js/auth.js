@@ -1,7 +1,5 @@
 $(document).ready(function(){
 
-    //$("#google_login").click(function(){
-	
 	$.ajax({
 	    type: 'GET',
 	    url: 'http://pieinthesky.xyz:8090/checkAuth',
@@ -15,15 +13,15 @@ $(document).ready(function(){
 		    $("#auth_buttons").html("<a href='/auth/google'><img src='../image/auth/google_login_dark.png'></a>");
 	    },
 	    error: function(x,y,z) {
-		alert("error");
+		alert("Error checking login status");
 
 	    },
 	});
 
 });
 
-//get the userID from the server
-function getUserID(cb){
+//verifies if the user is authenticated and sends auth data to caller
+function verifyAuthentication(cb){
     $.ajax({
 	type: 'GET',
 	url: 'http://pieinthesky.xyz:8090/checkAuth',
@@ -32,7 +30,7 @@ function getUserID(cb){
 	dataType: "json",
 	success: function(json) {
 	    if(json.isAuthenticated){
-		return cb(json.userID);
+		return cb(json);
 	    }
 	    else{
 		return cb(null);

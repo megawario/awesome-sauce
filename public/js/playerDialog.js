@@ -25,11 +25,14 @@ function createPlayerDialog(){
 	},
 	open: function(){
 	    $.getScript("../js/auth.js");	    
-	    getUserID(function(userID){
-		console.log(userID);
-		if(!userID){
+	    verifyAuthentication(function(auth){
+		console.log(auth.userID);
+		if(!auth.isAuthenticated){
 		    $(".authWarning").html("");
 		    $(".authWarning").append("<span>Não estás autenticado no site. Por favor nota que não poderás eliminar a tua inscrição após a submeteres.</span>");
+		}
+		else{
+		    $("#pf_player").val(auth.displayName);
 		}
 	    })
 	},
