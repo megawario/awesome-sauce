@@ -61,3 +61,12 @@ section{
     font-weight: bold;
     height: 25px;
 }
+
+#auth_buttons{
+    float: right;
+    text-align: right;
+}
+
+#welcome{
+    font-weight:bold;
+}

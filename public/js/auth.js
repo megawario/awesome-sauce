@@ -8,7 +8,7 @@ $(document).ready(function(){
 	    dataType: "json",
 	    success: function(json) {
 		if(json.isAuthenticated)
-		    $("#auth_buttons").html("<a href='/logout'>Logout</a>");
+		    $("#auth_buttons").html("Bem-vindo, <span id='welcome'>"+json.displayName+"</span><br/><a href='/logout'>Logout</a>");
 		else
 		    $("#auth_buttons").html("<a href='/auth/google'><img src='../image/auth/google_login_dark.png'></a>");
 	    },
