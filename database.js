@@ -99,11 +99,28 @@ var database={
 		doc.save(callback);
 	    }
 	});
+    },
+    getUserById: function(id, cb){
+	this.session.findOne({'userID': id}, function(err, user){
+	    cb(err, user);
+	});
+    },
+    addUser: function(json, cb){
+	this.session.create(json)
+	    .then(
+		function(result){ //success
+		    callback(null,result);
+		}).catch(function(err){callback(err);});
     }
 }
 
 //loads adventure module
 database.adventure = require('./models/adventureModel.js');
+
+//loads user module
+database.session = require('./models/sessionModel.js');
+
 database.mongoose = mongoose;
+
 //starts database connection
 module.exports=database.initialize();

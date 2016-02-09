@@ -26,35 +26,13 @@ var mongoStore = require("connect-mongo")(session);
 var cookieParser = require('cookie-parser');
 
 var mongoose = require('mongoose');
-//mongoose.connect('mongodb://127.0.0.1/lissch');
 
 var devMode = process.env.NODE_ENV == "production" ? 0 : 1; //activate development mode if NODE_ENV is not production
 
-var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
-var sessionSchema = new Schema({
-    userID: Number,
-    displayName: String,
-    email: String,
-    accessToken: String,
-    cookieID: String
-});
-
-var User = mongoose.model('sessions', sessionSchema);
-
+//mini logger for dev
 function logger(level,string){
     if(level == "critical" || devMode)
 	console.log(string);
-}
-
-function verifyAuth(){
-    //TODO: verify if the user is authenticated, return json object with user info relevant to the frontend
-}
-
-function getUserById(id, cb){
-    User.findOne({'userID': id}, function(err, user){
-	cb(err, user);
-    });
 }
 
 //Google OAuth
@@ -70,32 +48,31 @@ passport.use(new googleStrategy({
     logger("debug","AUTH: got access token "+accessToken);
     logger("debug","AUTH: got refresh token "+refreshToken);
     logger("debug","AUTH: profile info given: "+profile.id);
-    
-    User.findOne({'userID': profile.id}, function(err, user){
+
+    db.getUserById(profile.id, function(err, user){ //if no user is found in the session store matching the one we got from the provider, add a new one 
 	if(!user){
 	    logger("debug","User NOT FOUND on session store :(\nCreating User!");
 	    
-	    user = new User({
+	    var user = {
 		displayName: profile.displayName,
 		email: profile.email,
 		userID: profile.id,
 		provider: 'google',
 		accessToken: accessToken,
 		cookieID: ''
-	    });
-	    user.save(function(err){
-		if(err) console.log(err);
-		return done(err, user);
-		
+	    };
+
+	    db.addUser(user,function(err,userDoc){
+		if(err)
+		    logger("critical","Error inserting user to the DB!"+err);
+		return done(err,userDoc);
+			
 	    });
 	}
-	
 	else{
 	    logger("debug","User FOUND on session store! userID "+profile.id);
 	    return done(null, user);
 	}
-	
-	
     });
 }));
 
@@ -130,27 +107,13 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function(req,res){ //delete when a properly configured webserver is put in place
         
     if(!req.user){
-
 	logger("debug","Cookie not set, user not logged in");
 	logger("debug",req.session);
     }
     else{
 	logger("debug","Cookie set, user logged in. User id:");
 	logger("debug",'Session:\n'+req.session.passport.user);
-	User.findOne({'userID': req.session.passport.user}, function(err, user){
-	    if(user){
-		
-		logger("debug","E-mail: "+user.email);
-		logger("debug","Display Name: "+user.displayName);
-		logger("debug","UserID: "+user.userID);	
-	    }
-
-	    else{
-		logger("critical","ERROR: User in session not found in DB!");
-	    }
-	});
     }
-    //    console.log("Session:\n", req.session.passport.user);
     res.redirect("/html/index.html");
 });
 
@@ -171,9 +134,8 @@ app.get('/checkAuth', function(req, res){ //checkAuthentication - api for fronte
     if(!req.isAuthenticated())
 	return res.json({"isAuthenticated": false});
     else{
-	User.findOne({'userID': req.session.passport.user}, function(err, user){
+	db.getUserById(req.session.passport.user, function(err, user){
 	    if(user){
-
 		json = {
 		    "isAuthenticated": req.isAuthenticated(),
 		    "displayName": user.displayName,
@@ -183,15 +145,11 @@ app.get('/checkAuth', function(req, res){ //checkAuthentication - api for fronte
 		logger("debug","Sending auth json: ",json);
 		return res.json(json); 
 	    }
-	
-	    
 	    else{
 		logger("critical","ERROR: User in session not found in DB!");
 		return res.json({"isAuthenticated": false});
 	    }
 	});
-	
-
     }
 });
 
@@ -205,8 +163,7 @@ app.post('/checkAuth', function(req, res){ //checkAuthorization - api for fronte
     else
 	db.checkUserAuth(req.body._id, req.session.passport.user,function(err, authorized){
 	    return res.json({"isAuthorized":authorized});
-	});
-			 
+	});		 
 });
 
 //Push new adventure to the database
@@ -216,7 +173,7 @@ app.post('/rest/adventure/create',function(req,res){
     console.log("isAuthenticated? "+req.isAuthenticated());
         
     if(req.isAuthenticated()){
-	getUserById(req.session.passport.user, function(err, user){
+	db.getUserById(req.session.passport.user, function(err, user){
 	    if(!err && user)
 		console.log("Found user by id: ",user);
 	});
