@@ -1,5 +1,4 @@
 //Database for this server
-var mongoClient = require('mongodb').MongoClient;
 var config = require('./config');
 var mongoose = require('mongoose');
 
@@ -90,7 +89,6 @@ var database={
 	    }
 	});
     },
-    //removes a player from the adventure with the id.
     
     //removes a player from the adventure with the id. 
     removePlayer: function(id,playerName,callback){

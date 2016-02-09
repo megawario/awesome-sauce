@@ -28,6 +28,8 @@ var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://127.0.0.1/lissch');
 
+var devMode = process.env.NODE_ENV == "production" ? 0 : 1; //activate development mode if NODE_ENV is not production
+
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 var sessionSchema = new Schema({
@@ -39,6 +41,11 @@ var sessionSchema = new Schema({
 });
 
 var User = mongoose.model('sessions', sessionSchema);
+
+function logger(level,string){
+    if(level == "critical" || devMode)
+	console.log(string);
+}
 
 function verifyAuth(){
     //TODO: verify if the user is authenticated, return json object with user info relevant to the frontend
@@ -60,12 +67,13 @@ passport.use(new googleStrategy({
 
 }, function(req, accessToken, refreshToken, profile, done){
     
-    console.log("AUTH: got access token "+accessToken);
-    console.log("AUTH: got refresh token "+refreshToken);
-    console.log("AUTH: profile info given: "+profile.id);
+    logger("debug","AUTH: got access token "+accessToken);
+    logger("debug","AUTH: got refresh token "+refreshToken);
+    logger("debug","AUTH: profile info given: "+profile.id);
+    
     User.findOne({'userID': profile.id}, function(err, user){
 	if(!user){
-	    console.log("User NOT FOUND on session store :(\nCreating User!");
+	    logger("debug","User NOT FOUND on session store :(\nCreating User!");
 	    
 	    user = new User({
 		displayName: profile.displayName,
@@ -83,7 +91,7 @@ passport.use(new googleStrategy({
 	}
 	
 	else{
-	    console.log("User FOUND on session store! userID ", profile.id);
+	    logger("debug","User FOUND on session store! userID "+profile.id);
 	    return done(null, user);
 	}
 	
@@ -108,14 +116,9 @@ app.use(session({
     },
     secret: 'keyboard cat',
     name: 'session.sid',
-/*    cookie:{
-	httpOnly: false,
-	maxAge: 30 * 24 * 60 * 60 * 1000 // 1 month
-    },*/
     resave: false,
     saveUninitialized: false,
     store: new mongoStore({url: config.db.url, collection: 'cookies'})
-    
 }));
 
 app.use(passport.initialize());
@@ -127,21 +130,23 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function(req,res){ //delete when a properly configured webserver is put in place
         
     if(!req.user){
-	console.log("Cookie not set, user not logged in");
-	console.log(req.session);
+
+	logger("debug","Cookie not set, user not logged in");
+	logger("debug",req.session);
     }
     else{
-	console.log("Cookie set, user logged in. User id:");
-	console.log('Session:\n', req.session.passport.user);
+	logger("debug","Cookie set, user logged in. User id:");
+	logger("debug",'Session:\n'+req.session.passport.user);
 	User.findOne({'userID': req.session.passport.user}, function(err, user){
 	    if(user){
-		console.log("E-mail: "+user.email);
-		console.log("Display Name: "+user.displayName);
-		console.log("UserID: "+user.userID);	
+		
+		logger("debug","E-mail: "+user.email);
+		logger("debug","Display Name: "+user.displayName);
+		logger("debug","UserID: "+user.userID);	
 	    }
 
 	    else{
-		console.log("ERROR: User in session not found in DB!");
+		logger("critical","ERROR: User in session not found in DB!");
 	    }
 	});
     }
@@ -162,7 +167,6 @@ app.get('/logout', function(req, res){
 });
 
 app.get('/checkAuth', function(req, res){ //checkAuthentication - api for frontend check on whether a user has a valid login
-    console.log("Frontend auth check");
     var json = "";
     if(!req.isAuthenticated())
 	return res.json({"isAuthenticated": false});
@@ -176,13 +180,13 @@ app.get('/checkAuth', function(req, res){ //checkAuthentication - api for fronte
 		    "email": user.email,
 		    "userID":user.userID
 		};
-		console.log("Sending json: ",json);
+		logger("debug","Sending auth json: ",json);
 		return res.json(json); 
 	    }
 	
 	    
 	    else{
-		console.log("ERROR: User in session not found in DB!");
+		logger("critical","ERROR: User in session not found in DB!");
 		return res.json({"isAuthenticated": false});
 	    }
 	});
@@ -196,12 +200,10 @@ app.get('/checkAuth', function(req, res){ //checkAuthentication - api for fronte
 app.use(bodyParser.json());
 
 app.post('/checkAuth', function(req, res){ //checkAuthorization - api for frontend - send adventure/player data to check for edit/removal authorization
-    console.log("CheckAuthorization POST - got JSON: ",req.body);
     if(!req.body.userID || !req.user)
 	return res.json({"isAuthorized":false});
     else
 	db.checkUserAuth(req.body._id, req.session.passport.user,function(err, authorized){
-	    console.log("Database Auth Check: ",authorized);
 	    return res.json({"isAuthorized":authorized});
 	});
 			 
@@ -212,8 +214,7 @@ app.post('/checkAuth', function(req, res){ //checkAuthorization - api for fronte
 app.post('/rest/adventure/create',function(req,res){
     console.log('post request from '+req.ip+' to ' +req.path);
     console.log("isAuthenticated? "+req.isAuthenticated());
-    //console.log("USER:"+req.session.passport.user);
-    console.log("GOT IN POST: ",req.body);
+        
     if(req.isAuthenticated()){
 	getUserById(req.session.passport.user, function(err, user){
 	    if(!err && user)

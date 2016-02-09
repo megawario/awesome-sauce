@@ -22,7 +22,7 @@ $(document).ready(function(){
 
 });
 
-
+//get the userID from the server
 function getUserID(cb){
     $.ajax({
 	type: 'GET',
@@ -39,14 +39,14 @@ function getUserID(cb){
 	    }
 	},
 	error: function(x,y,z) {
-	    alert("error");
+	    alert("Error getting user data from server");
 	    return cb(null);
 	    
 	},
     });
     
 }
-
+//verify if the user has authorization to do an action
 function verifyAuthorization(json, cb){
     $.ajax({
     	type: 'POST',
@@ -58,6 +58,7 @@ function verifyAuthorization(json, cb){
 	    return cb(authReply);
 	},
 	error: function(x,y,z) {
+	    alert("Error verifying authorization");
 	    return cb({"isAuthorized": false});
 	    
 	},

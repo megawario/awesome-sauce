@@ -5,8 +5,14 @@
 
 
 function openAdventureDialog(type,json,index){
+    var authorized = false;
     	verifyAuthorization(json, function(response){ //verify if user can edit
 	    if(type == "edit"){
+		//get need info - json object and the index for table mapping
+		
+		
+		//	var json = $("#adventureDialog").data('json');
+		//	alert("picas"+JSON.stringify(json));
 		$("#adventureDialog").dialog("option","buttons",
 					     { "Guardar": function(){
 						 var json = $("#adventureDialog").data('json');
@@ -20,7 +26,11 @@ function openAdventureDialog(type,json,index){
 					     })
 		    .data('json',json)     //pass data to be used on the save.
 		    .data('index',index); //pass index for possible delection or edit.
-
+		
+		//$.getScript("../js/auth.js");
+		
+		if(response.isAuthorized == true)
+		    authorized = true;
 	    }
 	    
 	    else{//create
@@ -30,7 +40,7 @@ function openAdventureDialog(type,json,index){
 	    }
 	    
 	    
-	    if(type != "edit" || response.isAuthorized) //allow everyone to create adventures. Only authorized users can open the edit dialog
+	    if(type != "edit" || authorized) //allow everyone to create adventures. Only authorized users can open the edit dialog
 		$("#adventureDialog").dialog("open");
 	    else{
 		$("#authMessage").html("");
@@ -89,7 +99,7 @@ function createAdventureDialog(){
 //Create or update the Adventure
 function createAdventure(){
     //create new json object
-
+<<<<<<< HEAD
     $.getScript("../js/auth.js");
     getUserID(function(userID){ //get userID from backend and append it to the adenture data
 	var json = new Object();
@@ -118,7 +128,29 @@ function createAdventure(){
 	
 	//instead of close here, should show animation of processing. and close should be given by ajax.
 	$("#adventureDialog").dialog("close")
-
+=======
+    var json = new Object();
+    json.date=getGameDate(true);
+    json.name=$("#adv_name").val();
+    json.synopsis=$("#adv_synopsis").val();
+    json.adventure=$("#adv_adventure").val();
+    json.system=$("#adv_system").val();
+    json.slots_max=$("#adv_slots").val();
+    json.time=$("#adv_time").val();
+    json.players=[];
+    
+    //ajax request:
+    $.ajax({
+	type:'POST',
+	contentType: "application/json",
+	url: "../rest/adventure/create",
+	data: JSON.stringify(json),
+	success: function(data){ //add new entry to table.
+	    json._id=data;//set id;
+	    addNewTableLine(json);
+	},
+	error: function(){alert("TODO implement error msg");}  //show error message
+>>>>>>> peanuts/wip
     });
 };
 
