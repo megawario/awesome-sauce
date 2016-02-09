@@ -51,6 +51,7 @@ var database={
 
     // removes adventure docment identified by id.
     removeAdventure: function(id,callback){
+	console.log("Removing ID ", id);
 	this.adventure.remove(id,callback);
     },
 
@@ -64,7 +65,25 @@ var database={
 	    }
 	});
     },
-
+    //verifies that a user is authorized to edit/remove adventure
+    checkUserAuth: function(id, userID, callback){
+	this.adventure.findById(id, function(err, doc){
+	    if(err){
+		console.log("cheakUserAuth ERROR!!!!!!!");
+		callback(err, null)
+	    }
+	    else{
+		if(doc.userID != null && doc.userID== userID){
+		    console.log("USER AUTHORIZED TO EDIT DB DATA Doc: "+doc+" userID: "+userID);
+		    callback(null, true);
+		}
+		else{
+		    console.log("USER NOTAUTHORIZED TO EDIT DB DATA Doc: "+doc+" userID: "+userID);
+		    callback(null, false)
+		}
+	    }
+	});
+    },
     //removes a player from the adventure with the id.
     removePlayer: function(id,playerName,callback){
 	this.adventure.findById(id,function(err,doc){

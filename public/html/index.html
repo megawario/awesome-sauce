@@ -52,7 +52,7 @@
 	<img class="logo" src="/image/logo.jpg">
       </div>
       <h1 class="title" id="gameDay"></h1>
-
+      <div id="authMessage"></div>
       <div class="info">
 	<div class="table">
 	  <table class="flatTable" id="mytable">
@@ -98,11 +98,13 @@
 	    <input title="o teu nome aqui" type="text" name="as_player" id="pf_player" maxlength="20" class="text ui-widget-content ui-corder-all">
 	  </fieldset>
 	</form>
+	<div class="authWarning"></div>
       </div>
       
       <div class="Dialog" id="adventureDialog">
 	<form id="adventureForm">
 	  <fieldset>
+
 	    <div class="formGroup">
 	      <label for="name">Nome</label>
 	      <input type="text" name="name" title="Nome do DM" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
@@ -125,6 +127,7 @@
 	    </div>
 	    <label class="synopsisLabel"for="synopsis">Resumo</label>
 	    <textarea id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all"></textarea>
+	    <div class="authWarning"></div>
 	  </fieldset>
 	</form>
       </div>

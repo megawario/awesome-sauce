@@ -160,7 +160,8 @@ app.get('/logout', function(req, res){
     res.redirect('/');
     
 });
-app.get('/checkAuth', function(req, res){
+
+app.get('/checkAuth', function(req, res){ //checkAuthentication - api for frontend check on whether a user has a valid login
     console.log("Frontend auth check");
     var json = "";
     if(!req.isAuthenticated())
@@ -194,11 +195,24 @@ app.get('/checkAuth', function(req, res){
 //POST
 app.use(bodyParser.json());
 
+app.post('/checkAuth', function(req, res){ //checkAuthorization - api for frontend - send adventure/player data to check for edit/removal authorization
+    console.log("CheckAuthorization POST - got JSON: ",req.body);
+    if(!req.body.userID || !req.user)
+	return res.json({"isAuthorized":false});
+    else
+	db.checkUserAuth(req.body._id, req.session.passport.user,function(err, authorized){
+	    console.log("Database Auth Check: ",authorized);
+	    return res.json({"isAuthorized":authorized});
+	});
+			 
+});
+
 //Push new adventure to the database
 app.post('/rest/adventure/create',function(req,res){
     console.log('post request from '+req.ip+' to ' +req.path);
     console.log("isAuthenticated? "+req.isAuthenticated());
-    console.log("USER:"+req.session.passport.user);
+    //console.log("USER:"+req.session.passport.user);
+    console.log("GOT IN POST: ",req.body);
     if(req.isAuthenticated()){
 	getUserById(req.session.passport.user, function(err, user){
 	    if(!err && user)
@@ -206,8 +220,12 @@ app.post('/rest/adventure/create',function(req,res){
 	});
     }
     //TODO process validation for the req body here.
-    req.body.userID=req.session.passport.user;
-    console.log(req.body);
+    //Insert userID into the received object if a user is logged in so we can check for removal and edit permissions later
+    if(req.isAuthenticated())
+	req.body.userID=req.session.passport.user;
+    else
+	req.body.userID=null;
+
     db.createAdventure(req.body,function(err,docId){
 
 	

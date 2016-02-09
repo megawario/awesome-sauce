@@ -54,10 +54,3 @@ section{
     overflow: hidden;
     outline:none;
 }
-
-#authMessage{
-    text-align: center;
-    color: red;
-    font-weight: bold;
-    height: 25px;
-}

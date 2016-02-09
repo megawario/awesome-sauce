@@ -23,7 +23,7 @@ $(document).ready(function(){
 });
 
 
-function getUserID(){
+function getUserID(cb){
     $.ajax({
 	type: 'GET',
 	url: 'http://pieinthesky.xyz:8090/checkAuth',
@@ -32,19 +32,38 @@ function getUserID(){
 	dataType: "json",
 	success: function(json) {
 	    if(json.isAuthenticated){
-		alert("sending "+json.userID);
-		return json.userID;
+		return cb(json.userID);
 	    }
 	    else{
-		alert("sending null");
-		return null;
+		return cb(null);
 	    }
 	},
 	error: function(x,y,z) {
 	    alert("error");
-	    return null;
+	    return cb(null);
 	    
 	},
     });
     
 }
+
+function verifyAuthorization(json, cb){
+    $.ajax({
+    	type: 'POST',
+	contentType: "application/json",
+	url: 'http://pieinthesky.xyz:8090/checkAuth',
+	data: JSON.stringify(json),
+	dataType: "json",
+	success: function(authReply) {
+	    return cb(authReply);
+	},
+	error: function(x,y,z) {
+	    return cb({"isAuthorized": false});
+	    
+	},
+    });
+    
+}
+
+
+

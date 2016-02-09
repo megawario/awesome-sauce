@@ -23,6 +23,16 @@ function createPlayerDialog(){
 		createPlayer(json,index)},
 	    Cancelar: function(){$("#playerDialog").dialog("close")}
 	},
+	open: function(){
+	    $.getScript("../js/auth.js");	    
+	    getUserID(function(userID){
+		console.log(userID);
+		if(!userID){
+		    $(".authWarning").html("");
+		    $(".authWarning").append("<span>Não estás autenticado no site. Por favor nota que não poderás eliminar a tua inscrição após a submeteres.</span>");
+		}
+	    })
+	},
 	close: function(){
 	    $("#playerForm")[0].reset();//clear all form info
 	}
