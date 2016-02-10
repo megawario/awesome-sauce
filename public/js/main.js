@@ -24,12 +24,12 @@ $(function(){
 
     //create synopsis dialog;
     createAdventureSynopsisDialog();
-    
+
     //set page title
     $("#gameDay").text(getGameDate());
 
     //load adventures
-    getAdventure();    
+    getAdventure();
 });
 
 function createDialogConfirm(){
@@ -66,7 +66,7 @@ function getAdventure(){
 	    addNewTableLine(obj);
 	}
     });
- }
+}
 
 //add new table line to table with all functionality.
 function addNewTableLine(json){
@@ -87,6 +87,5 @@ function createTableLine(json){
 	+"</td><td class='td_icons'>"
 	+"<button class='actionButton redButton b_edit'><i class='material-icons'>mode_edit</i></button>"
 	+"<button class='actionButton greenButton b_info'><i class='material-icons'>info</i></button>"
-	+"<button class='actionButton greenButton b_player'><i class='material-icons'>person_add</i></button></td></tr>";   
+	+"<button class='actionButton greenButton b_player'><i class='material-icons'>person_add</i></button></td></tr>";
 }
-
