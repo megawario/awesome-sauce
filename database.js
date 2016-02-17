@@ -2,6 +2,7 @@
 var mongoClient = require('mongodb').MongoClient;
 var config = require('./config');
 var mongoose = require('mongoose');
+var log = require('./utils').log;
 
 var database={
 
@@ -11,13 +12,13 @@ var database={
 
 	//connection events:
 	mongoose.connection.on('connected',function(){
-	    console.log('Mongoose connected to: '+config.db.url);
+	    log.info('Mongoose connected to: '+config.db.url);
 	});
 	mongoose.connection.on('error',function(err){
-	    console.log('Mongoose error on connection: '+err);
+	    log.err('Mongoose error on connection: '+err);
 	});
 	mongoose.connection.on('disconnected',function(){
-	    console.log('Mongoose disconnected');
+	    log.warning('Mongoose disconnected');
 	});
 
 	return this;

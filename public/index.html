@@ -1,0 +1,204 @@
+<!DOCTYPE html lang="pt">
+<html ng-app='lisapp'>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/table.css">
+    <link rel="stylesheet" href="css/adventureDialogStyle.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/playerDisplay.css">
+    <link rel="stylesheet" href="css/adventureSynopsis.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="js/jquery-ui-1.11.4/jquery-ui.min.css">
+    <script src="js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <script src="js/adventureSubmit.js"></script>
+    <script src="js/adventureSynopsis.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/playerDialog.js"></script>
+    <!-- BootStrap -->
+    <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!-- Angular scripts -->
+    <script src="js/lisapp.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+
+  </head>
+
+  <body ng-controller="scopeController">
+    <div id="adventureSynopsisDialog">
+      <div>
+	<h2 id="as_name"></h2>
+	<div id="progressbar">
+	  <div id="as_slots">empty :(</div>
+	</div>
+      </div>
+      
+	<div id="as_accordion">
+	  <h6>Resumo</h6>
+	  <div class="accordion-tab" >
+	    <p  id="as_synopsis"></p>
+	  </div>
+	  <h6>Jogadores</h6>
+	  <div class="accordion-tab">
+	    <ul id="as_players"></ul>
+	  </div>
+	</div>
+     
+    </div>
+    
+    <div class="header">
+	<img class="logo" src="image/logo.jpg">
+    </div>
+      <h1 class="title">{{title}}</h1>
+
+      <div ng-controller="adventuresController as adv">
+	<h1>adv test: {{adv.adventures|json}}</h1>
+	<div class="nav_buttons">
+	  <button type="button" class="btn btn-lg btn-primary" ng-click="adv.selected(0)"><i class='material-icons'>info</i></button>
+	  <button type="button" class="btn btn-lg " ng-click="adv.selected(1)"><i class='material-icons'>add_circle</i></button>
+	</div>
+	
+	<div class="table" ng-show="adv.isSelected(0)">
+	  <table class="table table-hover table-condensed" id="mytable">
+	    <thead>
+	      <tr>
+		<td>Hora</td>
+		<td>Sistema</td>
+		<td>Aventura</td>
+		<td>Vagas</td>
+		<td></td>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="adventure in adv.adventures">
+		<td>{{adventure.time_start|date:"HH:mm"}} - {{adventure.time_end|date:"HH:mm"}}</td>
+		<td>{{adventure.system}}</td>
+		<td>{{adventure.adventure}}</td>
+		<td>{{adventure.slots_min+" - "+adventure.slots_max}}</td>
+		<td>
+		  <button class='actionButton redButton b_edit'><i class='material-icons'>mode_edit</i></button>
+		  <button class='actionButton greenButton b_info'><i class='material-icons'>info</i></button>
+		  <button class='actionButton greenButton b_player'><i class='material-icons'>person_add</i></button>
+		</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>
+
+	<!-- div for new adventure -->
+	<div ng-show="adv.isSelected(1)">
+	  <form novalidation ng-submit="adv.addAdventure()">
+ 	    <!-- nome -->
+	    <div class="input-group input-group-lg">
+	      <span class="input-group-addon" id="add_name"><i class="material-icons">account_circle</i></span>
+	      <input type="text" class="form-control" placeholder="Nome do DM" aria-describedby="add_name" ng-model="adventure.name">
+	    </div>
+
+	    <!-- sistema -->
+	    <div class="input-group input-group-lg">
+	      <span class="input-group-addon" id="add_system"><i class="material-icons">extension</i></span>
+	      <input type="text"  class="form-control" placeholder="Sistema de jogo" aria-describedby="add_system" ng-model="adventure.system">
+	    </div>
+
+	    <!-- aventura -->
+	    <div class="input-group input-group-lg">
+	      <span class="input-group-addon" id="add_aventure"><i class="material-icons">explore</i></span>
+	      <input type="text"  class="form-control" placeholder="Aventura" aria-describedby="add_aventure" ng-model="adventure.adventure">
+	    </div>
+	    
+	    <!-- horas -->
+	    <div class="input-group input-group-lg">
+	      <span class="input-group-addon" id="add_time_start"><i class="material-icons">schedule</i></span>
+	      <input type="time" class="form-control" placeholder="Inicio (hh:mm)" aria-describedby="add_time_start" ng-model="adventure.time_start">
+	      <span class="input-group-addon" id="add_time_end">até</span>
+	      <input type="time"  class="form-control" placeholder="Fim (hh:mm)" aria-describedby="add_time_end" ng-model="adventure.time_end">
+	    </div>
+
+	   <!-- vagas -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_slots_min"><i class="material-icons">group</i></span>
+	    <input type="number" class="form-control" placeholder="vaga minima" aria-describedby="add_slots_min" ng-model="adventure.slots_min">
+	    <span class="input-group-addon" id="add_slots_max">até</span>
+	     <input type="number"  class="form-control" placeholder="vagas maximas" aria-describedby="add_slots_max" ng-model="adventure.slots_max">
+	  </div>
+
+	   <!-- resumo -->
+	  <div class="input-group">
+	    <label class="synopsisLabel"for="synopsis">Resumo</label>
+	    <textarea id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all" ng-model="adventure.synopsis"></textarea>
+	  </div>
+	  
+	  <button class="btn btn-lg" type="submit" value = "Save"> Save</button>
+	  </form>
+	</div>
+
+	 
+	  	<h1>{{adventure||json}}</h1>
+      </div>
+	
+      <div class="welcomeText" data-index=0>
+	<p>Bemvindo ao site de marcação para os jogos Mensais de RPG.<br>
+	  Passa o cursor sobre as linhas para veres or resumos das sessões.<br>
+	    Adiciona o teu jogo ou regista-te num.</p>
+	</div>
+	
+	<footer class="footer">
+	  <p><a href="https://github.com/megawario/awesome-sauce">fork me! fork me! fork me hard!</a></p>
+	</footer>
+      </div>   
+
+      <div class="Dialog" 'id="#dialogConfirm"><p id="dialogConfirmText"></p></div>
+      
+            
+      <div class="Dialog" id="playerDialog">
+	<form id="playerForm">
+	  <fieldset>
+	    <label for="as_player">junta-te ao jogo</label>
+	    <input title="o teu nome aqui" type="text" name="as_player" id="pf_player" maxlength="20" class="text ui-widget-content ui-corder-all">
+	  </fieldset>
+	</form>
+      </div>
+      
+      <div class="Dialog" id="adventureDialog">
+	<form id="adventureForm">
+	  <fieldset>
+	    <div class="formGroup">
+	      <label for="name">Nome</label>
+	      <input type="text" name="name" title="Nome do DM" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
+	    </div>
+	    <div class="formGroup">
+	      <label for="system">Sistema</label>
+	      <input type="text" name="system" title="Sistema do jogo" id="adv_system" maxlength="40" class="text ui-widget-content ui-corder-all">
+	    </div>
+	    <div class="formGroup">
+	      <label for="adventure">Aventura</label>
+	      <input type="text" name="adventure" title="Titulo da aventura" id="adv_adventure" maxlength="80" class="text ui-widget-content ui-corder-all">
+	    </div>
+	    <div class ="formGroup">
+	      <label for="time">Hora de inicio</label>
+	      <input type="time" class="adv_time" name="time" id="adv_time_start" value="14:00" min="14:00" max="23:59">
+	      <label for="time">até</label>
+	      <input type="time" class="adv_time" name="time" id="adv_time_end" value="15:00" min="14:00" max="23:59">
+	    </div>
+	    
+	    <div class="formGroup">
+	      <label for="slots">Vagas</label>
+	      <input type="number" title="numero minimo de jogadores" min="1" max="20" id="adv_slots_min" class="number ui-widget-content ui-corder-all adv_slotnum">
+	      <label for="slots">até</label>
+	      <input type="number" title="numero maximo de jogadores" min="1" max="20" id="adv_slots_max" class="number ui-widget-content ui-corder-all adv_slotnum">
+	    </div>
+	    <label class="synopsisLabel"for="synopsis">Resumo</label>
+	    <textarea id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all"></textarea>
+	  </fieldset>
+	</form>
+      </div>
+  </body>
+</html>

@@ -9,7 +9,12 @@
 .synopsisLabel{
     display:block;
 }
-#adv_slots{
+
+.adv_time{
+    width:100px;
+}
+
+.adv_slotnum{
     width:50px;
 }
 #adv_adventure{

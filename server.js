@@ -18,17 +18,14 @@ process.on('uncaughtException',function(err){
 //import
 var express = require('express');
 var app = express();
-var bodyParser= require("body-parser");
 var routes = require("./routes");
+
+app.use(config.server.path+"/rest",routes);
 
 //serve static pages:
 if(config.server.serveStatic){
-    app.use(express.static(__dirname + '/public'));
+    app.use(config.server.path,express.static(__dirname + '/public'));
 }
-
-app.use(bodyParser.json());
-app.use(config.server.path,routes);
-
 
 //start server
 app.listen(config.server.port, function(){
