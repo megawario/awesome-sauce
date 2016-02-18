@@ -6,7 +6,7 @@ var type = Schema.Types;
 //adventure data schema
 var adventureSchema = new Schema(
     {
-	date: {type:String,required:true,index:true},
+	date: {type:String,required:true,index:true,unique:false},
 	time_start: Date,            //adventure start time
 	time_end: Date,              //adventure end time
 	name: {type: String, required: true},             //dm name

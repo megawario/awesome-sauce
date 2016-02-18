@@ -24,12 +24,13 @@ angular.module('lisapp.controllers',
     .controller('adventuresController',function($scope,lisappAPI){
 	
 	this.adventure={}; //selected or new adventure.
-	this.adventures={"teste":123};
+	this.adventures={};
 	
 	//update or create adventure adventure
 	this.addAdventure = function(){
 	    //fill in extra adventure info:
 	    this.adventure.date = $scope.gameDate;
+	    alert(this.adventure.name);
 	    lisappAPI.addAdventure(this.adventure)
 		.then(function(response){this.adventures.push(response.data);},
 		      function(response){alert('add adventure failed');
@@ -43,12 +44,13 @@ angular.module('lisapp.controllers',
 		this.selectedButton = button;};
 	    return this.selectedButton;
 	};
+
 	this.isSelected = function(button){
 	    return this.selectedButton === button;
 	}
 
-	//TODO FIX THIS to return promiss to place. 
 	lisappAPI.getAdventures($scope.gameDate)
-	    .then(function(response,adventures){ response.data;});
+	    .then(
+		(function(response){ this.adventures=response.data;}).bind(this));
 
     });
