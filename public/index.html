@@ -5,11 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/table.css">
-    <link rel="stylesheet" href="css/adventureDialogStyle.css">
     <link rel="stylesheet" href="css/animation.css">
-    <link rel="stylesheet" href="css/playerDisplay.css">
-    <link rel="stylesheet" href="css/adventureSynopsis.css">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="js/jquery-ui-1.11.4/jquery-ui.min.css">
     <script src="js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
@@ -23,8 +20,8 @@
     <script src="js/playerDialog.js"></script>
     <!-- BootStrap -->
     <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
     <!-- Angular scripts -->
     <script src="js/lisapp.js"></script>
     <script src="js/services.js"></script>
@@ -33,6 +30,45 @@
   </head>
 
   <body ng-controller="scopeController">
+
+    <div id="carousel" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+	<li data-target="#carousel" data-slide-to="0" class="active"></li>
+	<li data-target="#carousel" data-slide-to="1"></li>
+      </ol>
+
+      <div class="carousel-inner" role="listbox">
+
+	<div class="item active">
+	  <img class="first-slide" src="image/logo.jpg" alt="First slide">
+	</div>
+      
+	<div class="item">
+	  <img class="second-slide" src="" alt="second-slide">
+	  <div class="container">
+	    <div class="carousel-caption">
+	      <h1>Junta-te a nós no Facebook</h1>
+	      <p>O ponto de encontro do grupo, passa por esta rede social. Qualquer duvida que tenhas, deixa-nos uma palavrinha!!</p>
+	      <p><a class="btn btn-lg btn-primary" href="https://www.facebook.com/groups/gruporoleplayerslx/" target="_blank" role ="button">Junta-te!</a></p>
+	    </div>
+	  </div>
+	</div>
+	
+      </div>
+
+      <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
+	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	<span class="sr-only">Previous</span>
+      </a>
+
+      <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
+	<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	<span class="sr-only">Next</span>
+      </a>
+
+    </div>
+
+    
     <div id="adventureSynopsisDialog">
       <div>
 	<h2 id="as_name"></h2>
@@ -54,19 +90,16 @@
      
     </div>
     
-    <div class="header">
-	<img class="logo" src="image/logo.jpg">
-    </div>
       <h1 class="title">{{title}}</h1>
 
-      <div ng-controller="adventuresController as adv">
-	<h1>adv test: {{adv.adventures|json}}</h1>
+      <div id="info" ng-controller="adventuresController as adv">
+
 	<div class="nav_buttons">
 	  <button type="button" class="btn btn-lg btn-primary" ng-click="adv.selected(0)"><i class='material-icons'>info</i></button>
 	  <button type="button" class="btn btn-lg " ng-click="adv.selected(1)"><i class='material-icons'>add_circle</i></button>
 	</div>
 	
-	<div class="table" ng-show="adv.isSelected(0)">
+	<div class="table content" ng-show="adv.isSelected(0)">
 	  <table class="table table-hover table-condensed" id="mytable">
 	    <thead>
 	      <tr>
@@ -94,46 +127,46 @@
 	</div>
 
 	<!-- div for new adventure -->
-	<div ng-show="adv.isSelected(1)">
+	<div ng-show="adv.isSelected(1)" class="content adv_submit">
 	  <form novalidation ng-submit="adv.addAdventure()">
  	    <!-- nome -->
 	    <div class="input-group input-group-lg">
 	      <span class="input-group-addon" id="add_name"><i class="material-icons">account_circle</i></span>
-	      <input type="text" class="form-control" placeholder="Nome do DM" aria-describedby="add_name" ng-model="adventure.name">
+	      <input type="text" class="form-control" placeholder="Nome do DM" aria-describedby="add_name" ng-model="adv.adventure.name">
 	    </div>
 
 	    <!-- sistema -->
 	    <div class="input-group input-group-lg">
 	      <span class="input-group-addon" id="add_system"><i class="material-icons">extension</i></span>
-	      <input type="text"  class="form-control" placeholder="Sistema de jogo" aria-describedby="add_system" ng-model="adventure.system">
+	      <input type="text"  class="form-control" placeholder="Sistema de jogo" aria-describedby="add_system" ng-model="adv.adventure.system">
 	    </div>
 
 	    <!-- aventura -->
 	    <div class="input-group input-group-lg">
 	      <span class="input-group-addon" id="add_aventure"><i class="material-icons">explore</i></span>
-	      <input type="text"  class="form-control" placeholder="Aventura" aria-describedby="add_aventure" ng-model="adventure.adventure">
+	      <input type="text"  class="form-control" placeholder="Aventura" aria-describedby="add_aventure" ng-model="adv.adventure.adventure">
 	    </div>
 	    
 	    <!-- horas -->
 	    <div class="input-group input-group-lg">
 	      <span class="input-group-addon" id="add_time_start"><i class="material-icons">schedule</i></span>
-	      <input type="time" class="form-control" placeholder="Inicio (hh:mm)" aria-describedby="add_time_start" ng-model="adventure.time_start">
+	      <input type="time" class="form-control" placeholder="Inicio (hh:mm)" aria-describedby="add_time_start" ng-model="adv.adventure.time_start">
 	      <span class="input-group-addon" id="add_time_end">até</span>
-	      <input type="time"  class="form-control" placeholder="Fim (hh:mm)" aria-describedby="add_time_end" ng-model="adventure.time_end">
+	      <input type="time"  class="form-control" placeholder="Fim (hh:mm)" aria-describedby="add_time_end" ng-model="adv.adventure.time_end">
 	    </div>
 
 	   <!-- vagas -->
 	  <div class="input-group input-group-lg">
 	    <span class="input-group-addon" id="add_slots_min"><i class="material-icons">group</i></span>
-	    <input type="number" class="form-control" placeholder="vaga minima" aria-describedby="add_slots_min" ng-model="adventure.slots_min">
+	    <input type="number" class="form-control" placeholder="vaga minima" aria-describedby="add_slots_min" ng-model="adv.adventure.slots_min">
 	    <span class="input-group-addon" id="add_slots_max">até</span>
-	     <input type="number"  class="form-control" placeholder="vagas maximas" aria-describedby="add_slots_max" ng-model="adventure.slots_max">
+	     <input type="number"  class="form-control" placeholder="vagas maximas" aria-describedby="add_slots_max" ng-model="adv.adventure.slots_max">
 	  </div>
 
 	   <!-- resumo -->
-	  <div class="input-group">
-	    <label class="synopsisLabel"for="synopsis">Resumo</label>
-	    <textarea id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all" ng-model="adventure.synopsis"></textarea>
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon"><i class="material-icons">description</i></span>
+	    <textarea class="form-control" placeholder="Resumo da aventura" id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all" ng-model="adv.adventure.synopsis"></textarea>
 	  </div>
 	  
 	  <button class="btn btn-lg" type="submit" value = "Save"> Save</button>
@@ -141,7 +174,7 @@
 	</div>
 
 	 
-	  	<h1>{{adventure||json}}</h1>
+	  	<h1>{{adv.adventure||json}}</h1>
       </div>
 	
       <div class="welcomeText" data-index=0>
