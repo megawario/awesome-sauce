@@ -27,4 +27,5 @@ utils.log.log = function(string,level){logger(string,level);};
 utils.log.warning = function(string){logger(string,"warning");};
 utils.log.info = function(string){logger(string,"info");};
 utils.log.err = function(string){logger(string,"critical");};
+utils.log.debug = function(string){logger(string,"debug");};
 module.exports=utils;
