@@ -15,7 +15,8 @@ var adventureSchema = new Schema(
 	slots_min: {type: Number, min:0, max: 20},  //minumum slots
 	slots_max: {type: Number,required: true},         //maximum slots
 	players: Array,              //players
-	synopsis: {type: String}     //adventure synopsis
+	synopsis: {type: String},     //adventure synopsis
+	image: {type:String,default:"image/brand.png"} //image to display on card for adventure.
     });
 
 //virtual properties

@@ -29,12 +29,13 @@
 
   </head>
 
-  <body ng-controller="scopeController">
+  <body>
 
     <div id="carousel" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
 	<li data-target="#carousel" data-slide-to="0" class="active"></li>
 	<li data-target="#carousel" data-slide-to="1"></li>
+	<li data-target="#carousel" data-slide-to="2"></li>
       </ol>
 
       <div class="carousel-inner" role="listbox">
@@ -44,7 +45,7 @@
 	</div>
       
 	<div class="item">
-	  <img class="second-slide" src="" alt="second-slide">
+	  <img class="second-slide" src="http://thumbs.web.sapo.io/?pic=http://mb.web.sapo.io/1d245cf9dc3f92a72a957783f2995275d3ca8066.png&W=1000&H=500&crop=center&tv=2" alt="second-slide">
 	  <div class="container">
 	    <div class="carousel-caption">
 	      <h1>Junta-te a nós no Facebook</h1>
@@ -52,6 +53,10 @@
 	      <p><a class="btn btn-lg btn-primary" href="https://www.facebook.com/groups/gruporoleplayerslx/" target="_blank" role ="button">Junta-te!</a></p>
 	    </div>
 	  </div>
+	</div>
+
+	<div class="item">
+	  <img class="lisboaCon" src="https://scontent-mad1-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/12744466_10154054065787323_6903055858673497818_n.jpg?oh=608beec8509f3143b864c7ceadd83815&oe=57563F3F" alt="lisCon">
 	</div>
 	
       </div>
@@ -68,170 +73,160 @@
 
     </div>
 
-    
-    <div id="adventureSynopsisDialog">
-      <div>
-	<h2 id="as_name"></h2>
-	<div id="progressbar">
-	  <div id="as_slots">empty :(</div>
-	</div>
-      </div>
-      
-	<div id="as_accordion">
-	  <h6>Resumo</h6>
-	  <div class="accordion-tab" >
-	    <p  id="as_synopsis"></p>
-	  </div>
-	  <h6>Jogadores</h6>
-	  <div class="accordion-tab">
-	    <ul id="as_players"></ul>
-	  </div>
-	</div>
-     
-    </div>
-    
-      <h1 class="title">{{title}}</h1>
+    <!--Content for adventure -->    
+    <div id="info" class="container-fluid" ng-controller="adventuresController as adv">
 
-      <div id="info" ng-controller="adventuresController as adv">
+      <h1 class="title">{{adv.title}}</h1>
 
-	<div class="nav_buttons">
-	  <button type="button" class="btn btn-lg btn-primary" ng-click="adv.selected(0)"><i class='material-icons'>info</i></button>
-	  <button type="button" class="btn btn-lg " ng-click="adv.selected(1)"><i class='material-icons'>add_circle</i></button>
-	</div>
+      <div is="infoTable" class="table content" ng-show="adv.isSelected('infoTable')">
+	<table class="table table-hover table-condensed" id="mytable">
+	  <thead>
+	    <tr>
+	      <td>Hora</td>
+	      <td>Sistema</td>
+	      <td>Aventura</td>
+	      <td>Vagas</td>
+	      <td></td>
+	    </tr>
+	  </thead>
+	  <tbody ng-repeat="adventure in adv.adventures">
+
+	    <!-- adventure table -->
+	    <tr id="{{adv.adventure._id}}"
+		ng-click="adv.selectAdventure(adventure)"
+		ng-class="{active: adv.adventure._id==adventure._id}">
+	      <td>{{adventure.time_start|date:"HH:mm"}}<span ng-if="adventure.time_end"> - {{adventure.time_end|date:"HH:mm"}}</span></td>
+	      <td>{{adventure.system}}</td>
+	      <td>{{adventure.adventure}}</td>
+	      <td><span ng-if="adventure.slots_min">{{adventure.slots_min}} - </span>{{adventure.slots_max}}</td>
+	      <td>
+		<button class='actionButton redButton' ng-click="adv.selected('ceForm');$event.stopPropagation();"><i class='material-icons'>mode_edit</i></button>
+		<button class='actionButton greenButton' ng-click="adv.toAdd(adventure._id);$event.stopPropagation();"><i class='material-icons'>person_add</i></button>
+	      </td>
+	    </tr>
+
+	    <!-- User add form -->
+	    <tr>
+	      <td ng-show="adv.isAdd(adventure._id)" class="ng-hide" colspan="5">
+		<div class="alert alert-warning" role="alert">Só podes eliminar o teu nome, se tiver1es feito login.</div>
+		<form class="form-inline" ng-submit="adv.addPlayer(adventure,adv.player)">
+		  <div class="input-group input-group-lg">
+		    <span class="input-group-addon" id="add_player"><i class="material-icons">person_add</i></span>
+		    <input type="text"  class="form-control" placeholder="O teu nome aqui!!" aria-describedby="add_player" ng-model="adv.player.name">
+		  </div>
+		     <button type="submit" class="btn btn-primary">Inscrever</button>
+		</form>
+	      </td>
+	    </tr>
+
+	    <!-- Card description for each adventure -->
+	    <tr>
+	      <td ng-show="adv.adventure._id==adventure._id" class="ng-hide" colspan="5">
+		<div class="row">
 	
-	<div class="table content" ng-show="adv.isSelected(0)">
-	  <table class="table table-hover table-condensed" id="mytable">
-	    <thead>
-	      <tr>
-		<td>Hora</td>
-		<td>Sistema</td>
-		<td>Aventura</td>
-		<td>Vagas</td>
-		<td></td>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr ng-repeat="adventure in adv.adventures">
-		<td>{{adventure.time_start|date:"HH:mm"}} - {{adventure.time_end|date:"HH:mm"}}</td>
-		<td>{{adventure.system}}</td>
-		<td>{{adventure.adventure}}</td>
-		<td>{{adventure.slots_min+" - "+adventure.slots_max}}</td>
-		<td>
-		  <button class='actionButton redButton b_edit'><i class='material-icons'>mode_edit</i></button>
-		  <button class='actionButton greenButton b_info'><i class='material-icons'>info</i></button>
-		  <button class='actionButton greenButton b_player'><i class='material-icons'>person_add</i></button>
-		</td>
-	      </tr>
-	    </tbody>
-	  </table>
-	</div>
+		  <div class="thumbnail col-md-3">
+		    <img ng-src="{{adventure.image}}"/>
+		    <div class="caption">
+		      <h3>{{adventure.adventure}}</h3>
+		      <h4>{{adventure.name}}</h4>
+		      <div ng-if="adventure.players.length!=0">
+			<h5 >Players:</h5>
+			<div class="well">
+			  <ul ng-repeat="player in adventure.players">
+			   
+			    <li><span class="alignIcon"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
+			  </ul>
+			</div>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="col-md-9"><p>{{adventure.synopsis}}</p></div>  
+		</div>
+	      </td>
+	    </tr>
+	  </tbody>
+	  <tbody>
+	    <tr ng-click="adv.selected('createForm')">
+	      <td colspan="5"><div class="alert alert-success" role="alert">Adiciona a tua propria sessão!!!Clica aqui!</div></td>
+	    </tr>
+	  </tbody>
+	</table>
+      </div>
 
-	<!-- div for new adventure -->
-	<div ng-show="adv.isSelected(1)" class="content adv_submit">
-	  <form novalidation ng-submit="adv.addAdventure()">
- 	    <!-- nome -->
-	    <div class="input-group input-group-lg">
-	      <span class="input-group-addon" id="add_name"><i class="material-icons">account_circle</i></span>
-	      <input type="text" class="form-control" placeholder="Nome do DM" aria-describedby="add_name" ng-model="adv.adventure.name">
-	    </div>
-
-	    <!-- sistema -->
-	    <div class="input-group input-group-lg">
-	      <span class="input-group-addon" id="add_system"><i class="material-icons">extension</i></span>
-	      <input type="text"  class="form-control" placeholder="Sistema de jogo" aria-describedby="add_system" ng-model="adv.adventure.system">
-	    </div>
-
-	    <!-- aventura -->
-	    <div class="input-group input-group-lg">
-	      <span class="input-group-addon" id="add_aventure"><i class="material-icons">explore</i></span>
-	      <input type="text"  class="form-control" placeholder="Aventura" aria-describedby="add_aventure" ng-model="adv.adventure.adventure">
-	    </div>
-	    
-	    <!-- horas -->
-	    <div class="input-group input-group-lg">
-	      <span class="input-group-addon" id="add_time_start"><i class="material-icons">schedule</i></span>
-	      <input type="time" class="form-control" placeholder="Inicio (hh:mm)" aria-describedby="add_time_start" ng-model="adv.adventure.time_start">
-	      <span class="input-group-addon" id="add_time_end">até</span>
-	      <input type="time"  class="form-control" placeholder="Fim (hh:mm)" aria-describedby="add_time_end" ng-model="adv.adventure.time_end">
-	    </div>
-
-	   <!-- vagas -->
+      <!-- div for new or edit adventure -->
+      <div id="ceForm" ng-show="adv.isSelected('ceForm')" class="content adv_submit">
+	<div class="alert alert-warning" role="alert">Qualquer pessoa pode eleminar a tua aventura, se não estiveres autenticado.</div>
+	<form novalidation ng-submit="adv.addAdventure()">
+ 	  <!-- nome -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_name"><i class="material-icons">account_circle</i></span>
+	    <input type="text" class="form-control" placeholder="Nome do DM" aria-describedby="add_name" ng-model="adv.adventure.name">
+	  </div>
+	  
+	  <!-- sistema -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_system"><i class="material-icons">extension</i></span>
+	    <input type="text"  class="form-control" placeholder="Sistema de jogo" aria-describedby="add_system" ng-model="adv.adventure.system">
+	  </div>
+	  
+	  <!-- aventura -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_aventure"><i class="material-icons">explore</i></span>
+	    <input type="text"  class="form-control" placeholder="Aventura" aria-describedby="add_aventure" ng-model="adv.adventure.adventure">
+	  </div>
+	  
+	  <!-- horas -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_time_start"><i class="material-icons">schedule</i></span>
+	    <input type="time" class="form-control" placeholder="Inicio (hh:mm)" aria-describedby="add_time_start" ng-model="adv.adventure.time_start">
+	    <span class="input-group-addon" id="add_time_end">até</span>
+	    <input type="time"  class="form-control" placeholder="Fim (hh:mm)" aria-describedby="add_time_end" ng-model="adv.adventure.time_end">
+	  </div>
+	  
+	  <!-- vagas -->
 	  <div class="input-group input-group-lg">
 	    <span class="input-group-addon" id="add_slots_min"><i class="material-icons">group</i></span>
 	    <input type="number" class="form-control" placeholder="vaga minima" aria-describedby="add_slots_min" ng-model="adv.adventure.slots_min">
 	    <span class="input-group-addon" id="add_slots_max">até</span>
-	     <input type="number"  class="form-control" placeholder="vagas maximas" aria-describedby="add_slots_max" ng-model="adv.adventure.slots_max">
+	    <input type="number"  class="form-control" placeholder="vagas maximas" aria-describedby="add_slots_max" ng-model="adv.adventure.slots_max">
 	  </div>
-
-	   <!-- resumo -->
+	  
+	  <!-- image -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_image"><i class="material-icons">photo</i></span>
+	    <input type="text"  class="form-control" placeholder="url de imagem (200x200 centrada)" aria-describedby="add_aventure" ng-model="adv.adventure.image">
+	  </div>
+	  
+	  <!-- resumo -->
 	  <div class="input-group input-group-lg">
 	    <span class="input-group-addon"><i class="material-icons">description</i></span>
 	    <textarea class="form-control" placeholder="Resumo da aventura" id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all" ng-model="adv.adventure.synopsis"></textarea>
 	  </div>
 	  
-	  <button class="btn btn-lg" type="submit" value = "Save"> Save</button>
-	  </form>
-	</div>
-
-	 
-	  	<h1>{{adv.adventure||json}}</h1>
-      </div>
-	
-      <div class="welcomeText" data-index=0>
-	<p>Bemvindo ao site de marcação para os jogos Mensais de RPG.<br>
-	  Passa o cursor sobre as linhas para veres or resumos das sessões.<br>
-	    Adiciona o teu jogo ou regista-te num.</p>
-	</div>
-	
-	<footer class="footer">
-	  <p><a href="https://github.com/megawario/awesome-sauce">fork me! fork me! fork me hard!</a></p>
-	</footer>
-      </div>   
-
-      <div class="Dialog" 'id="#dialogConfirm"><p id="dialogConfirmText"></p></div>
-      
-            
-      <div class="Dialog" id="playerDialog">
-	<form id="playerForm">
-	  <fieldset>
-	    <label for="as_player">junta-te ao jogo</label>
-	    <input title="o teu nome aqui" type="text" name="as_player" id="pf_player" maxlength="20" class="text ui-widget-content ui-corder-all">
-	  </fieldset>
+	  <button class="btn btn-lg btn-primary" type="submit" value = "Guardar">Guardar</button>
+	  <button class="btn btn-lg btn-primary" type="button" value = "Apagar" ng-show="adv.adventure._id" ng-click="adv.removeAdventure(adv.adventure)">Apagar</button>
+	  <button type="button" class="btn btn-lg " ng-click="adv.selected('infoTable')"><i class='material-icons'>cancel</i></button>
 	</form>
       </div>
-      
-      <div class="Dialog" id="adventureDialog">
-	<form id="adventureForm">
-	  <fieldset>
-	    <div class="formGroup">
-	      <label for="name">Nome</label>
-	      <input type="text" name="name" title="Nome do DM" id="adv_name" maxlength="20" class="text ui-widget-content ui-corder-all">
-	    </div>
-	    <div class="formGroup">
-	      <label for="system">Sistema</label>
-	      <input type="text" name="system" title="Sistema do jogo" id="adv_system" maxlength="40" class="text ui-widget-content ui-corder-all">
-	    </div>
-	    <div class="formGroup">
-	      <label for="adventure">Aventura</label>
-	      <input type="text" name="adventure" title="Titulo da aventura" id="adv_adventure" maxlength="80" class="text ui-widget-content ui-corder-all">
-	    </div>
-	    <div class ="formGroup">
-	      <label for="time">Hora de inicio</label>
-	      <input type="time" class="adv_time" name="time" id="adv_time_start" value="14:00" min="14:00" max="23:59">
-	      <label for="time">até</label>
-	      <input type="time" class="adv_time" name="time" id="adv_time_end" value="15:00" min="14:00" max="23:59">
-	    </div>
-	    
-	    <div class="formGroup">
-	      <label for="slots">Vagas</label>
-	      <input type="number" title="numero minimo de jogadores" min="1" max="20" id="adv_slots_min" class="number ui-widget-content ui-corder-all adv_slotnum">
-	      <label for="slots">até</label>
-	      <input type="number" title="numero maximo de jogadores" min="1" max="20" id="adv_slots_max" class="number ui-widget-content ui-corder-all adv_slotnum">
-	    </div>
-	    <label class="synopsisLabel"for="synopsis">Resumo</label>
-	    <textarea id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all"></textarea>
-	  </fieldset>
-	</form>
-      </div>
+    </div>
+	
+    <div>	
+      <footer class="footer">
+	<p><a href="https://github.com/megawario/awesome-sauce">fork me! fork me! fork me hard!</a></p>
+      </footer>
+    </div>   
+
+    <div class="Dialog" 'id="#dialogConfirm"><p id="dialogConfirmText"></p></div>
+    
+    
+    <div class="Dialog" id="playerDialog">
+      <form id="playerForm">
+	<fieldset>
+	  <label for="as_player">junta-te ao jogo</label>
+	  <input title="o teu nome aqui" type="text" name="as_player" id="pf_player" maxlength="20" class="text ui-widget-content ui-corder-all">
+	</fieldset>
+      </form>
+    </div>
+    
   </body>
 </html>

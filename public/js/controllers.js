@@ -4,7 +4,69 @@ angular.module('lisapp.controllers',
 	       ['lisapp.services'])
 
     .controller('scopeController',function($scope,lisappAPI){
-	$scope.getGameDate = function getGameDate(number){
+
+	
+    })
+
+    //controller for adventures
+    .controller('adventuresController',function($scope,$location,$anchorScroll,lisappAPI){
+	
+	this.adventure={}; //adventureOnFocus
+	this.adventures={};
+	this.showAdd={};
+	this.player={};
+	
+	//visual queue to add player correctly
+	this.toAdd = function(id){this.showAdd=id;
+				  this.player={};
+				 };
+	this.isAdd = function(id){return (this.showAdd==id)};
+
+	//returns current selected button
+	this.selectedItem='infoTable'; //default id selection is table
+	this.selected = function(id){ //sets if id not undefined otherwise returns crurrent selected
+	    if(typeof id!=='undefined'){
+		if(id=='createForm'){ //clear adventure before opening form
+		    this.adventure = {};
+		    id='ceForm';
+		}
+		this.selectedItem = id;
+	    };
+	    return this.selectedItem;
+	};
+	//checks if it is selected 
+	this.isSelected = function(id){
+	    return this.selectedItem === id;
+	}
+	
+	//adds a player
+	this.addPlayer = function(adventure,player){
+	    adventure.players.push(player.name);
+	    //push change to database
+	    lisappAPI.addPlayer(adventure,player.name)
+		.then((function(response){
+		    alert('worked');
+		}).bind(this),function(response){alert('add player failed');});
+	    this.toAdd('hide');
+	}
+	
+	
+	//removes player from adventure
+	this.removePlayer = function (adventure,player){
+	    alert(adventure._id);
+	    lisappAPI.removePlayer(adventure._id,player)
+		.then( (function(response){
+		    this.adventure=response.data;
+		}).bind(this), //change object to reflect deletion
+		       function(response){alert("failed to remove the played");});
+	};
+
+	//select adventure and jump to location:
+	this.selectAdventure = function selectAdventure(adventure){
+	    this.adventure=adventure;
+	};
+
+	this.getGameDate = function getGameDate(number){
 	    var current = new Date();
 	    var day = getMonthDay(14,current.getMonth(),current.getFullYear());
 	    if(number){
@@ -14,42 +76,33 @@ angular.module('lisapp.controllers',
 	    };
 	};
 	
-	$scope.title = $scope.getGameDate(false);
-	$scope.gameDate = $scope.getGameDate(true);
+	this.title = this.getGameDate(false);
+	this.gameDate = this.getGameDate(true);
 
-	
-    })
-
-    //controller for adventures
-    .controller('adventuresController',function($scope,lisappAPI){
-	
-	this.adventure={}; //selected or new adventure.
-	this.adventures={};
 	
 	//update or create adventure adventure
 	this.addAdventure = function(){
 	    //fill in extra adventure info:
-	    this.adventure.date = $scope.gameDate;
-	    alert(this.adventure.name);
+	    this.adventure.date = this.gameDate;
 	    lisappAPI.addAdventure(this.adventure)
-		.then(function(response){this.adventures.push(response.data);},
+		.then(
+		    (function(response){this.adventures.push(response.data);}).bind(this),
 		      function(response){alert('add adventure failed');
 		      });
 	};
 
-	//returns current selected button
-	this.selectedButton=0; //number from 0 onwards
-	this.selected = function(button){
-	    if(typeof button!=='undefined'){
-		this.selectedButton = button;};
-	    return this.selectedButton;
+	//deletes adventure
+	this.removeAdventure = function(adventure){
+	    this.adventures.splice(this.adventures.indexOf(adventure),1);
+	    this.selected('infoTable');
+	    lisappAPI.deleteAdventure(adventure._id)
+		.then(
+		    (function(response){alert('removed');}).bind(this),
+		    function(response){alert('delete adventure failed');}
+		);
 	};
-
-	this.isSelected = function(button){
-	    return this.selectedButton === button;
-	}
-
-	lisappAPI.getAdventures($scope.gameDate)
+	
+	lisappAPI.getAdventures(this.gameDate)
 	    .then(
 		(function(response){ this.adventures=response.data;}).bind(this));
 

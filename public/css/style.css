@@ -3,10 +3,21 @@ body {
     color: #5a5a5a;
 }
 
+
+/* NavBar*/
+.navbar-brand{
+    padding:5px !important;
+}
+
+.navbar-brand img{
+    width:auto;
+    height:100%;
+}
+
 /* carousel base customisation */
 
 .carousel {
-    height: 500px;
+    height: 500;
     margin-bottom:60px;
 }
 
@@ -15,16 +26,12 @@ body {
 }
 
 .carousel .item {
-    height: 500px;
+    max-height: 500px;
     background-color: #777;
 }
 
 .carousel-inner > .item> img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    height: 500px;
+    width:100%;
 }
 
 /* HEADER */
@@ -96,6 +103,48 @@ section{
     margin-bottom:1%;
 }
 
+.thumbnail img{
+    height:200px !important;
+    width:200px !important;
+    object-fit:none;
+    object-position:center;
+    margin:10px;
+}
+
+.thumbnail h3{
+    margin:0px;
+}
+
+/* Buttons on table */
+
+.actionButton{
+    outline:0;
+    border: none;
+    background: transparent;
+    margin:2px;
+    max-width:25;
+}
+
+.actionButton:hover{
+    animation-name:buzz_out;
+    animation-duration:0.75s;
+    animation-timing-function: linear;
+    animation-iteration-count:1;
+}
+
+.redButton:hover{
+    color:red;
+}
+
+.greenButton:hover{
+    color:green;
+}
+
+/*well on show players*/
+.alignIcon{
+    display:inline-flex;
+}
+
 /* adventure submition form */
 .adv_submit .input-group{
     margin-top: 1px;
@@ -106,3 +155,4 @@ section{
 #adv_Synopsis{
     min-height:100px;
 }
+
