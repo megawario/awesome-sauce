@@ -32,3 +32,10 @@
 #adventureDialog .formGroup input{
     left-margin:10px;
 }
+
+.authWarning{
+    color: red;
+    height: 30px;
+    font-size: 70%;
+    top: 1px;
+}

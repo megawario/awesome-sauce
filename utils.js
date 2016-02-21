@@ -13,8 +13,9 @@ var logger =  function (string,level){
 	}
     }
     else{ //log in production
-	if(level=="critical"){
-	    console.log("CRITICAL: "+ string);
+	switch(level){
+	case "critical":console.log("CRITICAL: "+string);break;
+	case "warning":console.log("WARNING: "+string);break;
 	}
     }
 }

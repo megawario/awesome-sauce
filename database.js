@@ -1,5 +1,4 @@
 //Database for this server
-var mongoClient = require('mongodb').MongoClient;
 var config = require('./config');
 var mongoose = require('mongoose');
 var log = require('./utils').log;
@@ -41,7 +40,7 @@ var database={
 	    .catch(function(err){callback(err);});
     },
 
-//returns json with adventures using a projection for the date and request info
+    //returns json with adventures using a projection for the date and request info
     getAdventure : function(date,callback){
 	this.adventure.find()
 	    .where('date').equals(date)
@@ -50,6 +49,12 @@ var database={
 	    });
     },
 
+    // removes adventure docment identified by id.
+    removeAdventure: function(id,callback){
+	console.log("Removing ID ", id);
+	this.adventure.remove(id,callback);
+    },
+    
     // removes adventure docment identified by id.
     removeAdventure: function(id,callback){
 	this.adventure.remove(id,callback);
@@ -65,8 +70,28 @@ var database={
 	    }
 	});
     },
+	
+    //verifies that a user is authorized to edit/remove adventure
+    checkUserAuth: function(id, userID, callback){
+	this.adventure.findById(id, function(err, doc){
+	    if(err){
+		console.log("cheakUserAuth ERROR!!!!!!!");
+		callback(err, null)
+	    }
+	    else{
+		if(doc.userID != null && doc.userID== userID){
+		    console.log("USER AUTHORIZED TO EDIT DB DATA Doc: "+doc+" userID: "+userID);
+		    callback(null, true);
+		}
+		else{
+		    console.log("USER NOTAUTHORIZED TO EDIT DB DATA Doc: "+doc+" userID: "+userID);
+		    callback(null, false)
+		}
+	    }
+	});
+    },
     
-//removes a player from the adventure with the id. 
+    //removes a player from the adventure with the id. 
     removePlayer: function(id,playerName,callback){
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}
@@ -75,11 +100,28 @@ var database={
 		doc.save(callback);
 	    }
 	});
+    },
+    getUserById: function(id, cb){
+	this.session.findOne({'userID': id}, function(err, user){
+	    cb(err, user);
+	});
+    },
+    addUser: function(json, cb){
+	this.session.create(json)
+	    .then(
+		function(result){ //success
+		    callback(null,result);
+		}).catch(function(err){callback(err);});
     }
 }
 
 //loads adventure module
 database.adventure = require('./models/adventureModel.js');
+
+//loads user module
+database.session = require('./models/sessionModel.js');
+
 database.mongoose = mongoose;
+
 //starts database connection
 module.exports=database.initialize();

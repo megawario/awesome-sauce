@@ -9,14 +9,15 @@ var adventureSchema = new Schema(
 	date: {type:String,required:true,index:true,unique:false},
 	time_start: Date,            //adventure start time
 	time_end: Date,              //adventure end time
-	name: {type: String, required: true},             //dm name
-	system: {type: String},      //game system
-	adventure: {type: String, required: true} ,       //adventure title
-	slots_min: {type: Number, min:0, max: 20},  //minumum slots
-	slots_max: {type: Number,required: true},         //maximum slots
+	name: {type: String, required: true}, //dm name
+	system: {type: String},               //game system
+	adventure: {type: String, required: true} ,  //adventure title
+	slots_min: {type: Number, min:0, max: 20},   //minumum slots
+	slots_max: {type: Number,required: true},    //maximum slots
 	players: Array,              //players
-	synopsis: {type: String},     //adventure synopsis
-	image: {type:String,default:"image/brand.png"} //image to display on card for adventure.
+	synopsis: {type: String},    //adventure synopsis
+	image: {type:String,default:"image/brand.png"}, //image to display on card for adventure.
+	userID: {type: Number, required: false}         //user id, owner of the adventure.
     });
 
 //virtual properties

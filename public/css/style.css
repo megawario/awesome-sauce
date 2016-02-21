@@ -3,7 +3,6 @@ body {
     color: #5a5a5a;
 }
 
-
 /* NavBar*/
 .navbar-brand{
     padding:5px !important;
@@ -52,7 +51,6 @@ div.header{
     height:auto;
 }
 
-
 /* Title */
 .title{
     color: white;
@@ -76,8 +74,6 @@ section{
     margin: auto;
     padding:10px;
 }
-
-
     
 .iconButton{
     background-color: Transparent;
@@ -85,7 +81,6 @@ section{
     overflow: hidden;
     outline:none;
 }
-
 
 /* Info tab */
 #info {
@@ -155,4 +150,3 @@ section{
 #adv_Synopsis{
     min-height:100px;
 }
-

@@ -155,7 +155,8 @@
 
       <!-- div for new or edit adventure -->
       <div id="ceForm" ng-show="adv.isSelected('ceForm')" class="content adv_submit">
-	<div class="alert alert-warning" role="alert">Qualquer pessoa pode eleminar a tua aventura, se não estiveres autenticado.</div>
+	<div class="alert alert-warning" role="alert">Qualquer pessoa pode eliminar a tua aventura, se não estiveres autenticado.
+	Autentica-te <a href="/lisrpg/auth/google">aqui</a>!</div>
 	<form novalidation ng-submit="adv.addAdventure()">
  	  <!-- nome -->
 	  <div class="input-group input-group-lg">
