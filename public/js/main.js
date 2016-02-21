@@ -3,14 +3,11 @@
 //table manipulation and entry creation.
 
 //global flags:
-
-var adventures=[]; //datastructure to hold the get information for displaying the content of adventures
-
 var selectedRow;//selected table row;
 
 //start function
 $(function(){
-    $(document).tooltip({track:true});            //enable tooltips
+    //$(document).tooltip({track:true});            //enable tooltips
     $.getScript("../js/adventureSubmit.js");
 
     createAdventureDialog();  //initialize adventure add dialog
@@ -67,7 +64,6 @@ function getAdventure(){
 	}
     });
 }
-
 //add new table line to table with all functionality.
 function addNewTableLine(json){
     adventures.push(json); //fill inner representation

@@ -1,0 +1,233 @@
+<!DOCTYPE html lang="pt">
+<html ng-app='lisapp'>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="css/animation.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="js/jquery-ui-1.11.4/jquery-ui.min.css">
+    <script src="js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <script src="js/adventureSubmit.js"></script>
+    <script src="js/adventureSynopsis.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/playerDialog.js"></script>
+    <!-- BootStrap -->
+    <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- Angular scripts -->
+    <script src="js/lisapp.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+
+  </head>
+
+  <body>
+
+    <div id="carousel" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+	<li data-target="#carousel" data-slide-to="0" class="active"></li>
+	<li data-target="#carousel" data-slide-to="1"></li>
+	<li data-target="#carousel" data-slide-to="2"></li>
+      </ol>
+
+      <div class="carousel-inner" role="listbox">
+
+	<div class="item active">
+	  <img class="first-slide" src="image/logo.jpg" alt="First slide">
+	</div>
+      
+	<div class="item">
+	  <img class="second-slide" src="http://thumbs.web.sapo.io/?pic=http://mb.web.sapo.io/1d245cf9dc3f92a72a957783f2995275d3ca8066.png&W=1000&H=500&crop=center&tv=2" alt="second-slide">
+	  <div class="container">
+	    <div class="carousel-caption">
+	      <h1>Junta-te a nós no Facebook</h1>
+	      <p>O ponto de encontro do grupo, passa por esta rede social. Qualquer duvida que tenhas, deixa-nos uma palavrinha!!</p>
+	      <p><a class="btn btn-lg btn-primary" href="https://www.facebook.com/groups/gruporoleplayerslx/" target="_blank" role ="button">Junta-te!</a></p>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="item">
+	  <img class="lisboaCon" src="https://scontent-mad1-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/12744466_10154054065787323_6903055858673497818_n.jpg?oh=608beec8509f3143b864c7ceadd83815&oe=57563F3F" alt="lisCon">
+	</div>
+	
+      </div>
+
+      <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
+	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	<span class="sr-only">Previous</span>
+      </a>
+
+      <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
+	<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	<span class="sr-only">Next</span>
+      </a>
+
+    </div>
+
+    <!--Content for adventure -->    
+    <div id="info" class="container-fluid" ng-controller="adventuresController as adv">
+
+      <h1 class="title">{{adv.title}}</h1>
+
+      <div is="infoTable" class="table content" ng-show="adv.isSelected('infoTable')">
+	<table class="table table-hover table-condensed" id="mytable">
+	  <thead>
+	    <tr>
+	      <td>Hora</td>
+	      <td>Sistema</td>
+	      <td>Aventura</td>
+	      <td>Vagas</td>
+	      <td></td>
+	    </tr>
+	  </thead>
+	  <tbody ng-repeat="adventure in adv.adventures">
+
+	    <!-- adventure table -->
+	    <tr id="{{adv.adventure._id}}"
+		ng-click="adv.selectAdventure(adventure)"
+		ng-class="{active: adv.adventure._id==adventure._id}">
+	      <td>{{adventure.time_start|date:"HH:mm"}}<span ng-if="adventure.time_end"> - {{adventure.time_end|date:"HH:mm"}}</span></td>
+	      <td>{{adventure.system}}</td>
+	      <td>{{adventure.adventure}}</td>
+	      <td><span ng-if="adventure.slots_min">{{adventure.slots_min}} - </span>{{adventure.slots_max}}</td>
+	      <td>
+		<button class='actionButton redButton' ng-click="adv.selected('ceForm');$event.stopPropagation();"><i class='material-icons'>mode_edit</i></button>
+		<button class='actionButton greenButton' ng-click="adv.toAdd(adventure._id);$event.stopPropagation();"><i class='material-icons'>person_add</i></button>
+	      </td>
+	    </tr>
+
+	    <!-- User add form -->
+	    <tr>
+	      <td ng-show="adv.isAdd(adventure._id)" class="ng-hide" colspan="5">
+		<div class="alert alert-warning" role="alert">Só podes eliminar o teu nome, se tiver1es feito login.</div>
+		<form class="form-inline" ng-submit="adv.addPlayer(adventure,adv.player)">
+		  <div class="input-group input-group-lg">
+		    <span class="input-group-addon" id="add_player"><i class="material-icons">person_add</i></span>
+		    <input type="text"  class="form-control" placeholder="O teu nome aqui!!" aria-describedby="add_player" ng-model="adv.player.name">
+		  </div>
+		     <button type="submit" class="btn btn-primary">Inscrever</button>
+		</form>
+	      </td>
+	    </tr>
+
+	    <!-- Card description for each adventure -->
+	    <tr>
+	      <td ng-show="adv.adventure._id==adventure._id" class="ng-hide" colspan="5">
+		<div class="row">
+	
+		  <div class="thumbnail col-md-3">
+		    <img ng-src="{{adventure.image}}"/>
+		    <div class="caption">
+		      <h3>{{adventure.adventure}}</h3>
+		      <h4>{{adventure.name}}</h4>
+		      <div ng-if="adventure.players.length!=0">
+			<h5 >Players:</h5>
+			<div class="well">
+			  <ul ng-repeat="player in adventure.players">
+			   
+			    <li><span class="alignIcon"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
+			  </ul>
+			</div>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="col-md-9"><p>{{adventure.synopsis}}</p></div>  
+		</div>
+	      </td>
+	    </tr>
+	  </tbody>
+	  <tbody>
+	    <tr ng-click="adv.selected('createForm')">
+	      <td colspan="5"><div class="alert alert-success" role="alert">Adiciona a tua propria sessão!!!Clica aqui!</div></td>
+	    </tr>
+	  </tbody>
+	</table>
+      </div>
+
+      <!-- div for new or edit adventure -->
+      <div id="ceForm" ng-show="adv.isSelected('ceForm')" class="content adv_submit">
+	<div class="alert alert-warning" role="alert">Qualquer pessoa pode eliminar a tua aventura, se não estiveres autenticado.
+	Autentica-te <a href="/lisrpg/auth/google">aqui</a>!</div>
+	<form novalidation ng-submit="adv.addAdventure()">
+ 	  <!-- nome -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_name"><i class="material-icons">account_circle</i></span>
+	    <input type="text" class="form-control" placeholder="Nome do DM" aria-describedby="add_name" ng-model="adv.adventure.name">
+	  </div>
+	  
+	  <!-- sistema -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_system"><i class="material-icons">extension</i></span>
+	    <input type="text"  class="form-control" placeholder="Sistema de jogo" aria-describedby="add_system" ng-model="adv.adventure.system">
+	  </div>
+	  
+	  <!-- aventura -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_aventure"><i class="material-icons">explore</i></span>
+	    <input type="text"  class="form-control" placeholder="Aventura" aria-describedby="add_aventure" ng-model="adv.adventure.adventure">
+	  </div>
+	  
+	  <!-- horas -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_time_start"><i class="material-icons">schedule</i></span>
+	    <input type="time" class="form-control" placeholder="Inicio (hh:mm)" aria-describedby="add_time_start" ng-model="adv.adventure.time_start">
+	    <span class="input-group-addon" id="add_time_end">até</span>
+	    <input type="time"  class="form-control" placeholder="Fim (hh:mm)" aria-describedby="add_time_end" ng-model="adv.adventure.time_end">
+	  </div>
+	  
+	  <!-- vagas -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_slots_min"><i class="material-icons">group</i></span>
+	    <input type="number" class="form-control" placeholder="vaga minima" aria-describedby="add_slots_min" ng-model="adv.adventure.slots_min">
+	    <span class="input-group-addon" id="add_slots_max">até</span>
+	    <input type="number"  class="form-control" placeholder="vagas maximas" aria-describedby="add_slots_max" ng-model="adv.adventure.slots_max">
+	  </div>
+	  
+	  <!-- image -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon" id="add_image"><i class="material-icons">photo</i></span>
+	    <input type="text"  class="form-control" placeholder="url de imagem (200x200 centrada)" aria-describedby="add_aventure" ng-model="adv.adventure.image">
+	  </div>
+	  
+	  <!-- resumo -->
+	  <div class="input-group input-group-lg">
+	    <span class="input-group-addon"><i class="material-icons">description</i></span>
+	    <textarea class="form-control" placeholder="Resumo da aventura" id="adv_synopsis" maxlength="5000" class="text ui-widget-content ui-corder-all" ng-model="adv.adventure.synopsis"></textarea>
+	  </div>
+	  
+	  <button class="btn btn-lg btn-primary" type="submit" value = "Guardar">Guardar</button>
+	  <button class="btn btn-lg btn-primary" type="button" value = "Apagar" ng-show="adv.adventure._id" ng-click="adv.removeAdventure(adv.adventure)">Apagar</button>
+	  <button type="button" class="btn btn-lg " ng-click="adv.selected('infoTable')"><i class='material-icons'>cancel</i></button>
+	</form>
+      </div>
+    </div>
+	
+    <div>	
+      <footer class="footer">
+	<p><a href="https://github.com/megawario/awesome-sauce">fork me! fork me! fork me hard!</a></p>
+      </footer>
+    </div>   
+
+    <div class="Dialog" 'id="#dialogConfirm"><p id="dialogConfirmText"></p></div>
+    
+    
+    <div class="Dialog" id="playerDialog">
+      <form id="playerForm">
+	<fieldset>
+	  <label for="as_player">junta-te ao jogo</label>
+	  <input title="o teu nome aqui" type="text" name="as_player" id="pf_player" maxlength="20" class="text ui-widget-content ui-corder-all">
+	</fieldset>
+      </form>
+    </div>
+    
+  </body>
+</html>
