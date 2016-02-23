@@ -4,7 +4,7 @@ angular.module('lisapp.services',[])
 
 	//get request returns http request
 	result.getAdventures = function(date){
-	    var my_url = '/lisrpg/rest/adventure/'+date;
+	    var my_url = 'rest/adventure/'+date;
 	    return $http({
 		method: 'GET',
 		url: my_url
@@ -14,7 +14,7 @@ angular.module('lisapp.services',[])
 	//add player to adventure
 	result.addPlayer = function(adventureID,playerName){
 	    var payload = { "_id":adventureID,"player":playerName};
-	    var my_url = '/lisrpg/rest/adventure/player/add';
+	    var my_url = 'rest/adventure/player/add';
 	    return $http({
 		method: 'POST',
 		url: my_url,
@@ -25,7 +25,7 @@ angular.module('lisapp.services',[])
 	//remove player
 	result.removePlayer = function(adventureID,playerName){
 	    var payload = { "_id":adventureID,"playerName":playerName};
-	    var my_url = '/lisrpg/rest/adventure/player/remove';
+	    var my_url = 'rest/adventure/player/remove';
 	    return $http({
 		method: 'POST',
 		url: my_url,
@@ -34,7 +34,7 @@ angular.module('lisapp.services',[])
 	};
 
 	result.deleteAdventure = function(adventureID){
-	    var my_url = '/lisrpg/rest/adventure/remove'
+	    var my_url = 'rest/adventure/remove'
 	    var payload = {"_id":adventureID};
 	    return $http({
 		method: 'POST',
@@ -47,9 +47,9 @@ angular.module('lisapp.services',[])
 	//creates or edits adventure.
 	result.addAdventure = function(adventure){ 
 	    if(typeof adventure._id !== "undefined"){
-		var my_url='/lisrpg/rest/adventure/edit'; 
+		var my_url='rest/adventure/edit'; 
 	    }else{
-		var my_url='/lisrpg/rest/adventure/create';
+		var my_url='rest/adventure/create';
 	    }
 	    
 	    return $http({
