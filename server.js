@@ -1,122 +1,42 @@
 //Main server app
 
-//import
-var http = require("http");
-var express = require("express");
-var services = require("express");
-var fs = require("fs");
+//setup
 var config = require("./config");
-var bodyParser= require("body-parser");
+var log = require("./utils").log;
 
-var db = require("./database");
+//set debug mode according to config
+if(config.server.debug){ 
+    process.env.NODE_ENV="development";
+    log.warning("Development mode on");
+}else{ process.env.NODE_ENV="production";}
 
+//catch errors and log.
+process.on('uncaughtException',function(err){
+    log.err('Caught exception: '+err);
+    log.err('Caught exception: '+err.stack);
+});
+
+var passport = require('./passport.js');
+var express = require('express');
 var app = express();
+var advRoutes = require("./routes/adventureAPI.js");
+var authRoutes =require("./routes/authAPI.js");
+var cookieParser = require('cookie-parser');
 
-app.use(express.static(__dirname + '/public'));
+app.use(cookieParser());
+app.use(passport._session);
+app.use(passport.initialize());
+app.use(passport.session());
 
+app.use(config.server.path+"/rest",advRoutes);
+app.use(config.server.path+"/auth",authRoutes);
 
-//Services
-//POST
-app.use(bodyParser.json());
-
-//Push new adventure to the database
-app.post('/rest/adventure/create',function(req,res){
-    console.log('post request from '+req.ip+' to ' +req.path);
-    //TODO process validation for the req body here.
-    db.createAdventure(req.body,function(err,docId){
-	if(err){
-	    console.log(err);
-	    res.sendStatus(500);//send error status
-	}else{
-	    res.status(200).send(docId);
-	}
-    });
-});
-
-app.post('/rest/adventure/edit',function(req,res){
-    console.log('post request from '+req.ip+' to ' +req.path);
-    //TODO process validations here
-    db.editAdventure(req.body,function(err){
-	if(err){
-	    console.log(err);
-	    res.sendStatus(500);//send error status
-	}else{
-	    res.sendStatus(200);
-	}
-    });
-});
-
-//remove the adventure
-app.post('/rest/adventure/remove',function(req,res){
-    console.log('post request from '+req.ip+' to ' +req.path);
-    var id =req.body._id;
-    //TODO process validations here.
-    db.removeAdventure(id,function(err){
-	if(err){
-	    console.log(err);
-	    res.sendStatus(500);
-	}else{
-	    res.sendStatus(200);
-	};
-    });
-});
-
-//adds new player to adventure
-app.post('/rest/adventure/player/add',function(req,res){
-     console.log('post request from '+req.ip+' to ' +req.path);
-    var id=req.body._id;
-    var playerName = req.body.player;
-    //TODO process validation here for post arg.
-    db.addPlayer(id,playerName,function(err){
-	if(err){
-	    console.log(err);
-	    res.sendStatus(500);
-	}else{
-	    res.sendStatus(200);
-	}
-    });
-});
-
-//Remove setected player from adventure
-app.post('/rest/adventure/player/remove',function(req,res){
-    console.log('post request from '+req.ip+' to ' +req.path);
-    var id = req.body._id;
-    var playerName = req.body.playerName;
-    console.log("removing "+id+ " with name:"+playerName);
-    //TODO process validations here
-    db.removePlayer(id,playerName,function(err){
-	if(err){
-	    console.log(err);
-	    res.sendStatus(500);
-	}
-	else{
-	    res.sendStatus(200);
-	}
-    });
-});
-
-//GET
-app.get('/rest/adventure/:date',function(req,res){
-    console.log('get request from '+req.ip+' param:'+req.params.date);
-    db.getAdventure(req.params.date,function(err,result){
-	if(err){
-	    console.log(err);
-	    res.sendStatus(500);
-	}else{
-	    res.json(result);
-	}
-    });
-1});
-
-app.get(config.server.path,function(req,res){
-    res.redirect('/html/index.html');
-});
+//serve static pages:
+if(config.server.serveStatic){
+    app.use(config.server.path,express.static(__dirname + '/public'));
+}
 
 //start server
 app.listen(config.server.port, function(){
-    console.log('App running on port '+config.server.port);
+    log.info('App running on port '+config.server.port);
 });
-
-process.on('uncaughtException',function(err){
-    console.log('Caught exception: '+err);
-})

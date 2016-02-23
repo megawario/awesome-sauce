@@ -9,7 +9,12 @@
 .synopsisLabel{
     display:block;
 }
-#adv_slots{
+
+.adv_time{
+    width:100px;
+}
+
+.adv_slotnum{
     width:50px;
 }
 #adv_adventure{
@@ -26,4 +31,11 @@
 }
 #adventureDialog .formGroup input{
     left-margin:10px;
+}
+
+.authWarning{
+    color: red;
+    height: 30px;
+    font-size: 70%;
+    top: 1px;
 }

@@ -3,14 +3,11 @@
 //table manipulation and entry creation.
 
 //global flags:
-
-var adventures=[]; //datastructure to hold the get information for displaying the content of adventures
-
 var selectedRow;//selected table row;
 
 //start function
 $(function(){
-    $(document).tooltip({track:true});            //enable tooltips
+    //$(document).tooltip({track:true});            //enable tooltips
     $.getScript("../js/adventureSubmit.js");
 
     createAdventureDialog();  //initialize adventure add dialog
@@ -24,12 +21,12 @@ $(function(){
 
     //create synopsis dialog;
     createAdventureSynopsisDialog();
-    
+
     //set page title
     $("#gameDay").text(getGameDate());
 
     //load adventures
-    getAdventure();    
+    getAdventure();
 });
 
 function createDialogConfirm(){
@@ -66,8 +63,7 @@ function getAdventure(){
 	    addNewTableLine(obj);
 	}
     });
- }
-
+}
 //add new table line to table with all functionality.
 function addNewTableLine(json){
     adventures.push(json); //fill inner representation
@@ -83,10 +79,9 @@ function createTableLine(json){
     return "<tr class='tableRow'> <td class='td_time'>"+json.time
 	+"</td><td class='td_system'>"+json.system
 	+"</td><td class='td_adventure'>"+json.adventure
-	+"</td><td class='td_slots'>"+(json.slots-json.players.length)
+	+"</td><td class='td_slots'>"+(json.slots_max-json.players.length)
 	+"</td><td class='td_icons'>"
 	+"<button class='actionButton redButton b_edit'><i class='material-icons'>mode_edit</i></button>"
 	+"<button class='actionButton greenButton b_info'><i class='material-icons'>info</i></button>"
-	+"<button class='actionButton greenButton b_player'><i class='material-icons'>person_add</i></button></td></tr>";   
+	+"<button class='actionButton greenButton b_player'><i class='material-icons'>person_add</i></button></td></tr>";
 }
-

@@ -21,7 +21,20 @@ function createPlayerDialog(){
 		var json = $("#playerDialog").data('json'); 
 		var index = $("#playerDialog").data('index'); 
 		createPlayer(json,index)},
-	    Cancel: function(){$("#playerDialog").dialog("close")}
+	    Cancelar: function(){$("#playerDialog").dialog("close")}
+	},
+	open: function(){
+	    $.getScript("../js/auth.js");	    
+	    verifyAuthentication(function(auth){
+		console.log(auth.userID);
+		if(!auth.isAuthenticated){
+		    $(".authWarning").html("");
+		    $(".authWarning").append("<span>Não estás autenticado no site. Por favor nota que não poderás eliminar a tua inscrição após a submeteres.</span>");
+		}
+		else{
+		    $("#pf_player").val(auth.displayName);
+		}
+	    })
 	},
 	close: function(){
 	    $("#playerForm")[0].reset();//clear all form info
