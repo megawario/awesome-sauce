@@ -24,6 +24,28 @@
 
   </head>
   <body>
+    <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+      <div class="container-fluid">
+	<div class="navbar-header">
+	  <a href="" class="navbar-brand">
+	  <img alt="LisRPG"></img></a>
+	</div>
+	<nav class="" role="navigation">
+          <!-- Login Button -->
+	  <ul class="nav navbar-nav navbar-right">
+	    <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Log In</a>
+	      <ul class="dropdown-menu">
+		<li class="googleAuth"><a href="/lisrpg/auth/google"><img src="image/google_login_dark.png"></img></a></li>
+	      </ul>
+	    </li>
+	  </ul>
+
+	</nav>
+      </div>
+    </header>
+    
+<!-- carousel -->
     <div id="carousel" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
 	<li data-target="#carousel" data-slide-to="0" class="active"></li>
@@ -40,9 +62,9 @@
 	<div class="item">
 	  <img class="second-slide" src="http://thumbs.web.sapo.io/?pic=http://mb.web.sapo.io/1d245cf9dc3f92a72a957783f2995275d3ca8066.png&W=1000&H=500&crop=center&tv=2" alt="second-slide">
 	  <div class="container">
-	    <div class="carousel-caption">
-	      <h1>Junta-te a nós no Facebook</h1>
-	      <p>O ponto de encontro do grupo, passa por esta rede social. Qualquer duvida que tenhas, deixa-nos uma palavrinha!!</p>
+	    <div class="carousel-caption whiteBackground">
+	      <h1 class="black">Junta-te a nós no Facebook</h1>
+	      <p class="black">O ponto de encontro do grupo, passa por esta rede social. Qualquer duvida que tenhas, deixa-nos uma palavrinha!!</p>
 	      <p><a class="btn btn-lg btn-primary" href="https://www.facebook.com/groups/gruporoleplayerslx/" target="_blank" role ="button">Junta-te!</a></p>
 	    </div>
 	  </div>
@@ -65,7 +87,7 @@
       </a>
 
     </div>
-
+<h1>{{$mobile}}</h1>
     <!--Content for adventure -->    
     <div id="info" class="container-fluid" ng-controller="adventuresController as adv">
 
@@ -148,8 +170,7 @@
 
       <!-- div for new or edit adventure -->
       <div id="ceForm" ng-show="adv.isSelected('ceForm')" class="content adv_submit">
-	<div class="alert alert-warning" role="alert">Qualquer pessoa pode eliminar a tua aventura, se não estiveres autenticado.
-	Autentica-te <a href="/lisrpg/auth/google">aqui</a>!</div>
+	<div class="alert alert-warning" role="alert">ATENÇÃO: Qualquer pessoa pode eliminar a tua aventura, se não estiveres autenticado!!!</div>
 	<form novalidation ng-submit="adv.addAdventure()">
  	  <!-- nome -->
 	  <div class="input-group input-group-lg">
