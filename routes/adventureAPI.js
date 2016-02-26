@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var db = require("../database");
 var config = require("../config");
+var db = require("../database")(config.db.url);
 var log = require("../utils").log;
 var bodyParser= require("body-parser");
 

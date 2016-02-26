@@ -2,9 +2,10 @@
 // Instanciate the object and access database using the methods.
 
 module.exports = function Database(connectionString){
+    	log = require('./utils').log;
 	this.mongoose = require('mongoose');
 	this.mongoose.connect(connectionString);
-	this.log = require('./utils').log;
+
 
 	//load schemas
 	this.adventure = require('./models/adventureModel.js');
