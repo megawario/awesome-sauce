@@ -61,7 +61,7 @@ angular.module('lisapp.controllers',
 		       function(response){alert("failed to remove the played");});
 	};
 
-	//select adventure and jump to location:
+	
 	this.selectAdventure = function selectAdventure(adventure){
 	    this.adventure=adventure;
 	};
@@ -80,13 +80,17 @@ angular.module('lisapp.controllers',
 	this.gameDate = this.getGameDate(true);
 
 	
-	//update or create adventure adventure
+	//updates or creates an adventure
 	this.addAdventure = function(){
 	    //fill in extra adventure info:
 	    this.adventure.date = this.gameDate;
+	    
 	    lisappAPI.addAdventure(this.adventure)
 		.then(
-		    (function(response){this.adventures.push(response.data);}).bind(this),
+		    (function(response){ 
+			this.adventures.push(response.data);
+			this.selected('infoTable'); //return to table screen.
+		    }).bind(this),
 		      function(response){alert('add adventure failed');
 		      });
 	};

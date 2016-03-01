@@ -1,0 +1,15 @@
+
+
+/* if input invalid and touched change background color to red */
+.css-form input.ng-invalid.ng-touched{
+    background-color: #FA787E;
+}
+
+/* Alert for the form*/
+.form-alert{
+    margin:0px !important;
+    margin-bottom:3px !important;
+    padding:5px !important;
+    
+}
+
