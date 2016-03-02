@@ -29,21 +29,14 @@ body {
 
 /* =========================== carousel ========================= */
 
-.carousel {
-    margin-bottom:60px;
-}
+.carousel {margin-bottom:60px;}
 
 .whiteBackground > div{
     background-color:white;
     opacity:0.2;
 }
-.black{
-    color:black;    
-}
 
-.carousel-caption {
-    z-index:10;
-}
+.carousel-caption {z-index:10;}
 
 /** forcing height for images to be the same size - images are 1200x480 **/
 .carousel .item {
@@ -168,7 +161,6 @@ Remove margin in order to center the alert.
 .adv_submit .input-group{
     margin-top: 1px;
 }
-
 
 /*Adventure submition*/
 #adv_Synopsis{
