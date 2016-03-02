@@ -1,13 +1,18 @@
 @import url("css-form.css");
 @import url("animation.css");
+@import url("bootstrap.min.css");
 
 body {
     padding-top:50px; /*navbar boddy padding*/
     padding-bottom: 40px;
-    color: #5a5a5a;
+    background-color: #eee6d9 !important;
+    color: #97708A !important;
 }
 
-/* NavBar*/
+/*========== NavBar ========================*/
+.navbar-inverse{
+    background-color:583a52 !important;
+}
 .navbar-brand{
     padding:5px !important;
     vertical-alignment: center;
@@ -22,9 +27,7 @@ body {
     padding:0px;
 }
 
-
-
-/* carousel base customisation */
+/* =========================== carousel ========================= */
 
 .carousel {
     margin-bottom:60px;
@@ -62,15 +65,10 @@ body {
     width:100%;
 }
 
-/* HEADER */
-header {}
-
 /* Title */
 .title{
-    color: white;
     font-size: 250%;
     text-align:center;
-    text-shadow: 5px 5px 10px #000000;
 }
 
 div.info{
