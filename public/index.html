@@ -112,7 +112,7 @@
 	      <td>{{adventure.adventure}}</td>
 	      <td><span ng-if="adventure.slots_min">{{adventure.slots_min}} - </span>{{adventure.slots_max}}</td>
 	      <td>
-		<button class='actionButton redButton' ng-click="adv.selected('ceForm');$event.stopPropagation();"><i class='material-icons'>mode_edit</i></button>
+		<button class='actionButton redButton' ng-click="adv.edit(adventure);$event.stopPropagation();"><i class='material-icons'>mode_edit</i></button>
 		<button class='actionButton greenButton' ng-click="adv.toAdd(adventure._id);$event.stopPropagation();"><i class='material-icons'>person_add</i></button>
 	      </td>
 	    </tr>
@@ -120,7 +120,7 @@
 	    <!-- User add form -->
 	    <tr>
 	      <td ng-show="adv.isAdd(adventure._id)" class="ng-hide" colspan="5">
-		<div class="alert alert-warning" role="alert">Só podes eliminar o teu nome, se tiver1es feito login.</div>
+		<div class="alert alert-warning" role="alert">Só o dono da aventure pode eliminar o teu nome. Se tiveres feito login tu também o podes fazer.</div>
 		<form class="form-inline" ng-submit="adv.addPlayer(adventure,adv.player)">
 		  <div class="input-group input-group-lg">
 		    <span class="input-group-addon" id="add_player"><i class="material-icons">person_add</i></span>
@@ -170,7 +170,10 @@
 	   ng-show="adv.isSelected('ceForm')"
 	  
 	   class="content adv_submit">
-	<div class="alert alert-warning" role="alert">ATENÇÃO: Qualquer pessoa pode eliminar a tua aventura, se não estiveres autenticado!!!</div>
+	<div
+	   class="alert alert-warning"
+	   role="alert">ATENÇÃO: Qualquer pessoa pode eliminar a tua aventura, se não estiveres autenticado!!!</div>
+
 	<form ng-submit="adv.addAdventure()" class="css-form" name='addForm'>
  	  <!-- nome -->
 	  <div class="input-group input-group-lg">

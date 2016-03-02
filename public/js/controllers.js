@@ -3,12 +3,7 @@
 angular.module('lisapp.controllers',
 	       ['lisapp.services'])
 
-    .controller('scopeController',function($scope,lisappAPI){
-
-	
-    })
-
-    //controller for adventures
+//controller for adventures
     .controller('adventuresController',function($scope,$location,$anchorScroll,lisappAPI){
 	
 	this.adventure={}; //adventureOnFocus
@@ -104,6 +99,13 @@ angular.module('lisapp.controllers',
 		    (function(response){alert('removed');}).bind(this),
 		    function(response){alert('delete adventure failed');}
 		);
+	   
+	};
+
+	//opens the adventure edit form, sets adventure in focus
+	this.edit = function(adventure){
+	    this.adventure = adventure;
+	    this.selected('ceForm');
 	};
 	
 	lisappAPI.getAdventures(this.gameDate)
