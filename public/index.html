@@ -33,9 +33,11 @@
           <!-- Login Button -->
 	  <ul class="nav navbar-nav navbar-right">
 	    <li class="dropdown">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Log In</a>
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-hide="adv.isAuth()">Log In</a>
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="adv.isAuth()">Welcome {{adv.user.displayName}}</a>
 	      <ul class="dropdown-menu">
-		<li class="googleAuth"><a href="/lisrpg/auth/google"><img src="image/google_login_dark.png"></img></a></li>
+		<li class="googleAuth" ng-hide="adv.isAuth()"><a href="/lisrpg/auth/google"><img src="image/google_login_dark.png"></img></a></li>
+		<li class="googleAuth" ng-show="adv.isAuth()"><a href="/lisrpg/auth/logout">Logout</a></li>
 	      </ul>
 	    </li>
 	  </ul>
@@ -86,7 +88,6 @@
 
     </div>
 
-<h1>authInfo {{dev.user}}</h1>
     
     <!--Content for adventure -->    
     <div id="info" class="container-fluid">
@@ -175,6 +176,7 @@
 	   class="content adv_submit">
 	<div
 	   class="alert alert-warning"
+	   ng-hide="adv.isAuth()"
 	   role="alert">ATENÇÃO: Qualquer pessoa pode eliminar a tua aventura, se não estiveres autenticado!!!</div>
 
 	<form ng-submit="adv.addAdventure()" class="css-form" name='addForm'>
@@ -188,7 +190,7 @@
 		   aria-describedby="add_name"
 		   ng-model="adv.adventure.name"
 		   ng-maxlength="20"
-		   required>	   
+		   required >	   
 	  </div>
 	  <div class="alert alert-danger form-alert" role="alert" ng-show="addForm.add_name.$error.maxlength">Maximo 20 caracteres.</div>
 	  <div class="alert alert-danger form-alert" role="alert" ng-show="addForm.add_name.$error.required">Campo obrigatório.</div>

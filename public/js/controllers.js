@@ -9,8 +9,13 @@ angular.module('lisapp.controllers',
 	this.adventures={};
 	this.showAdd={};
 	this.player={};
-	this.user={}
 
+	//auth
+	this.user={};
+	this.isAuth = function(){
+	    return (typeof this.user.name !== undefined);
+	};
+	
 	//visual queue to add player correctly
 	this.toAdd = function(id){this.showAdd=id;
 				  this.player={};
@@ -23,6 +28,7 @@ angular.module('lisapp.controllers',
 	    if(typeof id!=='undefined'){
 		if(id=='createForm'){ //clear adventure before opening form
 		    this.adventure = {};
+		    this.adventure.name=this.user.displayName;
 		    id='ceForm';
 		}
 		this.selectedItem = id;
