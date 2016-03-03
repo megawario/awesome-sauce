@@ -1,7 +1,6 @@
 var assert = require('chai').assert;
-var db = require('../database.js');
 var config = require('../config.js');
-
+var database = require('../database.js')(config.db.test);
 
 describe('database',function(){
     var minimumJson = function(){
@@ -12,16 +11,10 @@ describe('database',function(){
     };
     
     //set pre conditions to test database
-    var database;
+   
     before(function(done){
-	database = new db(config.db.test)
-	database.mongoose.connection.on('connected',function(){
-	    done(); //no error carry on
-	});
-	
-	database.mongoose.connection.on('error',function(err){
-	    done(err);
-	}); });
+	done();
+    });
 
     //clear mongo db after tests executed
     after(function(done){
