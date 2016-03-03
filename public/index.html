@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="js/jquery-ui-1.11.4/external/jquery/jquery.js" async></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js" async></script>
-    <script src="js/util.js" async></script>
+    <script src="js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
+    <script src="js/util.js"></script>
     
     <!-- BootStrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     
     <!-- Angular scripts -->
-    <script src="js/lisapp.js" async></script>
-    <script src="js/services.js" async></script>
-    <script src="js/controllers.js" async></script>
+    <script src="js/lisapp.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
 
   </head>
-  <body>
+  <body ng-controller="adventuresController as adv">
     <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
       <div class="container-fluid">
 	<div class="navbar-header">
@@ -85,8 +86,10 @@
 
     </div>
 
+<h1>authInfo {{dev.user}}</h1>
+    
     <!--Content for adventure -->    
-    <div id="info" class="container-fluid" ng-controller="adventuresController as adv">
+    <div id="info" class="container-fluid">
 
       <h1 class="title">{{adv.title}}</h1>
 

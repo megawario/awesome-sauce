@@ -16,9 +16,9 @@ config.db.test='mongodb://localhost:27017/test';
 //auth config
 config.auth={};
 config.auth.google={};
-config.auth.google.clientID='asdasd'; //api key
-config.auth.google.clientSecret='asdasd'; //api password
-config.auth.google.callbackURL='http://thebard.pt:8080/lisrpg/auth/google/return'; 
+config.auth.google.clientID='264509223013-7ad5v4sh1g76b2rbmnck2842is2ji7vo.apps.googleusercontent.com'; //api key
+config.auth.google.clientSecret='we9qerQNhpCIvpou3s-nf8ZD'; //api password
+config.auth.google.callbackURL='http://thebard.pt:9090/lisrpg/auth/google/return'; 
 config.auth.google.scope='https://www.googleapis.com/auth/userinfo.email';
 
 

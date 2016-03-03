@@ -2,6 +2,12 @@ angular.module('lisapp.services',[])
     .factory('lisappAPI',function($http){
 	var result={};
 
+	//get request for auth credentials.
+	result.getAuth = function(){
+	    var my_url = 'auth/checkAuth'
+	    return $http({method: 'GET', url: my_url});
+	}
+	
 	//get request returns http request
 	result.getAdventures = function(date){
 	    var my_url = 'rest/adventure/'+date;

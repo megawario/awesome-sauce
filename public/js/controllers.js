@@ -4,13 +4,13 @@ angular.module('lisapp.controllers',
 	       ['lisapp.services'])
 
 //controller for adventures
-    .controller('adventuresController',function($scope,$location,$anchorScroll,lisappAPI){
-	
+    .controller('adventuresController',function($scope,$rootScope,lisappAPI){
 	this.adventure={}; //adventureOnFocus
 	this.adventures={};
 	this.showAdd={};
 	this.player={};
-	
+	this.user={}
+
 	//visual queue to add player correctly
 	this.toAdd = function(id){this.showAdd=id;
 				  this.player={};
@@ -112,4 +112,6 @@ angular.module('lisapp.controllers',
 	    .then(
 		(function(response){ this.adventures=response.data;}).bind(this));
 
+	lisappAPI.getAuth().then(
+	    (function(response){this.user=response.data}).bind(this));
     });
