@@ -13,13 +13,13 @@ module.exports = function(passport,express,db,config,log ){
 	else{
 	    db.getUserById(req.session.passport.user,
 			   function(err, user){
+			       if(err){
+				   log.critical(err);
+				   return res.sendStatus(401);
+			       }
 			       if(user){
-				   var json= 
-				       { "isAuthenticated": req.isAuthenticated(),
-					 "displayName": user.displayName,
-					 "email": user.email };
-				   log.debug("Sending auth json: ",json);
-				   return res.json(json);
+				   log.debug(user.displayName);
+				   return res.json({"displayName":user.displayName,"email":user.email});
 			       }
 			       else{
 				   log.critical("ERROR: User in session not found in DB!");
@@ -36,8 +36,8 @@ module.exports = function(passport,express,db,config,log ){
 						 failureRedirect: config.server.path }));
     //log out path
     router.get('/logout', function(req, res){
-    req.logout();
-	res.redirect('/');
+	req.logout();
+	res.redirect(config.server.path);
     });
 
     return router;

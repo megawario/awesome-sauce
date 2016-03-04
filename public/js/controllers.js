@@ -13,7 +13,7 @@ angular.module('lisapp.controllers',
 	//auth
 	this.user={};
 	this.isAuth = function(){
-	    return (typeof this.user.name !== undefined);
+	    return (typeof this.user.displayName !== "undefined");
 	};
 	
 	//visual queue to add player correctly
