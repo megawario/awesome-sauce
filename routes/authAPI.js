@@ -19,7 +19,7 @@ module.exports = function(passport,express,db,config,log ){
 			       }
 			       if(user){
 				   log.debug(user.displayName);
-				   return res.json({"displayName":user.displayName,"email":user.email});
+				   return res.json({"displayName":user.displayName});
 			       }
 			       else{
 				   log.critical("ERROR: User in session not found in DB!");

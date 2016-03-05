@@ -11,7 +11,7 @@ module.exports= function(express,db,config,log){
     router.use(bodyParser.json());
 
     //Post Request
-    //Create new database on bd
+    //Create new adventure on bd
     router.post('/adventure/create',function(req,res){
 	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in.
 	db.createAdventure(req.body,function(err,doc){
@@ -34,11 +34,14 @@ module.exports= function(express,db,config,log){
     
     //remove the adventure
     router.post('/adventure/remove',function(req,res){
-	var id =req.body._id;
-	db.removeAdventure(id,function(err){
+	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in.
+	db.removeAdventure(req.body._id,req.body.userID,function(err){
 	    if(err){
 		log.err(err);
-		res.sendStatus(500);
+		if(err.message=='forbiden'){
+		    res.sendStatus(401);
+		}
+		else{res.sendStatus(500);}
 	    }else{res.sendStatus(200);};
 	});
     });

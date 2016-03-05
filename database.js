@@ -32,9 +32,13 @@ module.exports = function Database(connectionString){
 
     //updates existing adventure
     this.editAdventure = function(json,callback){
-	this.adventure.update({_id:json._id},json)
+	//only update if userID is equal to adventure userID
+	this.adventure.update({_id:json._id, userID:json.userID},json)
 	    .then(function(result){
-		callback(null,result);})
+		//if no document matches return error
+		if(typeof result === "undefined"){ //if undefine user does not have permission to edit adventure.
+		    callback(new Error("Could not update"));
+		}else{callback(null,result);}})
 	    .catch(function(err){callback(err);});
     };
 
@@ -47,15 +51,17 @@ module.exports = function Database(connectionString){
 	    });
     };
 
-    // removes adventure docment identified by id.
-    this.removeAdventure = function(id,callback){
+    // removes adventure document identified by id.
+    this.removeAdventure = function(id,userID,callback){
 	console.log("Removing ID ", id);
-	this.adventure.remove(id,callback);
-    };
-    
-    // removes adventure docment identified by id.
-    this.removeAdventure = function(id,callback){
-	this.adventure.remove(id,callback);
+	this.adventure.find()
+	    .where('_id').equals(id)
+	    .exec( function(err,doc){
+		log.debug("document is: "+doc);
+		log.debug("caller userID "+userID);
+		log.debug("doc userID "+doc[0].userID);			
+		doc[0].userID!==userID ? callback(new Error("forbiden")) : this.adventure.remove(doc[0],callback);
+	    });
     };
     
     //updates adventure by id,  ading a new user.

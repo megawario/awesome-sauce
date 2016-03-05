@@ -41,7 +41,6 @@ body {
 /** forcing height for images to be the same size - images are 1200x480 **/
 .carousel .item {
     width:100%;    
-    max-height:480px;
     object-position:center;
     background-color: #777;
 }

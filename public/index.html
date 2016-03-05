@@ -88,12 +88,10 @@
       </a>
 
     </div>
-<h1>{{adv.user}}</h1>
+    
     <!--Content for adventure -->    
     <div id="info" class="container-fluid">
-
       <h1 class="title">{{adv.title}}</h1>
-
       <div is="infoTable" class="table content" ng-show="adv.isSelected('infoTable')">
 	<table class="table table-hover table-condensed" id="mytable">
 	  <thead>
@@ -116,21 +114,36 @@
 	      <td>{{adventure.adventure}}</td>
 	      <td><span ng-if="adventure.slots_min">{{adventure.slots_min}} - </span>{{adventure.slots_max}}</td>
 	      <td>
-		<button class='actionButton redButton' ng-click="adv.edit(adventure);$event.stopPropagation();"><i class='material-icons'>mode_edit</i></button>
-		<button class='actionButton greenButton' ng-click="adv.toAdd(adventure._id);$event.stopPropagation();"><i class='material-icons'>person_add</i></button>
+		<button class='actionButton redButton' ng-click="adv.editAdventure(adventure);$event.stopPropagation();"><i class='material-icons'>mode_edit</i></button>
+		<button class='actionButton greenButton' ng-click="adv.selectAddPlayer(adventure._id);$event.stopPropagation();"><i class='material-icons'>person_add</i></button>
 	      </td>
 	    </tr>
 
 	    <!-- User add form -->
 	    <tr>
 	      <td ng-show="adv.isAdd(adventure._id)" class="ng-hide" colspan="5">
-		<div class="alert alert-warning" role="alert">Só o dono da aventure pode eliminar o teu nome. Se tiveres feito login tu também o podes fazer.</div>
-		<form class="form-inline" ng-submit="adv.addPlayer(adventure,adv.player)">
+		<div class="alert alert-warning" role="alert" ng-show="isAuth()">ATENÇÃO: Só o dono da aventura pode eliminar o teu nome. Se tiveres feito login tu também o podes fazer.</div>
+		<form class="form-inline"
+		      ng-submit="adv.addPlayer(adventure,adv.player)"
+		      name="addPlayer">
 		  <div class="input-group input-group-lg">
-		    <span class="input-group-addon" id="add_player"><i class="material-icons">person_add</i></span>
-		    <input type="text"  class="form-control" placeholder="O teu nome aqui!!" aria-describedby="add_player" ng-model="adv.player.name">
+		    <span class="input-group-addon" id="label-add_player"><i class="material-icons">person_add</i></span>
+		    <input type="text"
+			   class="form-control"
+			   placeholder="O teu nome aqui!!"
+			   aria-describedby="label-add_player"
+			   ng-model="adv.player.name"
+			   name="add_player"
+			   ng-maxlength="20"
+			   required >
 		  </div>
-		     <button type="submit" class="btn btn-primary">Inscrever</button>
+		  <div class="alert alert-danger form-alert" role="alert" ng-show="addPlayer.add_player.$error.maxlength">Maximo 20 caracteres.</div>
+		  <div class="alert alert-danger form-alert" role="alert" ng-show="addPlayer.add_player.$error.required">Campo obrigatório.</div>
+	 		  
+		  <div class="table-formButtons">
+		    <button type="submit" class="btn btn-lg btn-primary">Inscrever</button>
+		    <button type="button" class="btn btn-lg  btn-default " ng-click="adv.selectAddPlayer('hide')"><i class='material-icons'>cancel</i></button>
+		  </div>
 		</form>
 	      </td>
 	    </tr>
@@ -139,7 +152,6 @@
 	    <tr>
 	      <td ng-show="adv.adventure._id==adventure._id" class="ng-hide" colspan="5">
 		<div class="row">
-	
 		  <div class="thumbnail col-md-3">
 		    <img ng-src="{{adventure.image}}"/>
 		    <div class="caption">
@@ -149,7 +161,6 @@
 			<h5 >Players:</h5>
 			<div class="well">
 			  <ul ng-repeat="player in adventure.players">
-			   
 			    <li><span class="alignIcon"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
 			  </ul>
 			</div>
@@ -268,9 +279,12 @@
 		      ng-model="adv.adventure.synopsis"
 		      ng-maxlength="2000"></textarea>
 	  </div>
-	  <div class="alert alert-danger form-alert" role="alert" ng-show="addForm.adv_synopsis.$error.maxlength">Maximo 2000 caracteres.</div>
+  	  <div class="alert alert-danger form-alert" role="alert" ng-show="addForm.adv_synopsis.$error.maxlength">Maximo 2000 caracteres.</div>
+
+	  
 	  
 	  <div class="table-formButtons">
+	    <div class="alert alert-danger" role="alert" ng-show="isError()">{{adv.error}}</div>
 	    <button class="btn btn-lg btn-primary" type="submit" value = "Guardar">Guardar</button>
 	    <button class="btn btn-lg btn-primary" type="button" value = "Apagar" ng-show="adv.adventure._id" ng-click="adv.removeAdventure(adv.adventure)">Apagar</button>
 	    <button type="button" class="btn btn-lg  btn-default " ng-click="adv.selected('infoTable')"><i class='material-icons'>cancel</i></button>
