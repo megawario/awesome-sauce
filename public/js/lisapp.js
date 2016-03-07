@@ -1,5 +1,5 @@
 angular.module('lisapp',[
-    'ngCookies',
+    'ngAnimate',
     'lisapp.controllers',
     'lisapp.services'
 ]);

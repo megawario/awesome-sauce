@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
     <script src="js/util.js"></script>
     
     <!-- BootStrap -->
@@ -64,9 +65,9 @@
       
 	<div class="item">
 	  <img class="second-slide" src="image/facebook.jpg" alt="facebook-group">
-	    <div class="carousel-caption whiteBackground">
-	      <h1>Junta-te a nós no Facebook</h1>
-	      <p class="black">O ponto de encontro do grupo, passa por esta rede social. Qualquer duvida que tenhas, deixa-nos uma palavrinha!!</p>
+	    <div class="carousel-caption">
+	      <h1  class="blackBackground">Junta-te a nós no Facebook</h1>
+	      <p class="blackBackground">O ponto de encontro do grupo, passa por esta rede social. Qualquer duvida que tenhas, deixa-nos uma palavrinha!!</p>
 	      <p><a class="btn btn-lg btn-primary" href="https://www.facebook.com/groups/gruporoleplayerslx/" target="_blank" role ="button">Junta-te!</a></p>
 	    </div>
 	  </div>
@@ -92,8 +93,8 @@
     <!--Content for adventure -->    
     <div id="info" class="container-fluid">
       <h1 class="title">{{adv.title}}</h1>
-      <div is="infoTable" class="table content" ng-show="adv.isSelected('infoTable')">
-	<table class="table table-hover table-condensed" id="mytable">
+      <div is="infoTable" class="content" ng-show="adv.isSelected('infoTable')">
+	<table class="table table-condensed" id="mytable">
 	  <thead>
 	    <tr>
 	      <td>Hora</td>
@@ -108,7 +109,9 @@
 	    <!-- adventure table -->
 	    <tr id="{{adv.adventure._id}}"
 		ng-click="adv.selectAdventure(adventure)"
-		ng-class="{active: adv.adventure._id==adventure._id}">
+		ng-class="{active: adventure._id == adv.adventure._id}"
+		class="table-hover"
+		>
 	      <td>{{adventure.time_start|date:"HH:mm"}}<span ng-if="adventure.time_end"> - {{adventure.time_end|date:"HH:mm"}}</span></td>
 	      <td>{{adventure.system}}</td>
 	      <td>{{adventure.adventure}}</td>
@@ -120,8 +123,8 @@
 	    </tr>
 
 	    <!-- User add form -->
-	    <tr>
-	      <td ng-show="adv.isAdd(adventure._id)" class="ng-hide" colspan="5">
+	    <tr ng-show="adv.isAdd(adventure._id)" class="fadeAnimation" >
+	      <td colspan="5">
 		<div class="alert alert-warning" role="alert" ng-show="isAuth()">ATENÇÃO: Só o dono da aventura pode eliminar o teu nome. Se tiveres feito login tu também o podes fazer.</div>
 		<form class="form-inline"
 		      ng-submit="adv.addPlayer(adventure,adv.player)"
@@ -149,9 +152,9 @@
 	    </tr>
 
 	    <!-- Card description for each adventure -->
-	    <tr>
-	      <td ng-show="adv.adventure._id==adventure._id" class="ng-hide" colspan="5">
-		<div class="row">
+	    <tr  ng-show="adv.adventure._id==adventure._id" class="fadeAnimation">
+	      <td colspan="5">
+		<div class="row infoCard">
 		  <div class="thumbnail col-md-3">
 		    <img ng-src="{{adventure.image}}"/>
 		    <div class="caption">
@@ -161,19 +164,19 @@
 			<h5 >Players:</h5>
 			<div class="well">
 			  <ul ng-repeat="player in adventure.players">
-			    <li><span class="alignIcon"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
+			    <li><span class="players"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
 			  </ul>
 			</div>
 		      </div>
 		    </div>
 		  </div>
-		  <div class="col-md-9"><p>{{adventure.synopsis}}</p></div>  
+		  <div class="col-md-8"><p>{{adventure.synopsis}}</p></div>  
 		</div>
 	      </td>
 	    </tr>
 	  </tbody>
 	  <tbody>
-	    <tr ng-click="adv.selected('createForm')">
+	    <tr ng-click="adv.selected('createForm')" class="table-hover">
 	      <td class="table-addAdv"colspan="5"><div class="alert alert-success" role="alert">Adiciona a tua propria sessão!!! Clica aqui!</div></td>
 	    </tr>
 	  </tbody>
@@ -183,8 +186,7 @@
       <!-- div for new or edit adventure -->
       <div id="ceForm"
 	   ng-show="adv.isSelected('ceForm')"
-	  
-	   class="content adv_submit">
+	   class="content adv_submit fadeAnimation">
 	<div
 	   class="alert alert-warning"
 	   ng-hide="adv.isAuth()"
@@ -284,7 +286,7 @@
 	  
 	  
 	  <div class="table-formButtons">
-	    <div class="alert alert-danger" role="alert" ng-show="isError()">{{adv.error}}</div>
+	    <div class="alert alert-danger fadeAnimation" role="alert" ng-show="adv.isError()">{{adv.errorMSG}}</div>
 	    <button class="btn btn-lg btn-primary" type="submit" value = "Guardar">Guardar</button>
 	    <button class="btn btn-lg btn-primary" type="button" value = "Apagar" ng-show="adv.adventure._id" ng-click="adv.removeAdventure(adv.adventure)">Apagar</button>
 	    <button type="button" class="btn btn-lg  btn-default " ng-click="adv.selected('infoTable')"><i class='material-icons'>cancel</i></button>
@@ -294,8 +296,8 @@
     </div>
 	
     <footer class="footer">
-      <div class="container">
-	<p><a href="https://github.com/megawario/awesome-sauce">fork me! fork me! fork me hard!</a></p>
+      <div class="container well">
+	<p>This is a community project. Feel free to fork it and edit for your purposes!! <a href="https://github.com/megawario/awesome-sauce">Fork me!!!</a></p>
       </div>
     </footer>
            

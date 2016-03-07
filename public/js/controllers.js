@@ -13,6 +13,9 @@ angular.module('lisapp.controllers',
 	this.selectedItem='infoTable'; //info selected default is table.	
 
 	//Error handling
+	this.isError = function() {    
+	    return (typeof this.errorMSG !== "undefined");
+	};
 	
 
 	//auth
@@ -32,7 +35,9 @@ angular.module('lisapp.controllers',
 
 	//returns current selected button
 	//sets if id not undefined otherwise returns crurrent selected
-	this.selected = function(id){ 
+	this.selected = function(id){
+	    //allways clear error message of forms when opening
+	    this.errorMSG=undefined;
 	    if(typeof id!=='undefined'){
 		if(id=='createForm'){ //clear adventure before opening form
 		    this.adventure = {};
@@ -96,13 +101,14 @@ angular.module('lisapp.controllers',
 			this.adventures.splice(this.adventures.indexOf(adventure),1);
 			this.selected('infoTable');
 		    }).bind(this),
-		    function(response){
+		    (function(response){
 			if(response.status==401){
+			    this.errorMSG="Esta operação não está autorizada. Só o dono da aventura a pode apagar.";
 			}else{
-			    
+			    this.errorMSG="Ocurreu um erro e a operação não foi executada.";
 			}
-		    }
-		);};
+		    }).bind(this))
+		    ;};
 	
 	//utils
 	this.getGameDate = function getGameDate(number){

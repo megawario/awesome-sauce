@@ -1,0 +1,31 @@
+/* CSS for the info table */
+.infoCard{
+    margin:auto !important;
+}
+.infoCard .thumbnail img{
+    height:200px !important;
+    width:200px !important;
+    object-fit:none;
+    object-position:center;
+    margin:10px;
+    margin-right:auto;
+    margin-left:auto;
+    border:3px solid;
+    border-radius: 5px;
+}
+
+.infoCard .thumbnail h3{
+    margin:0px;
+}
+.infoCard .thumbnail h4{
+    margin:2px;
+}
+
+.infoCard .players{
+    margin:auto;
+    display:inline-flex;
+}
+
+.infoCard .players p{
+    margin:auto !important;
+}

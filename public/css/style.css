@@ -1,17 +1,39 @@
 @import url("css-form.css");
+@import url("infoCard.css");
 @import url("animation.css");
 @import url("bootstrap.min.css");
 
 body {
     padding-top:50px; /*navbar boddy padding*/
     padding-bottom: 40px;
-    background-color: #eee6d9 !important;
-    color: #97708A !important;
+    background-color: #95a65b !important;
+    color: black !important;
+}
+
+
+.table-hover:hover{
+    background-color: 608D4E;
+}
+.slideDown{
+    animation-name:slide;
+    animation-duration:0.5s;
+    animation-direction:reverse;
+}
+
+.fadeAnimation.ng-hide-remove{
+    animation-name:fadeAnimation;
+    animation-duration:0.3s;
+    animation-direction:reverse;
+}
+
+.fadeAnimation.ng-hide-add{
+    animation-name:fadeAnimation;
+    animation-duration:0.3s;
 }
 
 /*========== NavBar ========================*/
 .navbar-inverse{
-    background-color:583a52 !important;
+    background-color:3c5b45 !important;
 }
 .navbar-brand{
     padding:5px !important;
@@ -31,9 +53,9 @@ body {
 
 .carousel {margin-bottom:60px;}
 
-.whiteBackground > div{
-    background-color:white;
-    opacity:0.2;
+.blackBackground{
+    color:black;
+    
 }
 
 .carousel-caption {z-index:10;}
@@ -43,14 +65,6 @@ body {
     width:100%;    
     object-position:center;
     background-color: #777;
-}
-
-.thumbnail img{
-    height:200px !important;
-    width:200px !important;
-    object-fit:none;
-    object-position:center;
-    margin:10px;
 }
 
 .carousel-inner > .item> img {
@@ -103,17 +117,6 @@ section{
     margin-bottom:1%;
 }
 
-.thumbnail img{
-    height:200px !important;
-    width:200px !important;
-    object-fit:none;
-    object-position:center;
-    margin:10px;
-}
-
-.thumbnail h3{
-    margin:0px;
-}
 
 /*
 Button to add adventures
