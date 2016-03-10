@@ -13,6 +13,7 @@ body {
 .redText {
     color:red !important;
 }
+
 footer{
     text-align:center;
 }
@@ -41,15 +42,7 @@ footer{
 .navbar-inverse{
     background-color:3c5b45 !important;
 }
-.navbar-brand{
-    padding:5px !important;
-    vertical-alignment: center;
-}
 
-.navbar-brand img{
-    width:auto;
-    height:100%;
-}
 
 .googleAuth > a{
     padding:0px;
