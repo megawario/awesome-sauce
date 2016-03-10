@@ -24,11 +24,12 @@ module.exports= function(express,db,config,log){
     
     //Edit adventure on database
     router.post('/adventure/edit',function(req,res){
-	db.editAdventure(req.body,function(err,doc){
+	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in.
+	db.editAdventure(req.body._id,req.body.userID,req.body,function(err,doc){
 	    if(err){
 		log.err(err);
-		res.sendStatus(500); //send error status
-	    }else{res.status(200).send(doc);} //send document
+		err.message==='forbiden' ? res.sendStatus(401) : res.sendStatus(500); //send error status
+	    }else{res.status(200).json(doc);} //send document
 	});
     });
     
@@ -38,9 +39,7 @@ module.exports= function(express,db,config,log){
 	db.removeAdventure(req.body._id,req.body.userID,function(err){
 	    if(err){
 		log.err(err);
-		if(err.message=='forbiden'){
-		    res.sendStatus(401);
-		}
+		if(err.message=='forbiden'){res.sendStatus(401);}
 		else{res.sendStatus(500);}
 	    }else{res.sendStatus(200);};
 	});
@@ -79,6 +78,7 @@ module.exports= function(express,db,config,log){
 		log.err(err);
 		res.sendStatus(500);
 	    }else{
+		log.debug(JSON.stringify(docs));
 		res.json(docs);
 	    }
 	});

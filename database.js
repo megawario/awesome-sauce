@@ -31,16 +31,14 @@ module.exports = function Database(connectionString){
     };
 
     //updates existing adventure
-    this.editAdventure = function(json,callback){
+    this.editAdventure = function(id,userID,json,callback){
 	//only update if userID is equal to adventure userID
-	this.adventure.update({_id:json._id, userID:json.userID},json)
-	    .then(function(result){
-		//if no document matches return error
-		if(typeof result === "undefined"){ //if undefine user does not have permission to edit adventure.
-		    callback(new Error("Could not update"));
-		}else{callback(null,result);}})
-	    .catch(function(err){callback(err);});
+	this.adventure.findById(id,function(err,doc){
+	    if(err){callback(err);}
+	    doc.userID!==userID ? callback(new Error("forbiden")) : this.adventure.update(json,callback);
+	});
     };
+	   
 
     //returns json with adventures using a projection for the date and request info
     this.getAdventure = function(date,callback){
@@ -53,17 +51,12 @@ module.exports = function Database(connectionString){
 
     // removes adventure document identified by id.
     this.removeAdventure = function(id,userID,callback){
-	console.log("Removing ID ", id);
-	this.adventure.find()
-	    .where('_id').equals(id)
-	    .exec( function(err,doc){
-		log.debug("document is: "+doc);
-		log.debug("caller userID "+userID);
-		log.debug("doc userID "+doc[0].userID);			
-		doc[0].userID!==userID ? callback(new Error("forbiden")) : this.adventure.remove(doc[0],callback);
-	    });
+	this.adventure.findById(id,function(err,doc){
+	    if(err){callback(err);}
+	    doc.userID!==userID ? callback(new Error("forbiden")) : this.adventure.remove(doc,callback);
+	});
     };
-    
+	
     //updates adventure by id,  ading a new user.
     this.addPlayer = function(id,playerName,callback){
 	this.adventure.findById(id,function(err,doc){

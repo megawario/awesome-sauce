@@ -3,6 +3,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var type = Schema.Types;
 
+//obfuscate fields when sending to client.
+function obfuscate(doc,ret,options){
+    delete ret.userID;
+}
+
 //adventure data schema
 var adventureSchema = new Schema(
     {
@@ -18,18 +23,22 @@ var adventureSchema = new Schema(
 	synopsis: {type: String, maxlength:2000},    //adventure synopsis
 	image: {type:String,default:"image/brand.png"}, //image to display on card for adventure.
 	userID: {type: Number, required: false}         //user id, owner of the adventure.
-    });
-
-//virtual properties
+    },{toJSON:{transform: obfuscate, virtuals:true}}
+);
 
 //returns the count of maximum filled slots
-adventureSchema.virtual('maxFilledSlots').get(function(){
-    return this.slots_max-this.players.length;
+adventureSchema.virtual('maxSlots').get(function(){
+    var slots= this.slots_max-this.players.length;
+    if(slots<0) slots=0;
+    return slots;
 });
 
 //returns the count of minimum filled slots
-adventureSchema.virtual('minFilledSlots').get(function(){
-    return this.slots_min-this.players.length;
+adventureSchema.virtual('minSlots').get(function(){
+    var slots= this.slots_min-this.players.length;
+    if(slots<0) slots=0;
+    return slots;
 });
+
 
 module.exports = mongoose.model('adventure',adventureSchema);
