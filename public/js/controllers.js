@@ -89,8 +89,13 @@ angular.module('lisapp.controllers',
 			this.adventures.push(response.data);
 			this.selected('infoTable'); //return to table screen.
 		    }).bind(this),
-		      function(response){alert('add adventure failed');
-		      });
+		    (function(response){
+			if(response.status==401){
+			    this.errorMSG="Esta operação não está autorizada. Só o dono da aventura a pode editar.";
+			}else{
+			    this.errorMSG="Ocurreu um erro e a operação não foi executada.";
+			}
+		    }).bind(this));
 	};
 
 	//deletes adventure
@@ -101,13 +106,13 @@ angular.module('lisapp.controllers',
 			this.adventures.splice(this.adventures.indexOf(adventure),1);
 			this.selected('infoTable');
 		    }).bind(this),
-		    (function(response){
+		   (function(response){
 			if(response.status==401){
 			    this.errorMSG="Esta operação não está autorizada. Só o dono da aventura a pode apagar.";
 			}else{
 			    this.errorMSG="Ocurreu um erro e a operação não foi executada.";
 			}
-		    }).bind(this))
+		    }).bind(this)) 
 		    ;};
 	
 	//utils

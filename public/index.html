@@ -115,7 +115,7 @@
 	      <td>{{adventure.time_start|date:"HH:mm"}}<span ng-if="adventure.time_end"> - {{adventure.time_end|date:"HH:mm"}}</span></td>
 	      <td>{{adventure.system}}</td>
 	      <td>{{adventure.adventure}}</td>
-	      <td><span ng-if="adventure.slots_min">{{adventure.slots_min}} - </span>{{adventure.slots_max}}</td>
+	      <td ng-class="{redText: adventure.maxSlots<=0}"><span ng-if="adventure.slots_min && adventure.minSlots>0">{{adventure.minSlots}} - </span>{{adventure.maxSlots}}</td>
 	      <td>
 		<button class='actionButton redButton' ng-click="adv.editAdventure(adventure);$event.stopPropagation();"><i class='material-icons'>mode_edit</i></button>
 		<button class='actionButton greenButton' ng-click="adv.selectAddPlayer(adventure._id);$event.stopPropagation();"><i class='material-icons'>person_add</i></button>
@@ -238,10 +238,11 @@
 	  <!-- horas -->
 	  <div class="input-group input-group-lg">
 	    <span class="input-group-addon" id="add_time_start"><i class="material-icons">schedule</i></span>
-	    <input type="time" class="form-control" placeholder="Inicio (hh:mm)" aria-describedby="add_time_start" ng-model="adv.adventure.time_start">
+	    <input type="time" class="form-control" placeholder="Inicio (hh:mm)" name="add_time_start" aria-describedby="add_time_start" ng-model="adv.adventure.time_start" required>
 	    <span class="input-group-addon" id="add_time_end">até</span>
 	    <input type="time"  class="form-control" placeholder="Fim (hh:mm)" aria-describedby="add_time_end" ng-model="adv.adventure.time_end">
 	  </div>
+	  <div class="alert alert-danger form-alert" role="alert" ng-show="addForm.add_time_start.$error.required">Hora de inicio obrigatória</div>
 
 	  <!-- vagas -->
 	  <div class="input-group input-group-lg">
@@ -282,8 +283,6 @@
 		      ng-maxlength="2000"></textarea>
 	  </div>
   	  <div class="alert alert-danger form-alert" role="alert" ng-show="addForm.adv_synopsis.$error.maxlength">Maximo 2000 caracteres.</div>
-
-	  
 	  
 	  <div class="table-formButtons">
 	    <div class="alert alert-danger fadeAnimation" role="alert" ng-show="adv.isError()">{{adv.errorMSG}}</div>

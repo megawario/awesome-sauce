@@ -10,6 +10,12 @@ body {
     color: black !important;
 }
 
+.redText {
+    color:red !important;
+}
+footer{
+    text-align:center;
+}
 
 .table-hover:hover{
     background-color: 608D4E;
