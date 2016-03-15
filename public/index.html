@@ -52,11 +52,9 @@
       <ol class="carousel-indicators">
 	<li data-target="#carousel" data-slide-to="0" class="active"></li>
 	<li data-target="#carousel" data-slide-to="1"></li>
-	<li data-target="#carousel" data-slide-to="2"></li>
       </ol>
 
       <div class="carousel-inner" role="listbox">
-
 	<div class="item active">
 	  <img class="first-slide" src="image/logo2.jpg" alt="logo">
 	</div>
@@ -69,11 +67,6 @@
 	      <p><a class="btn btn-lg btn-primary" href="https://www.facebook.com/groups/gruporoleplayerslx/" target="_blank" role ="button">Junta-te!</a></p>
 	    </div>
 	  </div>
-
-	<div class="item">
-	  <img class="lisboaCon" src="image/liscon2.jpg" alt="lisCon">
-	</div>
-	
       </div>
 
       <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
@@ -123,7 +116,7 @@
 	    <!-- User add form -->
 	    <tr ng-show="adv.isAdd(adventure._id)" class="fadeAnimation" >
 	      <td colspan="5">
-		<div class="alert alert-warning" role="alert" ng-show="isAuth()">ATENÇÃO: Só o dono da aventura pode eliminar o teu nome. Se tiveres feito login tu também o podes fazer.</div>
+		<div class="alert alert-warning" role="alert" ng-show="!isAuth()">ATENÇÃO: Só o dono da aventura pode eliminar o teu nome. Se tiveres feito login tu também o podes fazer.</div>
 		<form class="form-inline"
 		      ng-submit="adv.addPlayer(adventure,adv.player)"
 		      name="addPlayer">
@@ -140,10 +133,10 @@
 		  </div>
 		  <div class="alert alert-danger form-alert" role="alert" ng-show="addPlayer.add_player.$error.maxlength">Maximo 20 caracteres.</div>
 		  <div class="alert alert-danger form-alert" role="alert" ng-show="addPlayer.add_player.$error.required">Campo obrigatório.</div>
-	 		  
+		  <div class="alert alert-danger fadeAnimation" role="alert" ng-show="adv.isError('player')">{{adv.errorMSG}}</div>
 		  <div class="table-formButtons">
 		    <button type="submit" class="btn btn-lg btn-primary">Inscrever</button>
-		    <button type="button" class="btn btn-lg  btn-default " ng-click="adv.selectAddPlayer('hide')"><i class='material-icons'>cancel</i></button>
+		    <button type="button" class="btn btn-lg btn-default " ng-click="adv.selectAddPlayer('hide')"><i class='material-icons'>cancel</i></button>
 		  </div>
 		</form>
 	      </td>
@@ -159,16 +152,16 @@
 		      <h3>{{adventure.adventure}}</h3>
 		      <h4>{{adventure.name}}</h4>
 		      <div ng-if="adventure.players.length!=0">
-			<h5 >Players:</h5>
+			<h4 class="players"><i class="material-icons">people</i><p class="PlayerNumbers">{{adventure.players.length}} <span ng-show="{{adventure.players.length>adventure.slots_max}}">({{adventure.players.length - adventure.slots_max}} extra)</span></p></h4>
 			<div class="well">
-			  <ul ng-repeat="player in adventure.players">
-			    <li><span class="players"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
+			  <ul>
+			    <li ng-repeat="player in adventure.players"><span class="players"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
 			  </ul>
 			</div>
 		      </div>
 		    </div>
 		  </div>
-		  <div class="col-md-8"><p>{{adventure.synopsis}}</p></div>  
+		  <div class="col-md-8"><pre>{{adventure.synopsis}}</pre></div>  
 		</div>
 	      </td>
 	    </tr>
@@ -283,7 +276,7 @@
   	  <div class="alert alert-danger form-alert" role="alert" ng-show="addForm.adv_synopsis.$error.maxlength">Maximo 2000 caracteres.</div>
 	  
 	  <div class="table-formButtons">
-	    <div class="alert alert-danger fadeAnimation" role="alert" ng-show="adv.isError()">{{adv.errorMSG}}</div>
+	    <div class="alert alert-danger fadeAnimation" role="alert" ng-show="adv.isError('table')">{{adv.errorMSG}}</div>
 	    <button class="btn btn-lg btn-primary" type="submit" value = "Guardar">Guardar</button>
 	    <button class="btn btn-lg btn-primary" type="button" value = "Apagar" ng-show="adv.adventure._id" ng-click="adv.removeAdventure(adv.adventure)">Apagar</button>
 	    <button type="button" class="btn btn-lg  btn-default " ng-click="adv.selected('infoTable')"><i class='material-icons'>cancel</i></button>

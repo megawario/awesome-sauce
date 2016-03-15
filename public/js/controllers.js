@@ -13,7 +13,17 @@ angular.module('lisapp.controllers',
 	this.selectedItem='infoTable'; //info selected default is table.	
 
 	//Error handling
-	this.isError = function() {    
+	this.errorMSG;
+	this.errorPlace;
+
+	//use this to set errors
+	this.setError = function(err,place){
+	    this.errorMSG = err;
+	    this.errorPlace=place;
+	};
+	
+	this.isError = function(place) {
+	    if(place != this.errorPlace){return false;} //not this error
 	    return (typeof this.errorMSG !== "undefined");
 	};
 	
@@ -26,6 +36,7 @@ angular.module('lisapp.controllers',
 	//visual
 	this.selectAddPlayer = function(adventureID){ //select player add
 	    this.showAdd=adventureID;
+	    this.setError(undefined,undefined);
 	    this.player={};
 	    if(this.isAuth()) this.player.name = this.user.displayName;
 	};
@@ -37,7 +48,7 @@ angular.module('lisapp.controllers',
 	//sets if id not undefined otherwise returns crurrent selected
 	this.selected = function(id){
 	    //allways clear error message of forms when opening
-	    this.errorMSG=undefined;
+	    this.setError(undefined,undefined);
 	    if(typeof id!=='undefined'){
 		if(id=='createForm'){ //clear adventure before opening form
 		    this.adventure = {};
@@ -56,20 +67,22 @@ angular.module('lisapp.controllers',
 	
 	//adds a player
 	this.addPlayer = function(adventure,player){
-	    adventure.players.push(player.name);
-	    //push change to database
+	    //commit to database;
 	    lisappAPI.addPlayer(adventure,player.name)
 		.then((function(response){
-		    alert('worked');
-		}).bind(this),function(response){alert('add player failed');});
-	    this.selectAddPlayer('hide'); //hidePlayerAdd
+		    this.adventures[this.adventures.indexOf(adventure)]=response.data;
+		    this.selectAddPlayer('hide');
+		}).bind(this),function(response){
+		    //failed with code:
+		    this.setError("Ocurreu um erro e a operação não foi executada","player");
+		});
 	}
 	
 	//removes player from adventure
 	this.removePlayer = function (adventure,player){
 	    lisappAPI.removePlayer(adventure._id,player)
 		.then( (function(response){
-		    this.adventure=response.data;
+		    this.adventures[this.adventures.indexOf(adventure)]=response.data;
 		}).bind(this), //change object to reflect deletion
 		       function(response){alert("failed to remove the played");});
 	};
@@ -91,9 +104,10 @@ angular.module('lisapp.controllers',
 		    }).bind(this),
 		    (function(response){
 			if(response.status==401){
-			    this.errorMSG="Esta operação não está autorizada. Só o dono da aventura a pode editar.";
+			    
+			    this.setError("Esta operação não está autorizada. Só o dono da aventura a pode editar.","table");
 			}else{
-			    this.errorMSG="Ocurreu um erro e a operação não foi executada.";
+			    this.setError("Ocurreu um erro e a operação não foi executada.","table");
 			}
 		    }).bind(this));
 	};
@@ -107,10 +121,10 @@ angular.module('lisapp.controllers',
 			this.selected('infoTable');
 		    }).bind(this),
 		   (function(response){
-			if(response.status==401){
-			    this.errorMSG="Esta operação não está autorizada. Só o dono da aventura a pode apagar.";
+		       if(response.status==401){
+			   this.setError("Esta operação não está autorizada. Só o dono da aventura a pode apagar.","table");;
 			}else{
-			    this.errorMSG="Ocurreu um erro e a operação não foi executada.";
+			    this.setError("Ocurreu um erro e a operação não foi executada.","table");
 			}
 		    }).bind(this)) 
 		    ;};
@@ -137,7 +151,14 @@ angular.module('lisapp.controllers',
 	this.gameDate = this.getGameDate(true);
 
 	lisappAPI.getAdventures(this.gameDate).then(
-	    (function(response){ this.adventures=response.data;}).bind(this));
+	    (function(response){
+		this.adventures=response.data;
+		//do to contraints on input field [time] starttiem and endtime must be converted to date objects
+		for (var i of this.adventures) {
+		    i.time_start=new Date(i.time_start);
+		    i.time_end= new Date(i.time_end);
+		}
+	    }).bind(this));
 
 	lisappAPI.getAuth().then(
 	    (function(response){this.user=response.data}).bind(this));

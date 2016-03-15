@@ -53,7 +53,7 @@ module.exports= function(express,db,config,log){
 	    if(err){
 		log.err(err);
 		res.sendStatus(500);
-	    }else{res.status(200).send(doc);}
+	    }else{res.status(200).json(doc);}
 	});
     });
     
@@ -67,7 +67,7 @@ module.exports= function(express,db,config,log){
 		log.err(err);
 		res.sendStatus(500);
 	    }
-	    else{res.status(200).send(doc);}
+	    else{res.status(200).json(doc);}
 	});
     });
     

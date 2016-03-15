@@ -35,7 +35,7 @@ module.exports = function Database(connectionString){
 	//only update if userID is equal to adventure userID
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}
-	    doc.userID!==userID ? callback(new Error("forbiden")) : this.adventure.update(json,callback);
+	    doc.userID!==userID ? callback(new Error("forbiden")) : adventure.update(json,callback);
 	});
     };
 	   
@@ -53,17 +53,18 @@ module.exports = function Database(connectionString){
     this.removeAdventure = function(id,userID,callback){
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}
-	    doc.userID!==userID ? callback(new Error("forbiden")) : this.adventure.remove(doc,callback);
+	    doc.userID!==userID ? callback(new Error("forbiden")) : adventure.remove(doc,callback);
 	});
     };
 	
-    //updates adventure by id,  ading a new user.
+    //updates adventure by id,  adding a new user.
     this.addPlayer = function(id,playerName,callback){
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}
 	    else{
 		doc.players.push(playerName);
-		doc.save(callback); //used to force validations of playerName
+		doc.save(); //used to force validations of playerName
+		callback(err,doc);
 	    }
 	});
     };
