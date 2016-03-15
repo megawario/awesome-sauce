@@ -10,10 +10,6 @@ body {
     color: black !important;
 }
 
-.playerNumbers {
-    margin: auto auto auto 5px !important;
-}
-
 .well > ul{
     margin-bottom:0px !important;
 }

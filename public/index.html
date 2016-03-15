@@ -152,7 +152,7 @@
 		      <h3>{{adventure.adventure}}</h3>
 		      <h4>{{adventure.name}}</h4>
 		      <div ng-if="adventure.players.length!=0">
-			<h4 class="players"><i class="material-icons">people</i><p class="PlayerNumbers">{{adventure.players.length}} <span ng-show="{{adventure.players.length>adventure.slots_max}}">({{adventure.players.length - adventure.slots_max}} extra)</span></p></h4>
+			<h4 class="players"><i class="material-icons">people</i><p>{{adventure.players.length}} <span ng-show="{{adventure.players.length>adventure.slots_max}}">({{adventure.players.length - adventure.slots_max}} extra)</span></p></h4>
 			<div class="well">
 			  <ul>
 			    <li ng-repeat="player in adventure.players"><span class="players"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
