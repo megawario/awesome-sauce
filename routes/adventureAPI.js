@@ -1,5 +1,5 @@
 
-module.exports= function(express,db,config,log){
+module.exports = function(express,db,config,log){
     var router = express.Router();
     var bodyParser= require("body-parser");
     

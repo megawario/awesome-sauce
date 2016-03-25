@@ -130,13 +130,17 @@ angular.module('lisapp.controllers',
 		    ;};
 	
 	//utils
+	//return game day date, if number false, displays as string.
+	//date will change 7 days of second week (14+7)
 	this.getGameDate = function getGameDate(number){
 	    var current = new Date();
-	    var day = getMonthDay(14,current.getMonth(),current.getFullYear());
+	    var currentMonth = current.getMonth();
+	    var day = getMonthDay(14,currentMonth,current.getFullYear());
+	    if (current.getDate() >= 21) currentMonth++; //change month by one if day is bigger than offset
 	    if(number){
-		return day+"-"+current.getMonth()+"-"+current.getFullYear();
+		return day+"-"+currentMonth+"-"+current.getFullYear();
 	    }else{
-		return getMonthDay(14,current.getMonth(),current.getFullYear()) +" "+ monthName("pt",current.getMonth())+" "+current.getFullYear();
+		return getMonthDay(14,currentMonth,current.getFullYear()) +" "+ monthName("pt",currentMonth)+" "+current.getFullYear();
 	    };
 	};
 	
