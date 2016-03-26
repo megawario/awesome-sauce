@@ -32,8 +32,8 @@ module.exports = function(passport,express,db,config,log ){
     //authentication
     router.get('/google', passport.authenticate('google'));
     router.get('/google/return',
-	       passport.authenticate('google', { successRedirect: config.server.path,
-						 failureRedirect: config.server.path }));
+	       passport.authenticate('google', { successRedirect: config.auth.redirect,
+						 failureRedirect: config.auth.redirect }));
     //log out path
     router.get('/logout', function(req, res){
 	req.logout();
