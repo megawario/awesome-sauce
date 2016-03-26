@@ -6,6 +6,7 @@ var type = Schema.Types;
 //obfuscate fields when sending to client.
 function obfuscate(doc,ret,options){
     delete ret.userID;
+    ret.players.map(function(x){delete x.userID; delete x._id}); //delete userID;
 }
 
 //adventure data schema
@@ -19,7 +20,8 @@ var adventureSchema = new Schema(
 	adventure: {type: String, required: true, maxlength:100, minlength:1} ,  //adventure title
 	slots_min: {type: Number, min:0, max: 20},   //minumum slots
 	slots_max: {type: Number,required: true, min:0, max:20},    //maximum slots
-	players: Array,              //players
+	players: [{name: String,
+		   userID: Number}],              //players
 	synopsis: {type: String, maxlength:2000},    //adventure synopsis
 	image: {type:String,default:"image/brand.png"}, //image to display on card for adventure.
 	userID: {type: Number, required: false}         //user id, owner of the adventure.

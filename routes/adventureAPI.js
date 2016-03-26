@@ -47,9 +47,11 @@ module.exports = function(express,db,config,log){
     
     //adds new player to adventure
     router.post('/adventure/player/add',function(req,res){
+	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in
 	var id=req.body._id;
 	var playerName = req.body.player;
-	db.addPlayer(id,playerName,function(err,doc){
+	var userID = req.body.userID;
+	db.addPlayer(id,playerName,userID,function(err,doc){
 	    if(err){
 		log.err(err);
 		res.sendStatus(500);
@@ -59,13 +61,16 @@ module.exports = function(express,db,config,log){
     
     //Remove setected player from adventure
     router.post('/adventure/player/remove',function(req,res){
+	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in
 	var id = req.body._id;
 	var playerName = req.body.playerName;
+	var userID = req.body.userID;
 	log.debug("removing "+id+ " with name:"+playerName);
-	db.removePlayer(id,playerName,function(err,doc){
+	db.removePlayer(id,playerName,userID,function(err,doc){
 	    if(err){
 		log.err(err);
-		res.sendStatus(500);
+		if(err.message=='forbiden'){res.sendStatus(401);}
+		else{res.sendStatus(500);}
 	    }
 	    else{res.status(200).json(doc);}
 	});

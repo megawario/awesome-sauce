@@ -16,6 +16,12 @@ angular.module('lisapp.controllers',
 	this.errorMSG;
 	this.errorPlace;
 
+	//use this to clear errors
+	this.clearError = function(){
+	    this.errorMSG=undefined;
+	    this.errorPlace=undefined;
+	};
+	
 	//use this to set errors
 	this.setError = function(err,place){
 	    this.errorMSG = err;
@@ -36,7 +42,7 @@ angular.module('lisapp.controllers',
 	//visual
 	this.selectAddPlayer = function(adventureID){ //select player add
 	    this.showAdd=adventureID;
-	    this.setError(undefined,undefined);
+	    this.clearError();
 	    this.player={};
 	    if(this.isAuth()) this.player.name = this.user.displayName;
 	};
@@ -48,7 +54,7 @@ angular.module('lisapp.controllers',
 	//sets if id not undefined otherwise returns crurrent selected
 	this.selected = function(id){
 	    //allways clear error message of forms when opening
-	    this.setError(undefined,undefined);
+	    this.clearError();
 	    if(typeof id!=='undefined'){
 		if(id=='createForm'){ //clear adventure before opening form
 		    this.adventure = {};
@@ -84,11 +90,17 @@ angular.module('lisapp.controllers',
 		.then( (function(response){
 		    this.adventures[this.adventures.indexOf(adventure)]=response.data;
 		}).bind(this), //change object to reflect deletion
-		       function(response){alert("failed to remove the played");});
+		       (function(response){
+			   if(response.status==401){
+			       this.setError('Não tens permissões para apagar este jogador','playerList');
+			   }
+
+		       }).bind(this));
 	};
 
 	//focus adventure
 	this.selectAdventure = function selectAdventure(adventure){
+	    this.clearError();
 	    this.adventure=adventure;
 	};
 

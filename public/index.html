@@ -116,7 +116,7 @@
 	    <!-- User add form -->
 	    <tr ng-show="adv.isAdd(adventure._id)" class="fadeAnimation" >
 	      <td colspan="5">
-		<div class="alert alert-warning" role="alert" ng-show="!isAuth()">ATENÇÃO: Só o dono da aventura pode eliminar o teu nome. Se tiveres feito login tu também o podes fazer.</div>
+		<div class="alert alert-warning" role="alert" ng-show="!isAuth()">ATENÇÃO: Se fizeste login, só o admin da aventura e tu o podem eliminar. </div>
 		<form class="form-inline"
 		      ng-submit="adv.addPlayer(adventure,adv.player)"
 		      name="addPlayer">
@@ -153,9 +153,10 @@
 		      <h4>{{adventure.name}}</h4>
 		      <div ng-if="adventure.players.length!=0">
 			<h4 class="players"><i class="material-icons">people</i><p>{{adventure.players.length}} <span ng-show="{{adventure.players.length>adventure.slots_max}}">({{adventure.players.length - adventure.slots_max}} extra)</span></p></h4>
+			<div class="alert  alert-danger fadeAnimation" role="alert" ng-show="adv.isError('playerList')">{{adv.errorMSG}}</div>
 			<div class="well">
 			  <ul>
-			    <li ng-repeat="player in adventure.players"><span class="players"><p>{{player}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player)"><i class="material-icons">cancel</i></button></span></li>
+			    <li ng-repeat="player in adventure.players"><span class="players"><p>{{player.name}}</p><button class="actionButton redButton"  ng-click="adv.removePlayer(adventure,player.name)"><i class="material-icons">cancel</i></button></span></li>
 			  </ul>
 			</div>
 		      </div>

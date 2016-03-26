@@ -57,12 +57,12 @@ module.exports = function Database(connectionString){
 	});
     };
 	
-    //updates adventure by id,  adding a new user.
-    this.addPlayer = function(id,playerName,callback){
+    //updates adventure by id, adding a new player.
+    this.addPlayer = function(id,playerName,userID,callback){
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}
 	    else{
-		doc.players.push(playerName);
+		doc.players.push({name:playerName,userID:userID});
 		doc.save(); //used to force validations of playerName
 		callback(err,doc);
 	    }
@@ -70,17 +70,22 @@ module.exports = function Database(connectionString){
     };
     
     //removes a player from the adventure with the id. 
-    this.removePlayer = function(id,playerName,callback){
+    this.removePlayer = function(id,playerName,userID,callback){
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}
 	    else{
-		doc.players.pull(playerName);
-		doc.save(callback);
+		var player = doc.players.find(x => x.name==playerName);
+		//remove if userID is null, if admin or if user owns it.
+		log.debug('player userID '+player.userID+ ' doc '+doc.userID +' user '+userID);
+		if(!player.userID || player.userID==userID || doc.userID==userID){
+		    doc.players.pull(player);
+		    doc.save(callback);
+		}else{callback(new Error("forbiden"));}
 	    }
 	});
     };
     
-	//auth:
+    //auth:
     this.getUserById = function(id, cb){
 	this.session.findOne({'userID': id}, function(err, user){
 	    cb(err, user);
