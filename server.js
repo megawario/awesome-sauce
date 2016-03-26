@@ -16,11 +16,14 @@ process.on('uncaughtException',function(err){
     log.err('Caught exception: '+err.stack);
 });
 
-var passport = require('./passport.js');
+var database = require('./database.js')(config.db.url);
+var passport = require('./passport.js')(database,config,log);
 var express = require('express');
 var app = express();
-var advRoutes = require("./routes/adventureAPI.js");
-var authRoutes =require("./routes/authAPI.js");
+
+var advRoutes = require("./routes/adventureAPI.js")(express,database,config,log);
+var authRoutes =require("./routes/authAPI.js")(passport,express,database,config,log);
+
 var cookieParser = require('cookie-parser');
 
 app.use(cookieParser());

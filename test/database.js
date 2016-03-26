@@ -1,31 +1,35 @@
 var assert = require('chai').assert;
-
+var config = require('../config.js');
+var database = require('../database.js')(config.db.test);
 
 describe('database',function(){
+    var minimumJson = function(){
+	return {date:'13-1-2016',
+			   name:'test name',
+			   adventure:'test adventure',
+			   slots_max:10};
+    };
     
     //set pre conditions to test database
-    var database;
+   
     before(function(done){
-	database = require('../database.js');
-	database.mongoose.connection.on('connected',function(){
-	    done(); //no error carry on
-	});
-	
-	database.mongoose.connection.on('error',function(err){
-	    done(err);
-	}); });
+	done();
+    });
 
+    //clear mongo db after tests executed
     after(function(done){
-	//clear mongo bd
 	database.adventure.remove()
 	    .then(function(){done();})
 	    .catch(function(err){done(err)});
     });
 
+    
+    //adventure database tests
     describe('#Adventure',function(){
-	var test_added_id; //for testing 
+	var test_added_id; //for testing
+	
+	//minimum required adventure json
 	it('should be able to create an adventure whith minimum requirements',function(done){
-	    var minimumJson = {name:'test name',adventure:'test adventure',slots_max:10}
 	    database.createAdventure(minimumJson,function(err,jsonID){
 		if(err){done(err)}
 		else{
@@ -36,13 +40,14 @@ describe('database',function(){
 	
 	it('should NOT be able to create an adventure without one of the  minimum requirements',function(done){
 	    var notMinimumJson = {slots_min:10}
-	    database.createAdventure(notMinimumJson,function(err,jsonID){
+	    database.createAdventure(notMinimumJson,function(err,jsonID){	
 		assert.isDefined(err,'Error is Undifined');
 		done();
 	    }); });
 	
 	it('should be able to edit an existing adventure',function(done){
-	    var adv_json = {name:"testEdit",adventure:"testEdit",slots_max:10};
+	    var adv_json = minimumJson();
+	    adv_json.name="testEdit";
 	    database.createAdventure(adv_json, function(err,result){
 		if(err){done(err)}
 		else{
@@ -56,7 +61,8 @@ describe('database',function(){
 	    };});};});})
 	
 	it('should NOT be able to edit an non existing adventure',function(done){
-	    var adv_json = {name:"testEdit",adventure:"testEdit",slots_max:10};
+	    var adv_json = minimumJson();
+	    adv_json.name="testEdit";
 	    database.editAdventure(adv_json,function(err,result){
 		if(err){done(err)}//success
 		else{
@@ -64,6 +70,16 @@ describe('database',function(){
 		    done();
 	    } }); })
 
+	//validation test
+	it('should NOT be able to add an adventure with a name bigger than 20 chars',function(done){
+	    var adv_json = minimumJson();
+	    adv_json.name='a1234567890123456789012345678901234567890'
+	    database.createAdventure(adv_json,function(err,jsonID){
+		assert.isDefined(err,'Error is Undifined');
+		done();
+	    });
+	    
+	})
 	//TODO - trigger field validation and check edit success.
 	//it('should NOT be able to edit an adventure with field validations',function(){});
 
@@ -85,10 +101,12 @@ describe('database',function(){
     //test player functionality of database
     describe('#Player',function(){
 	var jsonId;
+	
 	//create a entry with users for testing
 	before(function(done){
-	    var minimumJson = {name:'test name',adventure:'test adventure',slots_max:10,players:['teste']}
-	    database.createAdventure(minimumJson,function(err,jsonID){
+	    var playerJson = minimumJson;
+	    playerJson.players=['teste'];
+	    database.createAdventure(playerJson,function(err,jsonID){
 		jsonId=jsonID;
 		if(err){done(err)}else{done()};
 	    })

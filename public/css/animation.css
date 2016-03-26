@@ -13,3 +13,8 @@
     90%{ transform: translateX(1px) rotate(0deg);}
     100%{ transform: translateX(-1px) rotate(0deg);}
 }
+
+@keyframes fadeAnimation{
+    from {opacity:1; }
+    to{	opacity:0;}
+}

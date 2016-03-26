@@ -1,31 +1,72 @@
+@import url("css-form.css");
+@import url("infoCard.css");
+@import url("animation.css");
+@import url("bootstrap.min.css");
+
 body {
+    padding-top:50px; /*navbar boddy padding*/
     padding-bottom: 40px;
-    color: #5a5a5a;
+    background-color: #95a65b !important;
+    color: black !important;
 }
 
-/* NavBar*/
-.navbar-brand{
-    padding:5px !important;
+.well > ul{
+    margin-bottom:0px !important;
 }
 
-.navbar-brand img{
-    width:auto;
-    height:100%;
+.redText {
+    color:red !important;
 }
 
-/* carousel base customisation */
-
-.carousel {
-    height: 500;
-    margin-bottom:60px;
+footer{
+    text-align:center;
 }
 
-.carousel-caption {
-    z-index:10;
+.table-hover:hover{
+    background-color: 608D4E;
+}
+.slideDown{
+    animation-name:slide;
+    animation-duration:0.5s;
+    animation-direction:reverse;
 }
 
+.fadeAnimation.ng-hide-remove{
+    animation-name:fadeAnimation;
+    animation-duration:0.3s;
+    animation-direction:reverse;
+}
+
+.fadeAnimation.ng-hide-add{
+    animation-name:fadeAnimation;
+    animation-duration:0.3s;
+}
+
+/*========== NavBar ========================*/
+.navbar-inverse{
+    background-color:3c5b45 !important;
+}
+
+
+.googleAuth > a{
+    padding:0px;
+}
+
+/* =========================== carousel ========================= */
+
+.carousel {margin-bottom:60px;}
+
+.blackBackground{
+    color:black;
+    
+}
+
+.carousel-caption {z-index:10;}
+
+/** forcing height for images to be the same size - images are 1200x480 **/
 .carousel .item {
-    max-height: 500px;
+    width:100%;    
+    object-position:center;
     background-color: #777;
 }
 
@@ -33,30 +74,10 @@ body {
     width:100%;
 }
 
-/* HEADER */
-div.header{
-    margin-left:5%;
-    margin-right:5%;
-    text-align: center;
-    width:auto;
-    height:auto;
-}
-.logo{
-    border-radius: 300px 300px 50px 50px;
-    max-width:100%;
-    max-heigth:100%;
-    margin-left:auto;
-    margin-right:auto;
-    width:auto;
-    height:auto;
-}
-
 /* Title */
 .title{
-    color: white;
     font-size: 250%;
     text-align:center;
-    text-shadow: 5px 5px 10px #000000;
 }
 
 div.info{
@@ -92,24 +113,25 @@ section{
     margin-top:2%;
     margin-bottom:2%;
 }
-    /* Table */
+
+/*================Table============================== */
 .tableContent td{
     margin-top:10px;
     margin-bottom:1%;
 }
 
-.thumbnail img{
-    height:200px !important;
-    width:200px !important;
-    object-fit:none;
-    object-position:center;
-    margin:10px;
+
+/*
+Button to add adventures
+Remove margin in order to center the alert.
+*/
+.table-addAdv > div{
+    margin-bottom: 0px !important;
 }
 
-.thumbnail h3{
-    margin:0px;
+.table-formButtons{
+    margin-top: 10px;
 }
-
 /* Buttons on table */
 
 .actionButton{
@@ -144,7 +166,6 @@ section{
 .adv_submit .input-group{
     margin-top: 1px;
 }
-
 
 /*Adventure submition*/
 #adv_Synopsis{
