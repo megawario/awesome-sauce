@@ -35,7 +35,10 @@ module.exports = function Database(connectionString){
 	//only update if userID is equal to adventure userID
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}
-	    doc.userID!==userID ? callback(new Error("forbiden")) : adventure.update(json,callback);
+	    if(doc.userID!==userID){callback(new Error("forbiden"))}
+	    else{ //only update the edit adventure fields
+	    	delete json.players;	 
+	    	adventure.update(json,callback);}
 	});
     };
 	   
