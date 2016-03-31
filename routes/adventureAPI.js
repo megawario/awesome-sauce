@@ -61,10 +61,11 @@ module.exports = function(express,db,config,log){
     
     //Remove setected player from adventure
     router.post('/adventure/player/remove',function(req,res){
-	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in
 	var id = req.body._id;
 	var playerName = req.body.playerName;
-	var userID = req.body.userID;
+	var userID = undefined;
+	if(req.isAuthenticated()){userID=req.session.passport.user;} //push userID if logged in
+	
 	log.debug("removing "+id+ " with name:"+playerName);
 	db.removePlayer(id,playerName,userID,function(err,doc){
 	    if(err){

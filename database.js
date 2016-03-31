@@ -77,7 +77,7 @@ module.exports = function Database(connectionString){
 		var player = doc.players.find(x => x.name==playerName);
 		//remove if userID is null, if admin or if user owns it.
 		log.debug('player userID '+player.userID+ ' doc '+doc.userID +' user '+userID);
-		if(!player.userID || player.userID==userID || doc.userID==userID){
+		if(!player.userID || player.userID===userID || doc.userID===userID){
 		    doc.players.pull(player);
 		    doc.save(callback);
 		}else{callback(new Error("forbiden"));}
