@@ -37,7 +37,8 @@ module.exports = function Database(connectionString){
 	    if(err){callback(err);}
 	    if(doc.userID!==userID){callback(new Error("forbiden"))}
 	    else{ //only update the edit adventure fields
-	    	delete json.players;	 
+	    	delete json.players;
+	    	delete json.date;
 	    	adventure.update(json,callback);}
 	});
     };
