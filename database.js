@@ -35,7 +35,11 @@ module.exports = function Database(connectionString){
 	//only update if userID is equal to adventure userID
 	this.adventure.findById(id,function(err,doc){
 	    if(err){callback(err);}
-	    doc.userID!==userID ? callback(new Error("forbiden")) : adventure.update(json,callback);
+	    if(doc.userID!==userID){callback(new Error("forbiden"))}
+	    else{ //only update the edit adventure fields
+	    	delete json.players;
+	    	delete json.date;
+	    	adventure.update(json,callback);}
 	});
     };
 	   
@@ -77,7 +81,7 @@ module.exports = function Database(connectionString){
 		var player = doc.players.find(x => x.name==playerName);
 		//remove if userID is null, if admin or if user owns it.
 		log.debug('player userID '+player.userID+ ' doc '+doc.userID +' user '+userID);
-		if(!player.userID || player.userID==userID || doc.userID==userID){
+		if(!player.userID || player.userID===userID || doc.userID===userID){
 		    doc.players.pull(player);
 		    doc.save(callback);
 		}else{callback(new Error("forbiden"));}

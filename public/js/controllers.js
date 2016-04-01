@@ -110,8 +110,8 @@ angular.module('lisapp.controllers',
 	    this.adventure.date = this.gameDate;   
 	    lisappAPI.addAdventure(this.adventure)
 		.then(
-		    (function(response){ 
-			this.adventures.push(response.data);
+		    (function(response){
+		    	if(response.data) this.adventures.push(response.data);
 			this.selected('infoTable'); //return to table screen.
 		    }).bind(this),
 		    (function(response){

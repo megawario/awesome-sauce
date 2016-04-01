@@ -24,8 +24,9 @@ module.exports = function(express,db,config,log){
     
     //Edit adventure on database
     router.post('/adventure/edit',function(req,res){
-	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in.
-	db.editAdventure(req.body._id,req.body.userID,req.body,function(err,doc){
+    	var userID = undefined;
+	if(req.isAuthenticated()){userID=req.session.passport.user;} //push userID if logged in.
+	db.editAdventure(req.body._id,userID,req.body,function(err,doc){
 	    if(err){
 		log.err(err);
 		err.message==='forbiden' ? res.sendStatus(401) : res.sendStatus(500); //send error status
@@ -35,8 +36,9 @@ module.exports = function(express,db,config,log){
     
     //remove the adventure
     router.post('/adventure/remove',function(req,res){
-	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in.
-	db.removeAdventure(req.body._id,req.body.userID,function(err){
+    	var userID = undefined;
+	if(req.isAuthenticated()){userID=req.session.passport.user;} //push userID if logged in.
+	db.removeAdventure(req.body._id,userID,function(err){
 	    if(err){
 		log.err(err);
 		if(err.message=='forbiden'){res.sendStatus(401);}
@@ -61,10 +63,11 @@ module.exports = function(express,db,config,log){
     
     //Remove setected player from adventure
     router.post('/adventure/player/remove',function(req,res){
-	if(req.isAuthenticated()){req.body.userID=req.session.passport.user;} //push userID if logged in
 	var id = req.body._id;
 	var playerName = req.body.playerName;
-	var userID = req.body.userID;
+	var userID = undefined;
+	if(req.isAuthenticated()){userID=req.session.passport.user;} //push userID if logged in
+	
 	log.debug("removing "+id+ " with name:"+playerName);
 	db.removePlayer(id,playerName,userID,function(err,doc){
 	    if(err){
