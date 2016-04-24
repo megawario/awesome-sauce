@@ -147,12 +147,12 @@ angular.module('lisapp.controllers',
 	this.getGameDate = function getGameDate(number){
 	    var current = new Date();
 	    var currentMonth = current.getMonth();
+	    if (current.getDate() >= 21) currentMonth = (currentMonth+1)%12; //change month by one if day is bigger than offset
 	    var day = getMonthDay(14,currentMonth,current.getFullYear());
-	    if (current.getDate() >= 21) currentMonth++; //change month by one if day is bigger than offset
 	    if(number){
 		return day+"-"+currentMonth+"-"+current.getFullYear();
 	    }else{
-		return getMonthDay(14,currentMonth,current.getFullYear()) +" "+ monthName("pt",currentMonth)+" "+current.getFullYear();
+		return day +" "+ monthName("pt",currentMonth)+" "+current.getFullYear();
 	    };
 	};
 	

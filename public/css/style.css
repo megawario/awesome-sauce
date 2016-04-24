@@ -3,6 +3,11 @@
 @import url("animation.css");
 @import url("bootstrap.min.css");
 
+pre {
+    font-family: "Helvetiva Neue",Helvetica,Arial,sans-serif;
+    white-space: pre-wrap;
+}
+
 body {
     padding-top:50px; /*navbar boddy padding*/
     padding-bottom: 40px;
